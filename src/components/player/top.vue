@@ -15,7 +15,8 @@
             <van-col span="9" class="span2 span">
               <h1 class="name">{{ClassTimePlayer.user_name}}</h1>
               <h1 class="zan">
-                <van-icon name="like" class="icon" />{{ClassTimePlayer.likes}}
+                <van-icon name="like" class="icon" />
+                {{ClassTimePlayer.likes}}
               </h1>
             </van-col>
             <van-col span="9" class="span3 span">
@@ -30,7 +31,7 @@
             <van-col span="16" class="paihangbang" @click="showPaihangbang">
               <img src="../../../static/img/icon_j1.png" alt /> 排行榜
             </van-col>
-            <van-col span="8" class="close" @click="$router.go(-1)">
+            <van-col span="8" class="close" @click="goBack">
               <van-icon name="cross" class="icon" />
             </van-col>
           </van-row>
@@ -60,16 +61,19 @@ import paihangbang1 from "../../grandson/top/paiHangBang1";
 import paihangbang2 from "../../grandson/top/paiHangBang2";
 import NumberGrow3 from "../numberGrow/numberGrow3";
 export default {
-  props: ["ClassTimePlayer", "paiHangBang"],
+  props: ["ClassTimePlayer", "paiHangBang","res_id"],
   data() {
     return {
-      show: false
+      show: false,
     };
   },
   methods: {
     //弹出排行榜组件
     showPaihangbang() {
       this.show = !this.show;
+    },
+    goBack() {
+      this.$router.push(`/classDetail/${this.res_id}`);
     }
   },
   components: {

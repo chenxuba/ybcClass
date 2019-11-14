@@ -11,7 +11,7 @@
       <div class="jieshu" v-show="showjieshu">直播已经结束，稍后查看回放</div>
     </div>
     <!-- 头部 -->
-    <Top :ClassTimePlayer="ClassTimePlayer" :paiHangBang="paiHangBang"></Top>
+    <Top :ClassTimePlayer="ClassTimePlayer" :paiHangBang="paiHangBang" :res_id="res_id"></Top>
     <!-- 点赞组件 -->
     <Like ref="likes" :user_id="wsConfig.user_id"></Like>
     <!-- 底部 -->
