@@ -15,12 +15,19 @@
           <van-cell title="微信支付" icon="wechat" clickable @click="radio = '2'">
             <van-radio slot="right-icon" name="2" checked-color="#5dd6c7" />
           </van-cell>
+          <van-cell title="零钱支付" icon="balance-list" clickable @click="radio = '3'">
+            <van-radio slot="right-icon" name="3" checked-color="#5dd6c7" />
+          </van-cell>
         </van-cell-group>
       </van-radio-group>
     </div>
     <div class="btn">
       <van-button type="primary" size="large" color="#5dd6c7" @click="wxPay" round>立即支付</van-button>
     </div>
+    <!-- 零钱支付密码输入框 -->
+    <van-popup v-model="showPwdInput" position="bottom" :style="{ height: height }" round>
+      <pwdNumber :id="id" :type="type"></pwdNumber>
+    </van-popup>
     <goBack></goBack>
   </div>
 </template>
@@ -29,6 +36,7 @@
 import { reqWxPay } from "../api/index";
 import { isWx, isIos } from "../util";
 import { Toast } from "vant";
+import pwdNumber from "../components/pay/pwdNumber";
 import router from "../router";
 export default {
   data() {
@@ -36,14 +44,16 @@ export default {
       id: this.$route.params.id,
       money: this.$route.query.money,
       radio: "2",
-      type: this.$route.query.type
+      type: this.$route.query.type,
+      showPwdInput: false, //支付密码输入框是否显示
+      height: "50%"
     };
   },
   methods: {
     async wxPay() {
       if (this.radio == "1") {
         console.log("调用支付宝支付");
-      } else {
+      } else if (this.radio == "2") {
         console.log("调用微信支付");
         if (isWx()) {
           const result = await reqWxPay("", this.id, this.type);
@@ -78,12 +88,16 @@ export default {
         } else {
           console.log("不是微信浏览器");
         }
+      } else {
+        console.log("调用零钱支付，先弹出支付密码输入框");
+        this.showPwdInput = true;
       }
-    }
+    },
+    
   },
 
-  created() {
-    isIos();
+  components: {
+    pwdNumber
   }
 };
 </script>
@@ -136,6 +150,10 @@ export default {
 .van-icon.van-icon-alipay {
   font-size: 45px;
   color: rgb(65, 187, 243);
+}
+.van-icon.van-icon-balance-list {
+  font-size: 45px;
+  color: rgb(252, 187, 67);
 }
 .van-submit-bar__text {
   text-align: left;

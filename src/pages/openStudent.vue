@@ -156,6 +156,7 @@ export default {
   color: #a1a1a1;
   line-height: 60px;
   padding-left: 26px;
+  margin: 0;
 }
 /* 学员费列表 */
 .openStudent .stuList {

@@ -58,7 +58,7 @@ function setFontSize() {
 }
 /* 设置播放按钮为最高层级 */
 .xgplayer-start {
-  z-index: 2001;
+  z-index: 1999;
 }
 /* 控制视频播放页面底部菜单是否显示，0为显示 ，可选值为1101*/
 .xgplayer-poster {
