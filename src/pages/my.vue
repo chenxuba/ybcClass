@@ -95,7 +95,7 @@
                 <img :src="['../../static/img/'+item.id+'a.png']" class="tu04" />
                 <span>{{item.name}}</span>
               </div>
-              <span class="span youxiaoqi" v-if="item.id == 1">有效期:{{userinfo.endtime || "  点击开通"}}</span>
+              <span class="span youxiaoqi" v-if="item.id == 1">有效期:{{userinfo.endtime || " 点击开通"}}</span>
               <span class="span youhuiquan" v-if="item.id == 16">领取好券</span>
               <img src="../../static/img/icon_b9_32.png" class="tu03" alt />
             </div>
@@ -104,6 +104,16 @@
       </div>
     </div>
     <img src="../../static/img/sholist.svg" alt v-for="(item,index) in 6" :key="index" v-else />
+    <!-- 退出按钮 -->
+    <div class="contbox" v-if="isWx" @click="out">
+      <div class="cont" style="border-bottom: 1px solid rgb(225, 225, 225);">
+        <div class="cont-left">
+          <img src="../../static/img/tuichu.png" class="tu04" />
+          <span>退出</span>
+        </div>
+        <img src="../../static/img/icon_b9_32.png" class="tu03" alt />
+      </div>
+    </div>
     <!-- 占位符 -->
     <van-divider />
     <van-divider />
@@ -113,6 +123,8 @@
 
 <script>
 import { reqUserInfo } from "../api/index.js";
+import { isWx } from "../util/index";
+import { Dialog } from "vant";
 export default {
   name: "my",
   data() {
@@ -120,7 +132,8 @@ export default {
       List: [],
       userinfo: {}, //个人信息
       res_count: {}, //购买收藏关注足迹等计数
-      cookie: sessionStorage.getItem("cookie")
+      cookie: sessionStorage.getItem("cookie"),
+      isWx: false
     };
   },
   methods: {
@@ -131,16 +144,41 @@ export default {
         this.List = result.data.center_set;
         this.userinfo = result.data.user_info;
         this.res_count = result.data.res_count;
-        localStorage.setItem("user_id",result.data.user_info.binding_acount_master)
-        localStorage.setItem("agency_id",result.data.user_info.binding_acount_agency)
+        localStorage.setItem(
+          "user_id",
+          result.data.user_info.binding_acount_master
+        ); //绑定的导师id
+        localStorage.setItem(
+          "agency_id",
+          result.data.user_info.binding_acount_agency
+        ); //绑定的机构id
       }
     },
     zuji() {
-      alert("足迹模块待优化");
+      this.$toast("足迹模块待优化");
+    },
+    out() {
+      Dialog.confirm({
+        title: "温馨提示",
+        message: "确认要退出吗"
+      })
+        .then(() => {
+          // on confirm
+          sessionStorage.clear();
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          // on cancel
+        });
     }
   },
   mounted() {
     this.getUserInfo();
+    if (isWx()) {
+      this.isWx = false;
+    } else {
+      this.isWx = true;
+    }
   }
 };
 </script>

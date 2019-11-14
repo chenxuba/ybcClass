@@ -1,56 +1,54 @@
 <template>
   <div class="myDingYue">
-    <van-button type="warning" @click="change">点击发送</van-button>
-    <ul>
-      <li v-for="(item,index) in list" :key="index" v-html="item" ref="liwu" id="li"></li>
-    </ul>
+    <DingYueList :dingYueList="dingYueList" @pullDown="pullDown2" ref="child"></DingYueList>
+    <goBack></goBack>
   </div>
 </template>
 
 <script>
+import { reqUserDingyue } from "../api";
+import DingYueList from "../components/myDingYue/dingYueList";
 export default {
   data() {
     return {
-      list: []
+      dingYueList: {},
+      page: 1
     };
   },
   methods: {
-    change() {
-      let html = `<div
-      class="liwu animated bounceInLeft"
-    >我是礼物</div>`;
-      this.list.push(html);
-    }
-  },
-  watch: {
-    list() {
-      if (this.list.length >= 5) {
-        this.$refs.liwu.forEach(item => {
-          console.log(item);
-          item.classList = "bounceOutRight animated";
-          setTimeout(() => {
-            item.style.display = "none";
-          }, 3000);
+    async getDingYueList() {
+      const result = await reqUserDingyue("", this.page);
+      console.log(result);
+      if (result.code == 1) {
+        this.dingYueList = result.data;
+      }
+    },
+    async pullDown2() {
+      this.page++;
+      const result = await reqUserDingyue("", this.page);
+       if (result.code == 1) {
+        result.data.forEach(item => {
+          this.dingYueList.push(item);
         });
-      }else if(this.list.length == 1){
-        setTimeout(() => {
-        this.list= []
-        }, 5000);
-        // console.log(this.list.length);
-        
+        // 加载状态结束
+        this.$refs.child.loading = false;
+      } else if (result.code == -3) {
+        this.$refs.child.finished = true;
+        this.$refs.child.loading = false;
       }
     }
+  },
+  components: {
+    DingYueList
+  },
+  mounted() {
+    this.getDingYueList();
   }
 };
 </script>
 
 <style scoped>
-.liwu {
-  width: 200px;
-  font-size: 26px;
-  border: 1px solid red;
-  margin-top: 200px;
-  padding: 5px 20px;
-  text-align: center;
+.myDingYue >>> .van-swipe-cell__right {
+  line-height: 130px;
 }
 </style>

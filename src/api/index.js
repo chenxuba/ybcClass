@@ -238,3 +238,7 @@ export const reqApplySchool = (cookie,schoolname,province,city,area,addressdetai
  * 获取用户零钱信息
  */
 export const reqlingQianMsg = (cookie) => ajax(`${BASE_URL2}/api/5d9c2474c1463`, {cookie}, 'POST');
+/**
+ * 获取用户订阅接口
+ */
+export const reqUserDingyue = (cookie,page) => ajax(`${BASE_URL2}/api/5db28aa0d5b54`, {cookie,page}, 'POST');
