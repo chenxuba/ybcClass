@@ -488,7 +488,57 @@ const router = new Router({
         title: "申请机构"
       }
     },
-    // applySchool
+    {
+      path: "/download",
+      name: "download",
+      component: () =>
+        import('../pages/download.vue'),
+      meta: {
+        showFooter: false,
+        title: "app下载"
+      }
+    },
+    {
+      path: "/xianxiaCourse",
+      name: "xianxiaCourse",
+      component: () =>
+        import('../pages/xianxiaCourse.vue'),
+      meta: {
+        showFooter: false,
+        title: "线下课程"
+      }
+    },
+    {
+      path: "/setting",
+      name: "setting",
+      component: () =>
+        import('../pages/setting.vue'),
+      meta: {
+        showFooter: false,
+        title: "设置"
+      }
+    },
+    {
+      path: "/xianxiaCourseAdmin",
+      name: "xianxiaCourseAdmin",
+      component: () =>
+        import('../pages/xianxiaCourseAdmin.vue'),
+      meta: {
+        showFooter: false,
+        title: "线下课程管理员"
+      }
+    },
+    {
+      path: "/myCoupon",
+      name: "myCoupon",
+      component: () =>
+        import('../pages/myCoupon.vue'),
+      meta: {
+        showFooter: false,
+        title: "线下课程管理员"
+      }
+    },
+    // myCoupon
 
   ]
 })
