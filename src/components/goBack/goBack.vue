@@ -11,7 +11,12 @@ export default {
     goBack() {
       if (this.router == "applyTeacher" || this.router == 'openTeacher' || this.router == 'openSchool') {
         this.$router.push("/my");
-      } else {
+      }else if(this.router == 'pay'){
+        this.$router.push("/inquire");
+      }else if(this.router == 'payOver'){
+        this.$router.push("/");
+      }
+      else {
         this.$router.go(-1);
       }
     }

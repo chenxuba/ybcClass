@@ -150,9 +150,7 @@
     </div>
     <goHome></goHome>
     <!-- 返回按钮 -->
-    <div class="goHome" @click="goBack">
-      <img src="../../static/img/back.svg" alt />
-    </div>
+   <goBack :router="router"></goBack>
   </div>
 </template>
 
@@ -176,7 +174,7 @@ export default {
       baseValue: "1300",
       show2: false,
       height: "50%",
-      fromName: "/" //从哪个路由过来的
+      router:"payOver"
     };
   },
   methods: {
@@ -240,18 +238,12 @@ export default {
         path: `/pay/${this.id}`,
         query: {
           money: this.classDetail.price,
-          type: "2"
+          type: "2",
+          res_id:this.id
         }
       });
     },
-    // 返回
-    goBack() {
-      if (this.fromName == "payOver") {
-        this.$router.push("/");
-      } else {
-        this.$router.go(-1);
-      }
-    }
+   
   },
   mounted() {
     this.getRandomInt(100, 200);
@@ -267,16 +259,8 @@ export default {
     pwdNumber
   },
   computed: {},
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      console.log(from);
-
-      vm.fromName = from.name;
-    });
-  },
-  created() {
-    isIos();
-  }
+ 
+ 
 };
 </script>
 

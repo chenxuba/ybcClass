@@ -31,7 +31,8 @@ export default {
       info: "请输入支付密码",
       error_info: "",
       pay_type: "2", //2是零钱支付
-      batchcode: ""
+      batchcode: "",
+      res_id:this.$route.query.res_id
     };
   },
   methods: {
@@ -81,8 +82,13 @@ export default {
       if (res.code == 1) {
         toast2.clear();
         _this.value = "";
-        _this.$router.push("/my");
-
+        _this.$router.push({
+          path:"/payOver",
+          query:{
+            type:this.type,
+            id: this.id,
+          }
+        });
         Toast.success("支付成功");
       } else {
         Toast.fail("支付未成功");

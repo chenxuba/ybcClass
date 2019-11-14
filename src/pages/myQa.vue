@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <goBack></goBack>
+    <goBack :router="router"></goBack>
   </div>
 </template>
 
@@ -36,7 +36,8 @@ export default {
       MyQuery: [],
       MyWeiGuan: [],
       member_info: {},
-      page: 0
+      page: 0,
+      router:"pay"
     };
   },
   methods: {

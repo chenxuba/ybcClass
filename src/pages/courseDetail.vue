@@ -92,7 +92,7 @@
       </van-row>
     </div>
     <goHome></goHome>
-    <goBack></goBack>
+    <goBack :router="router"></goBack>
   </div>
 </template>
 
@@ -115,7 +115,8 @@ export default {
     return {
       active: 1, //默认进入到目录下
       show: true, //控制我的邀约卡的显示与否
-      id: this.$route.params.id //上一级传过来的id，通过id去找详情资源,
+      id: this.$route.params.id ,//上一级传过来的id，通过id去找详情资源,
+      router:"payOver"
     };
   },
   methods: {
