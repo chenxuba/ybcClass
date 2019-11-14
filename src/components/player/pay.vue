@@ -11,17 +11,22 @@
           <van-icon name="arrow" class="icon" />
         </span>
       </li>
-      <li>
+      <li v-if="lingQianMoney > 0 && lingQianMoney > LiwuTotalPrice" @click="bank_pay">
         <img
           src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572774246562&di=fd48e01da1cfa810379e67f1dee4cca2&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F32%2F12%2F5810ded697fac_610.jpg"
           alt
         />
-        <span
-          class="wx_text"
-          v-if="lingQianMoney > 0 && lingQianMoney > LiwuTotalPrice"
-          @click="bank_pay"
-        >零钱支付：{{lingQianMoney}}</span>
-        <span class="wx_text" v-else>零钱支付：余额不足</span>
+        <span class="wx_text">零钱支付：{{lingQianMoney}}</span>
+        <span>
+          <van-icon name="arrow" class="icon" />
+        </span>
+      </li>
+      <li @click="bank_pay" v-else>
+        <img
+          src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572774246562&di=fd48e01da1cfa810379e67f1dee4cca2&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic2%2Fcover%2F00%2F32%2F12%2F5810ded697fac_610.jpg"
+          alt
+        />
+        <span class="wx_text">零钱支付：零钱不足</span>
         <span>
           <van-icon name="arrow" class="icon" />
         </span>

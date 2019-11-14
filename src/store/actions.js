@@ -62,6 +62,8 @@ export default {
         const content = state.content
         // 发送异步ajax请求
         const result = await reqBook(content)
+        console.log(result);
+        
         // 提交一个mutation
         const Zbook = result
         commit(GET_Zbook, { Zbook })

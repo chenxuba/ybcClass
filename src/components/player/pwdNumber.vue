@@ -85,7 +85,10 @@ export default {
         toast2.clear();
         _this.value = "";
         _this.$emit("closePwdInput");
-        Toast.success("打赏成功");
+        Toast({
+          message: "感谢打赏",
+          icon: "like",
+        });
         // 打赏成功后,实时刷新用户零钱余额
         _this.$emit("ShuaXinlingQianMsg")
         switch (_this.Restype) {
@@ -171,4 +174,5 @@ export default {
 .number {
   padding-top: 45px;
 }
+
 </style>

@@ -75,7 +75,7 @@ export default {
     // 检查零钱支付结果
     async getPayResult() {
       let _this = this;
-       const toast2 = Toast.loading({
+      const toast2 = Toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
         message: "加载中"
@@ -85,9 +85,12 @@ export default {
         toast2.clear();
         _this.value = "";
         _this.$emit("closePwdInput");
-        Toast.success("打赏成功");
+        Toast({
+          message: "感谢打赏",
+          icon: "like"
+        });
         // 打赏成功后,实时刷新用户零钱余额
-        _this.$emit("ShuaXinlingQianMsg")
+        _this.$emit("ShuaXinlingQianMsg");
         switch (_this.Restype) {
           // 正在直播的视频
           case 2:

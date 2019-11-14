@@ -44,6 +44,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { Toast } from "vant";
 export default {
   data() {
     return {};
@@ -51,14 +52,21 @@ export default {
   methods: {
     //请求查询证书
     ...mapActions(["getZbook"]),
-    async query() {
+    query() {
       if (this.content == "") {
         this.$message.error("请输入证书编号");
       } else {
         //异步获取证书信息，触发查询
         this.getZbook();
+        const toast = Toast.loading({
+          duration: 0, // 持续展示 toast
+          forbidClick: true,
+          message: "正在查询中..."
+        });
         //跳转到证书详情页面
-        this.$router.push("/ZbookResult");
+        setTimeout(() => {
+          this.$router.push("/ZbookResult");
+        }, 1000);
       }
     },
     tel() {

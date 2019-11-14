@@ -522,4 +522,5 @@ export default {
   border: 2px solid red;
   padding: 10px 30px;
 }
+
 </style>
