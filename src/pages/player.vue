@@ -66,6 +66,15 @@
         @ShuaXinlingQianMsg="getlingQianMsg"
       ></pwdNumber>
     </van-popup>
+    <!-- ppt容器弹出层 -->
+    <van-popup v-model="showPPt" position="top">
+      <van-swipe  style="height: 200px;" @change="onChange">
+        <van-swipe-item v-for="(item,index) in ppt" :key="index">
+          <img :src="item.img_url" alt width="100%" height="100%" />
+        </van-swipe-item>
+        <div class="custom-indicator" slot="indicator">{{ current + 1 }}/{{ppt.length}}</div>
+      </van-swipe>
+    </van-popup>
   </div>
 </template>
 
@@ -125,7 +134,10 @@ export default {
       multiply: "", //倍数
       showPwdInput: false, //零钱支付密码输入框是否显示
       height: "50%",
-      lingQianMoney: "" //用户的零钱余额
+      lingQianMoney: "", //用户的零钱余额
+      showPPt: false, //ppt容器是否开启
+      ppt: [] ,//ppt数据
+      current:0
     };
   },
   methods: {
@@ -194,6 +206,9 @@ export default {
         }
         this.paiHangBang = result.data.data;
         this.msgList = result.data.data.res_log.count;
+        this.ppt = result.data.data.ppt;
+        console.log(this.ppt);
+
         this.getVideoConfig();
       } else if (result.code == -6) {
         Toast("该资源需要输入密码");
@@ -379,6 +394,10 @@ export default {
       // 隐藏聊天区域
       this.$refs.bottomChild.showMsg = false;
     },
+    // 点击出现ppt容器
+    showPPtBox() {
+      this.showPPt = true;
+    },
     // 显示聊天框
     showmsg() {
       this.$refs.bottomChild.showMsg = true;
@@ -424,6 +443,10 @@ export default {
       const res = await reqlingQianMsg();
       console.log(res);
       this.lingQianMoney = res.data.total.money;
+    },
+    // 轮播图轮播改变索引值
+    onChange(index){
+      this.current = index;
     }
   },
   mounted() {
@@ -522,5 +545,12 @@ export default {
   border: 2px solid red;
   padding: 10px 30px;
 }
-
+.custom-indicator{
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  color: red;
+  font-size: 28px;
+  font-weight: bold;
+}
 </style>

@@ -3,7 +3,7 @@
     <!-- 底部 -->
     <div class="bottom">
       <van-row>
-        <van-col span="18">
+        <van-col span="15">
           <div class="input_warp">
             <form action="javascript:void(0)">
               <input
@@ -16,6 +16,11 @@
               />
             </form>
           </div>
+        </van-col>
+        <van-col span="3" class="liwu ppt" @click="showPPtBoxs">
+          <span>
+            <van-icon name="http://qiniu.ybc365.com/ppt.png" class="icon" />
+          </span>
         </van-col>
         <van-col span="3" class="zan">
           <span class="fenxiang">
@@ -46,7 +51,7 @@
           <!-- xxx打赏了棒棒糖 X 1 -->
           <span v-else-if="item.content_type == 3 || item.content_type == 7">
             <span class="login_name">{{item.name == '' ? '游客' : item.name}}</span>
-           <span class="dashang">打赏了{{item.meaning}}x{{item.multiple}}</span> 
+            <span class="dashang">打赏了{{item.meaning}}x{{item.multiple}}</span>
           </span>
           <!-- xxx进入了房间 -->
           <span
@@ -188,6 +193,9 @@ export default {
     },
     showLiwu() {
       this.$parent.showLiwuBox();
+    },
+    showPPtBoxs() {
+      this.$parent.showPPtBox();
     }
   },
   watch: {
@@ -255,6 +263,9 @@ export default {
 .bottom .liwu {
   position: relative;
   top: 5px;
+}
+.bottom .liwu.ppt {
+  transform: scale(0.9);
 }
 .bottom .liwu span {
   display: inline-block;
@@ -348,8 +359,8 @@ export default {
   border-radius: 50%;
   vertical-align: middle;
 }
-.dashang{
+.dashang {
   color: #fc7d5e;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>

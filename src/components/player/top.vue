@@ -101,7 +101,7 @@ export default {
   right: 0;
   /* background: #fff; */
   display: flex;
-  z-index: 9999999 !important;
+  z-index: 1990 !important;
   padding-left: 25px;
   padding-right: 15px;
   box-sizing: border-box;
