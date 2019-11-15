@@ -67,8 +67,8 @@
       ></pwdNumber>
     </van-popup>
     <!-- ppt容器弹出层 -->
-    <van-popup v-model="showPPt" position="top">
-      <van-swipe  style="height: 200px;" @change="onChange">
+    <van-popup v-model="showPPt" position="top" v-if="ppt != ''">
+      <van-swipe style="height: 220px;" @change="onChange">
         <van-swipe-item v-for="(item,index) in ppt" :key="index">
           <img :src="item.img_url" alt width="100%" height="100%" />
         </van-swipe-item>
@@ -136,8 +136,8 @@ export default {
       height: "50%",
       lingQianMoney: "", //用户的零钱余额
       showPPt: false, //ppt容器是否开启
-      ppt: [] ,//ppt数据
-      current:0
+      ppt: [], //ppt数据
+      current: 0
     };
   },
   methods: {
@@ -396,7 +396,11 @@ export default {
     },
     // 点击出现ppt容器
     showPPtBox() {
-      this.showPPt = true;
+      if (this.ppt != "") {
+        this.showPPt = true;
+      }else{
+        this.$toast("导师暂未上传PPT")
+      }
     },
     // 显示聊天框
     showmsg() {
@@ -445,7 +449,7 @@ export default {
       this.lingQianMoney = res.data.total.money;
     },
     // 轮播图轮播改变索引值
-    onChange(index){
+    onChange(index) {
       this.current = index;
     }
   },
@@ -545,7 +549,7 @@ export default {
   border: 2px solid red;
   padding: 10px 30px;
 }
-.custom-indicator{
+.custom-indicator {
   position: absolute;
   bottom: 0;
   right: 10px;
