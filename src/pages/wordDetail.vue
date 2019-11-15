@@ -99,6 +99,7 @@
     </div>
     <goHome></goHome>
     <goBack></goBack>
+    <bottom></bottom>
   </div>
 </template>
 
@@ -113,12 +114,15 @@ import Needpay4 from "../components/wordDetail/needpay4";
 import Needpay5 from "../components/wordDetail/needpay5";
 import Needpay6 from "../components/wordDetail/needpay6";
 import Needpay7 from "../components/wordDetail/needpay7";
-import  Comment from "../components/wordDetail/comment";
+import Comment from "../components/wordDetail/comment";
+import bottom from "../components/wordDetail/bottom";
 export default {
   data() {
     return {
       article_id: this.$route.params.id, //上一级传过来的id，通过id去找详情资源
-      word: {}
+      word: {
+        reward: {}
+      }
     };
   },
   methods: {
@@ -156,7 +160,8 @@ export default {
     Needpay5,
     Needpay6,
     Needpay7,
-    Comment
+    Comment,
+    bottom
   }
 };
 </script>
@@ -306,9 +311,11 @@ export default {
   margin-top: 50px;
 }
 /* 评论 */
+.word .comment {
+  margin-bottom: 110px;
+}
 .word .comment .title {
   font-size: 30px;
   margin: 30px 0 0 30px;
 }
-
 </style>
