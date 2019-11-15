@@ -168,19 +168,23 @@ export default {
         },
         false
       );
+    },
+    //自动飘心
+    setIntervalZan() {
+      this.timer = setInterval(() => {
+        this.$parent.delayed();
+      }, 1200);
     }
   },
   mounted() {
     this.getLike();
     //   定时自动飘心
-    this.timer = setInterval(() => {
-      this.$parent.delayed();
-    }, 1200);
+    this.setIntervalZan();
   },
   beforeDestroy() {
     if (this.timer) {
       //如果定时器还在运行 或者直接关闭，不用判断
-      clearTimeout(this.timer); //关闭
+      clearInterval(this.timer); //关闭
     }
   }
 };

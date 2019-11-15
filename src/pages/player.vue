@@ -468,9 +468,11 @@ export default {
         if ((visibleTime - this.hiddenTime) / 1000 > 5) {
           //页面再次可见的时间-隐藏时间>10S,重连
           typeof this.ws.close == "function" && this.websocketclose(); //先主动关闭连接
+          clearInterval(this.$refs.likes.timer);
           console.log("主动关闭连接后重连");
           setTimeout(() => {
             this.connection(); //打开连接，使用的vuejs，这是websocket的连接方法
+            this.$refs.likes.setIntervalZan();
           }, 1500); //1.5S后重连
         } else {
           console.log("还没有到断开的时间");
