@@ -20,13 +20,33 @@
           </van-col>
         </van-row>
       </div>
-      <div class="html" v-html="word.content"></div>
-      <div class="zhezhao" :style="{height:height}"></div>
-      <div class="html" v-if="word.try_content">
-        <p ref="ppp" v-html="word.try_content"></p>
+      <!-- 直接渲染content -->
+      <div class="needpay0" v-if="word.content != '' ">
+        <Needpay0 :content="word.content"></Needpay0>
       </div>
-      <div class="cry" v-if="word.try_see == 2">
-        <span>{{word.price}}元查看全文</span>
+      <!-- 学员文章，needpay == 2 无试看 不是学员-->
+      <div class="needpay0" v-if="word.needpay == 2 && word.try_content == '' && word.content == null">
+        <Needpay2 :article_qr="word.article_qr"></Needpay2>
+      </div>
+      <!-- 学员文章，needpay == 2 有试看 不是学员-->
+      <div class="needpay0" v-if="word.needpay == 2 && word.try_content != '' && word.content == null">
+        <Needpay3 :try_content="word.try_content"></Needpay3>
+      </div>
+      <!-- 密码文章，needpay == 4 无试看 没有输入密码-->
+      <div class="needpay0" v-if="word.needpay == 4 && word.try_content == '' && word.content == null">
+        <Needpay4></Needpay4>
+      </div>
+      <!-- 密码文章，needpay == 4 有试看 没有输入密码-->
+      <div class="needpay0" v-if="word.needpay == 4 && word.try_content != '' && word.content == null">
+        <Needpay5 :try_content="word.try_content"></Needpay5>
+      </div>
+      <!-- 密码文章，needpay == 3 有试看 没有购买-->
+      <div class="needpay0" v-if="word.needpay == 3 && word.try_content != '' && word.content == null">
+        <Needpay6 :try_content="word.try_content" :price="word.price"></Needpay6>
+      </div>
+      <!-- 密码文章，needpay == 3 无试看 没有购买-->
+      <div class="needpay0" v-if="word.needpay == 3 && word.try_content == '' && word.content == null">
+        <Needpay7 :price="word.price"></Needpay7>
       </div>
     </div>
     <goHome></goHome>
@@ -36,25 +56,36 @@
 
 <script>
 import { reqWordDetail } from "../api/index";
-import {  isIos } from "../util";
+import { isIos } from "../util";
 import { wxJS_SDk } from "../util/share";
+import Needpay0 from "../components/wordDetail/needpay0";
+import Needpay2 from "../components/wordDetail/needpay2";
+import Needpay3 from "../components/wordDetail/needpay3";
+import Needpay4 from "../components/wordDetail/needpay4";
+import Needpay5 from "../components/wordDetail/needpay5";
+import Needpay6 from "../components/wordDetail/needpay6";
+import Needpay7 from "../components/wordDetail/needpay7";
 export default {
   data() {
     return {
       article_id: this.$route.params.id, //上一级传过来的id，通过id去找详情资源
-      word: {},
-      height: 0
+      word: {}
     };
   },
   methods: {
     async getWordDetail() {
       const result = await reqWordDetail(this.article_id, "");
-      // console.log(result);
+      console.log(result);
       this.word = result.data;
+      if(result.code == -8){
+        this.$toast("该资源不存在");
+        this.$router.go(-1)
+      }
       wxJS_SDk(
         this.word.title,
         this.word.abstract,
-        window.location.href + `?parent_id=${sessionStorage.getItem("member_id")}`,
+        window.location.href +
+          `?parent_id=${sessionStorage.getItem("member_id")}`,
         this.word.pic
       );
     },
@@ -68,8 +99,14 @@ export default {
       this.getHeight();
     }, 500);
   },
-  created() {
-    isIos();
+  components: {
+    Needpay0,
+    Needpay2,
+    Needpay3,
+    Needpay4,
+    Needpay5,
+    Needpay6,
+    Needpay7,
   }
 };
 </script>
@@ -163,32 +200,9 @@ export default {
   font-size: 30px;
   padding: 0 20px;
   box-sizing: border-box;
+  color: #333;
 }
 .word .html >>> img {
   width: 100% !important;
-}
-.word .cry {
-  width: 100%;
-  font-size: 30px;
-  color: red;
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: 100px;
-}
-.word .cry span {
-  border: 2px solid red;
-  padding: 1px 80px;
-  border-radius: 40px;
-}
-.zhezhao {
-  width: 100%;
-  /* height:70%; */
-  background-image: linear-gradient(
-    -180deg,
-    rgba(255, 255, 255, 0) 0,
-    #fff 100%
-  );
-  position: fixed;
-  top: 26%;
 }
 </style>
