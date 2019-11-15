@@ -1,5 +1,5 @@
 <template>
-  <div class="word" v-wechat-title="$route.meta.title = word.title">
+  <div class="word" v-wechat-title="$route.meta.title = word.title" v-height>
     <div class="top">
       <span>{{word.title}}</span>
     </div>
@@ -20,33 +20,81 @@
           </van-col>
         </van-row>
       </div>
-      <!-- 直接渲染content -->
-      <div class="needpay0" v-if="word.content != '' ">
-        <Needpay0 :content="word.content"></Needpay0>
+      <!-- 正文部分 -->
+      <div class="contents">
+        <!-- 直接渲染content -->
+        <div class="needpay0" v-if="word.content != '' ">
+          <Needpay0 :content="word.content"></Needpay0>
+        </div>
+        <!-- 学员文章，needpay == 2 无试看 不是学员-->
+        <div
+          class="needpay0"
+          v-if="word.needpay == 2 && word.try_content == '' && word.content == null"
+        >
+          <Needpay2 :article_qr="word.article_qr"></Needpay2>
+        </div>
+        <!-- 学员文章，needpay == 2 有试看 不是学员-->
+        <div
+          class="needpay0"
+          v-if="word.needpay == 2 && word.try_content != '' && word.content == null"
+        >
+          <Needpay3 :try_content="word.try_content"></Needpay3>
+        </div>
+        <!-- 密码文章，needpay == 4 无试看 没有输入密码-->
+        <div
+          class="needpay0"
+          v-if="word.needpay == 4 && word.try_content == '' && word.content == null"
+        >
+          <Needpay4></Needpay4>
+        </div>
+        <!-- 密码文章，needpay == 4 有试看 没有输入密码-->
+        <div
+          class="needpay0"
+          v-if="word.needpay == 4 && word.try_content != '' && word.content == null"
+        >
+          <Needpay5 :try_content="word.try_content"></Needpay5>
+        </div>
+        <!-- 密码文章，needpay == 3 有试看 没有购买-->
+        <div
+          class="needpay0"
+          v-if="word.needpay == 3 && word.try_content != '' && word.content == null"
+        >
+          <Needpay6 :try_content="word.try_content" :price="word.price"></Needpay6>
+        </div>
+        <!-- 密码文章，needpay == 3 无试看 没有购买-->
+        <div
+          class="needpay0"
+          v-if="word.needpay == 3 && word.try_content == '' && word.content == null"
+        >
+          <Needpay7 :price="word.price"></Needpay7>
+        </div>
       </div>
-      <!-- 学员文章，needpay == 2 无试看 不是学员-->
-      <div class="needpay0" v-if="word.needpay == 2 && word.try_content == '' && word.content == null">
-        <Needpay2 :article_qr="word.article_qr"></Needpay2>
+      <!-- 赞赏区域 -->
+      <div class="zanshang-box">
+        <div class="zanshang">
+          <h1>您的打赏，是对我梦想的最大鼓励</h1>
+          <img src="http://qiniu.ybc365.com/%E8%B5%9E%E8%B5%8F.png" alt />
+          <p>{{word.reward.reward_num}}人赞赏</p>
+        </div>
+        <!-- 赞赏人的头像 -->
+        <div class="zanshangMember">
+          <span v-for="(item,index) in word.reward.data" :key="index">
+            <img
+              v-lazy="item.headimgurl || 'http://qiniu.ybc365.com/timg.jpeg'"
+              :class="'img'+index"
+            />
+          </span>
+        </div>
       </div>
-      <!-- 学员文章，needpay == 2 有试看 不是学员-->
-      <div class="needpay0" v-if="word.needpay == 2 && word.try_content != '' && word.content == null">
-        <Needpay3 :try_content="word.try_content"></Needpay3>
-      </div>
-      <!-- 密码文章，needpay == 4 无试看 没有输入密码-->
-      <div class="needpay0" v-if="word.needpay == 4 && word.try_content == '' && word.content == null">
-        <Needpay4></Needpay4>
-      </div>
-      <!-- 密码文章，needpay == 4 有试看 没有输入密码-->
-      <div class="needpay0" v-if="word.needpay == 4 && word.try_content != '' && word.content == null">
-        <Needpay5 :try_content="word.try_content"></Needpay5>
-      </div>
-      <!-- 密码文章，needpay == 3 有试看 没有购买-->
-      <div class="needpay0" v-if="word.needpay == 3 && word.try_content != '' && word.content == null">
-        <Needpay6 :try_content="word.try_content" :price="word.price"></Needpay6>
-      </div>
-      <!-- 密码文章，needpay == 3 无试看 没有购买-->
-      <div class="needpay0" v-if="word.needpay == 3 && word.try_content == '' && word.content == null">
-        <Needpay7 :price="word.price"></Needpay7>
+      <div class="divider"></div>
+    </div>
+    <!-- 评论区 -->
+    <div class="comment">
+      <div class="title">评论(1)</div>
+      <van-divider />
+      <!-- 评论详情 -->
+      <div class="comment-content">
+        <Comment></Comment>
       </div>
     </div>
     <goHome></goHome>
@@ -65,6 +113,7 @@ import Needpay4 from "../components/wordDetail/needpay4";
 import Needpay5 from "../components/wordDetail/needpay5";
 import Needpay6 from "../components/wordDetail/needpay6";
 import Needpay7 from "../components/wordDetail/needpay7";
+import  Comment from "../components/wordDetail/comment";
 export default {
   data() {
     return {
@@ -77,9 +126,9 @@ export default {
       const result = await reqWordDetail(this.article_id, "");
       console.log(result);
       this.word = result.data;
-      if(result.code == -8){
+      if (result.code == -8) {
         this.$toast("该资源不存在");
-        this.$router.go(-1)
+        this.$router.go(-1);
       }
       wxJS_SDk(
         this.word.title,
@@ -107,6 +156,7 @@ export default {
     Needpay5,
     Needpay6,
     Needpay7,
+    Comment
   }
 };
 </script>
@@ -202,7 +252,63 @@ export default {
   box-sizing: border-box;
   color: #333;
 }
-.word .html >>> img {
-  width: 100% !important;
+
+.word .zanshang-box {
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-top: 80px;
+  text-align: center;
 }
+.word .zanshang {
+  font-size: 24px;
+  width: 100%;
+  border-top: 2px solid #ccc;
+}
+.word .zanshang h1 {
+  font-size: 30px;
+  text-align: center;
+}
+.word .zanshang img {
+  width: 100px;
+  height: 100px;
+}
+.word .zanshangMember {
+  width: 100%;
+  height: 60px;
+  /* background: red; */
+  /* text-indent: 30px; */
+}
+.word .zanshangMember img {
+  width: 60px;
+  height: 100%;
+  vertical-align: top;
+  border-radius: 50%;
+}
+.word .zanshangMember img.img1 {
+  position: relative;
+  left: -15px;
+}
+.word .zanshangMember img.img2 {
+  position: relative;
+  left: -30px;
+}
+.word .zanshangMember img.img3 {
+  position: relative;
+  left: -45px;
+}
+.word .zanshangMember img.img4 {
+  position: relative;
+  left: -60px;
+}
+.word .divider {
+  height: 20px;
+  background: #eee;
+  margin-top: 50px;
+}
+/* 评论 */
+.word .comment .title {
+  font-size: 30px;
+  margin: 30px 0 0 30px;
+}
+
 </style>

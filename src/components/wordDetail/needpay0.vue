@@ -16,4 +16,7 @@ export default {
     padding: 0 30px;
     color: #333;
 }
+.needpay0 >>> img {
+  width: 100% !important;
+}
 </style>
