@@ -25,7 +25,7 @@ export const reqBook = content => ajax(`${BASE_URL2}/api/5da3d36aed252`, { conte
 /**
  * 发送请求查询机构和导师列表
  */
-export const reqTeacherAndSchoolList = (type,page, keyword,uid,p_type) => ajax(`${BASE_URL2}/api/5d9ea5bf4efdd`, {type,page, keyword,uid,p_type}, 'POST');
+export const reqTeacherAndSchoolList = (cookie,type,page, keyword,uid,p_type) => ajax(`${BASE_URL2}/api/5d9ea5bf4efdd`, {cookie,type,page, keyword,uid,p_type}, 'POST');
 /**
  * 发送请求模糊搜索
  */
@@ -165,7 +165,7 @@ export const reqMyFans = (cookie,page) => ajax(`${BASE_URL2}/api/5db1697a74d6d`,
 /**
  * 课程购买---支付接口
  */
-export const reqWxPay = (cookie,id,type,res_id,pay_type,multiply,pwd) => ajax(`${BASE_URL2}/api/5db6a07c84156`, {cookie,id,type,res_id,pay_type,multiply,pwd}, 'POST');
+export const reqWxPay = (cookie,id,type,res_id,pay_type,money,multiply,pwd,user_id) => ajax(`${BASE_URL2}/api/5db6a07c84156`, {cookie,id,type,res_id,pay_type,money,multiply,pwd,user_id}, 'POST');
 /**
  * 是否订阅接口
  */
@@ -242,3 +242,15 @@ export const reqlingQianMsg = (cookie) => ajax(`${BASE_URL2}/api/5d9c2474c1463`,
  * 获取用户订阅接口
  */
 export const reqUserDingyue = (cookie,page) => ajax(`${BASE_URL2}/api/5db28aa0d5b54`, {cookie,page}, 'POST');
+/**
+ * 获取软文评论
+ */
+export const reqWordComment = (cookie,article_id,page) => ajax(`${BASE_URL2}/api/5dce1099d8222`, {cookie,article_id,page}, 'POST');
+/**
+ * 发布软文评论
+ */
+export const reqFabuComment = (cookie,article_id,content) => ajax(`${BASE_URL2}/api/5dce0f5bb2557`, {cookie,article_id,content}, 'POST');
+/**
+ * 软文评论删除
+ */
+export const reqDeleteComment = (cookie,article_id,comm_id) => ajax(`${BASE_URL2}/api/5dd22ec451501`, {cookie,article_id,comm_id}, 'POST');

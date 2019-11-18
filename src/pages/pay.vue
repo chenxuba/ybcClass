@@ -26,7 +26,7 @@
     </div>
     <!-- 零钱支付密码输入框 -->
     <van-popup v-model="showPwdInput" position="bottom" :style="{ height: height }" round>
-      <pwdNumber :id="id" :type="type"></pwdNumber>
+      <pwdNumber :id="id" :type="type" :money="money" :user_id="user_id"></pwdNumber>
     </van-popup>
     <goBack></goBack>
   </div>
@@ -46,7 +46,9 @@ export default {
       radio: "2",
       type: this.$route.query.type,
       showPwdInput: false, //支付密码输入框是否显示
-      height: "50%"
+      height: "50%",
+      user_id: this.$route.query.user_id, //导师id，软文打赏用
+      pay_type: 1
     };
   },
   methods: {
@@ -56,8 +58,16 @@ export default {
       } else if (this.radio == "2") {
         console.log("调用微信支付");
         if (isWx()) {
-          const result = await reqWxPay("", this.id, this.type);
-          // console.log(result);
+          const result = await reqWxPay(
+            "",
+            this.id,
+            this.type,
+            "",
+            this.pay_type,
+            this.money,
+            "",
+          );
+          console.log(result);
           WeixinJSBridge.invoke(
             "getBrandWCPayRequest",
             {
@@ -92,8 +102,7 @@ export default {
         console.log("调用零钱支付，先弹出支付密码输入框");
         this.showPwdInput = true;
       }
-    },
-    
+    }
   },
 
   components: {

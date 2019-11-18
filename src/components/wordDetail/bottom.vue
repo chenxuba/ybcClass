@@ -5,19 +5,16 @@
       <van-row>
         <van-col span="15">
           <div class="input_warp">
-            <form action="javascript:void(0)">
-              <input
-                type="text"
-                placeholder="下一个神评论就是你..."
-                class="input"
-                v-model="msgValue"
-                @blur="fixScroll"
-              />
-            </form>
+            <input
+              type="text"
+              placeholder="下一个神评论就是你..."
+              class="input"
+              v-model="msgValue"
+            />
           </div>
         </van-col>
-        <van-col span="3" class="liwu ppt" @click="printMsg">
-          <span class="print">发送</span>
+        <van-col span="3" class="liwu ppt">
+          <span class="print" @click="printMsg">发布</span>
         </van-col>
         <van-col span="3" class="zan">
           <span class="fenxiang">
@@ -35,7 +32,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -43,17 +39,13 @@ export default {
     };
   },
   methods: {
-    /* 使文本框出现在视野内 */
-    fixScroll() {
-      let u = navigator.userAgent;
-      let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isiOS) {
-        window.scrollTo(0, 0);
-      }
-    },
     //发送信息
     printMsg() {
-      alert(this.msgValue)
+      if (this.msgValue == "") {
+        this.$toast("内容不能为空");
+      } else {
+        this.$emit("print", this.msgValue);
+      }
     }
   }
 };
@@ -98,6 +90,7 @@ export default {
 }
 .bottom .liwu.ppt {
   top: -5px;
+  display: inline-block;
 }
 .bottom .liwu span {
   display: inline-block;
@@ -183,7 +176,6 @@ export default {
   color: red;
   vertical-align: middle;
   margin-left: 5px;
-  
 }
 .wrapper ul li >>> img {
   width: 50px;
@@ -196,7 +188,7 @@ export default {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .print {
-  font-size: 30px;
+  font-size: 28px;
   color: #5dd6c7;
 }
 </style>

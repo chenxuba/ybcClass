@@ -17,7 +17,6 @@
       </van-tab>
     </van-tabs>
     <goHome></goHome>
-   
   </div>
 </template>
 
@@ -41,7 +40,7 @@ export default {
     // 获取机构列表
     async getSchoolList() {
       this.page1 = 1;
-      const result = await reqTeacherAndSchoolList("5");
+      const result = await reqTeacherAndSchoolList("", 5, "", "", "", "");
       if (result.code == 1) {
         this.SchoolList = result.data.data;
       }
@@ -49,7 +48,7 @@ export default {
     // 获取导师列表
     async getTeacherList() {
       this.page2 = 1;
-      const result = await reqTeacherAndSchoolList("7");
+      const result = await reqTeacherAndSchoolList("", 7, "", "", "", "");
       if (result.code == 1) {
         this.TeacherList = result.data.data;
       }
@@ -57,7 +56,14 @@ export default {
     // 上拉加载，触底触发
     async pullDown2() {
       this.page2++;
-      const result = await reqTeacherAndSchoolList("7", this.page2);
+      const result = await reqTeacherAndSchoolList(
+        "",
+        7,
+        this.page2,
+        "",
+        "",
+        ""
+      );
       if (result.code == 1) {
         result.data.data.forEach(item => {
           this.TeacherList.push(item);
@@ -71,7 +77,14 @@ export default {
     },
     async pullDown1() {
       this.page1++;
-      const result = await reqTeacherAndSchoolList("5", this.page1);
+      const result = await reqTeacherAndSchoolList(
+        "",
+        5,
+        this.page1,
+        "",
+        "",
+        ""
+      );
       if (result.code == 1) {
         result.data.data.forEach(item => {
           this.SchoolList.push(item);
@@ -127,5 +140,4 @@ export default {
   font-size: 30px;
   color: #1ad473;
 }
-
 </style>

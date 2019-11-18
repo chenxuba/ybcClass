@@ -23,7 +23,7 @@
 import { reqWxPay, reqPayResult2 } from "../../api";
 import { Toast } from "vant";
 export default {
-  props: ["id", "type"],
+  props: ["id", "type","money","user_id"],
   data() {
     return {
       value: "",
@@ -58,8 +58,10 @@ export default {
         this.type,
         "",
         this.pay_type,
+        this.money,
         "",
-        this.value
+        this.value,
+        this.user_id
       );
       console.log(result);
       if (result.code == 1) {

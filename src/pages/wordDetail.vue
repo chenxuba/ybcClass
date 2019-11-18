@@ -71,7 +71,7 @@
       </div>
       <!-- 赞赏区域 -->
       <div class="zanshang-box">
-        <div class="zanshang">
+        <div class="zanshang" @click="showDaShang">
           <h1>您的打赏，是对我梦想的最大鼓励</h1>
           <img src="http://qiniu.ybc365.com/%E8%B5%9E%E8%B5%8F.png" alt />
           <p>{{word.reward.reward_num}}人赞赏</p>
@@ -90,22 +90,37 @@
     </div>
     <!-- 评论区 -->
     <div class="comment">
-      <div class="title">评论(1)</div>
+      <div class="title">评论({{comment.length}})</div>
       <van-divider />
       <!-- 评论详情 -->
       <div class="comment-content">
-        <Comment></Comment>
+        <Comment :comment="comment" @event="deleteComment" :my_member_id="my_member_id"></Comment>
       </div>
       <div class="zhanwei"></div>
     </div>
+    <!-- 打赏弹窗 -->
+    <van-popup
+      v-model="showDashang"
+      closeOnClickOverlay
+      :showConfirmButton="false"
+      class="dialogDashang"
+      closeable
+    >
+      <Dashang :word="word"></Dashang>
+    </van-popup>
     <goHome></goHome>
     <goBack></goBack>
-    <bottom></bottom>
+    <bottom @print="FabuComment" ref="child"></bottom>
   </div>
 </template>
 
 <script>
-import { reqWordDetail } from "../api/index";
+import {
+  reqWordDetail,
+  reqWordComment,
+  reqFabuComment,
+  reqDeleteComment
+} from "../api/index";
 import { isIos } from "../util";
 import { wxJS_SDk } from "../util/share";
 import Needpay0 from "../components/wordDetail/needpay0";
@@ -117,13 +132,18 @@ import Needpay6 from "../components/wordDetail/needpay6";
 import Needpay7 from "../components/wordDetail/needpay7";
 import Comment from "../components/wordDetail/comment";
 import bottom from "../components/wordDetail/bottom";
+import Dashang from "../components/wordDetail/dashang";
+
 export default {
   data() {
     return {
       article_id: this.$route.params.id, //上一级传过来的id，通过id去找详情资源
       word: {
         reward: {}
-      }
+      },
+      comment: [],
+      my_member_id: "",
+      showDashang: false
     };
   },
   methods: {
@@ -143,15 +163,44 @@ export default {
         this.word.pic
       );
     },
-    getHeight() {
-      // this.height = this.$refs.ppp.offsetHeight + "px";
+
+    //获取软文评论
+    async getWordComment() {
+      const result = await reqWordComment("", this.article_id);
+      this.comment = result.data.rs;
+      // console.log(this.comment);
+      this.my_member_id = result.data.member_id;
+    },
+    // 弹出打赏弹窗
+    showDaShang() {
+      this.showDashang = true;
+    },
+    // 发布评论
+    async FabuComment(data) {
+      const result = await reqFabuComment("", this.article_id, data);
+      console.log(result);
+      if (result.code == 1) {
+        this.$toast("评论成功");
+        this.getWordComment();
+        this.$refs.child.msgValue = "";
+      }
+    },
+    // 删除评论
+    async deleteComment(item) {
+      const result = await reqDeleteComment("", this.article_id, item.id);
+
+      if (result.code == 1) {
+        this.$toast("删除成功");
+        this.getWordComment();
+      }else{
+         this.$toast("删除失败");
+      }
     }
   },
   mounted() {
     this.getWordDetail();
-    setTimeout(() => {
-      this.getHeight();
-    }, 500);
+
+    this.getWordComment();
   },
   components: {
     Needpay0,
@@ -162,7 +211,8 @@ export default {
     Needpay6,
     Needpay7,
     Comment,
-    bottom
+    bottom,
+    Dashang
   }
 };
 </script>
@@ -317,7 +367,14 @@ export default {
   font-size: 30px;
   margin: 30px 0 0 30px;
 }
-.zhanwei{
+.zhanwei {
   height: 120px;
+}
+.dialogDashang {
+  width: 60%;
+  border-radius: 20px;
+}
+.dialogDashang >>> .van-popup__close-icon {
+  color: #fff;
 }
 </style>

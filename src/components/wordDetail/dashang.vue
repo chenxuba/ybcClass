@@ -1,51 +1,65 @@
 <template>
   <div class="dashang">
     <div class="img_box">
-      <img :src="ClassTimePlayer.headimgurl" alt />
+      <img :src="word.headimgurl" alt />
       <span>打赏给导师</span>
       <div class="money">
         <van-grid :gutter="5" :column-num="3">
           <van-grid-item
             v-for="(item,index) in moneyList"
             :key="index"
-            :text="item.money"
+            :text="item.money + '元'"
             :class="{active:index == current}"
             @click="tagClass(index)"
+            v-model="price"
           />
         </van-grid>
         <span v-show="current == 0">2元也是爱</span>
         <span v-show="current == 1">5元是真爱</span>
         <span v-show="current == 2">10元是土豪</span>
         <span v-show="current == 3">送个20表心意</span>
-        <span v-show="current == 4">50相识大鼓励</span>
+        <span v-show="current == 4">打赏50小鼓励</span>
         <span v-show="current == 5">100黄金大土豪</span>
       </div>
     </div>
     <div class="btn">
-      <van-button type="primary" size="mini" round color="#ff6161" class="button">确认</van-button>
+      <van-button type="primary" size="mini" round color="#ff6161" class="button" @click="GoPay">去打赏</van-button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["ClassTimePlayer"],
+  props: ["word"],
   data() {
     return {
       moneyList: [
-        { id: 1, money: "2元" },
-        { id: 2, money: "5元" },
-        { id: 3, money: "10元" },
-        { id: 4, money: "20元" },
-        { id: 5, money: "50元" },
-        { id: 6, money: "100元" }
+        { id: 1, money: "2" },
+        { id: 2, money: "5" },
+        { id: 3, money: "10" },
+        { id: 4, money: "20" },
+        { id: 5, money: "50" },
+        { id: 6, money: "100" }
       ],
-      current: 0
+      current: 0,
+      price: 2
     };
   },
   methods: {
     tagClass(index) {
       this.current = index;
+      this.price = this.moneyList[index].money;
+      console.log(this.price);
+    },
+    GoPay() {
+      this.$router.push({
+        path: "/pay/" + this.word.id,
+        query: {
+          money: this.price,
+          user_id:this.word.user_id,
+          type: "7"
+        }
+      });
     }
   }
 };

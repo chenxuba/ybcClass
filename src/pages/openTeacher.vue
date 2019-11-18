@@ -177,7 +177,7 @@ export default {
       }
     },
     async getSchool() {
-      const result = await reqTeacherAndSchoolList(null, 5, "", -1);
+      const result = await reqTeacherAndSchoolList("", 5, "", "", "",-1);
       result.data.data.map(item => {
         this.columns.push({
           text: item.name,
@@ -186,7 +186,7 @@ export default {
       });
     },
     async checkResult() {
-      const result = await reqCheckResult("","master");
+      const result = await reqCheckResult("", "master");
       // console.log(result);
       if (
         result.data.status == 1 ||

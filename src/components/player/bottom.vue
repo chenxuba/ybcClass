@@ -108,7 +108,7 @@ export default {
             type: "video_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: _this.$parent.wsConfig.user_id,
+            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
             content: _this.msgValue
           };
           //键盘回车的编码是13
@@ -123,7 +123,7 @@ export default {
             type: "live_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: _this.$parent.wsConfig.user_id,
+            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
             content: _this.msgValue
           };
           //键盘回车的编码是13
@@ -138,7 +138,7 @@ export default {
             type: "radio_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: _this.$parent.wsConfig.user_id,
+            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
             content: _this.msgValue
           };
           //键盘回车的编码是13
@@ -153,7 +153,7 @@ export default {
             type: "audio_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: _this.$parent.wsConfig.user_id,
+            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
             content: _this.msgValue
           };
           if (ev.keyCode == 13 && _this.msgValue != "") {
@@ -167,7 +167,7 @@ export default {
             type: "audio_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: _this.$parent.wsConfig.user_id,
+            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
             content: _this.msgValue
           };
           if (ev.keyCode == 13 && _this.msgValue != "") {
