@@ -19,6 +19,9 @@
     <HotCourse2></HotCourse2>
     <!-- 软文模块 -->
     <Word></Word>
+    <div class="hongbao animated tada infinite">
+      <img src="../../static/img/hongbao.png" alt />
+    </div>
   </div>
 </template>
 
@@ -68,6 +71,16 @@ export default {
 }
 .v-top {
   transform: translateZ(0);
+}
+.hongbao {
+  position: fixed;
+  bottom: 400px;
+  right: -30px;
+}
+.hongbao img {
+  width: 80px;
+  height: 100px;
+  transform: rotate(-40deg);
 }
 .hongbao {
   position: fixed;

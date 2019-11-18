@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="eva-content">
-        <pre class="word_pre">dewfwfwfwfwfwfwfwf dewfwfwfwfwfwfwfwf dewfwfwfwfwfwfwfwf dewfwfwfwfwfwfwfwf dewfwfwfwfwfwfwfwf dewfwfwfwfwfwfwfwf</pre>
+        <pre class="word_pre">1</pre>
       </div>
       <div class="eva-menu">
         <div style="width:40%;display:inline-block;" class="eva-time">刚刚</div>
@@ -36,8 +36,8 @@ export default {};
   position: relative;
 }
 .eva-details .eva-head {
-  width: 84px;
-  height: 84px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -68,7 +68,6 @@ export default {};
 .eva-content {
   font-size: 26px;
   color: #333;
-  /* margin-top: 26px; */
   word-break: break-all;
 }
 .word_pre {
@@ -89,7 +88,8 @@ export default {};
 .delete_comm {
   width: 20%;
   display: inline-block;
-  font-size: 28px;
+  font-size: 26px;
   text-align: right;
+  color: #333;
 }
 </style>

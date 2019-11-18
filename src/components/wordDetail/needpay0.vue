@@ -1,6 +1,9 @@
 <template>
   <div class="needpay0">
-    <div v-html="content"></div>
+    <div v-html="content" ></div>
+    <div v-if="!content">
+      <img src="../../../static/img/sholist.svg" v-for="(item,index) in 8" :key="index">
+    </div>
   </div>
 </template>
 

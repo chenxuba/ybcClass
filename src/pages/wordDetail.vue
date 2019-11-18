@@ -96,6 +96,7 @@
       <div class="comment-content">
         <Comment></Comment>
       </div>
+      <div class="zhanwei"></div>
     </div>
     <goHome></goHome>
     <goBack></goBack>
@@ -311,11 +312,12 @@ export default {
   margin-top: 50px;
 }
 /* 评论 */
-.word .comment {
-  margin-bottom: 110px;
-}
+
 .word .comment .title {
   font-size: 30px;
   margin: 30px 0 0 30px;
+}
+.zhanwei{
+  height: 120px;
 }
 </style>

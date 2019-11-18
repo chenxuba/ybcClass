@@ -8,28 +8,25 @@
             <form action="javascript:void(0)">
               <input
                 type="text"
-                placeholder="说点什么..."
+                placeholder="下一个神评论就是你..."
                 class="input"
                 v-model="msgValue"
-                @keydown="printMsg($event)"
                 @blur="fixScroll"
               />
             </form>
           </div>
         </van-col>
-        <van-col span="3" class="liwu ppt">
-          <span>
-            <van-icon name="http://qiniu.ybc365.com/ppt.png" class="icon" />
-          </span>
+        <van-col span="3" class="liwu ppt" @click="printMsg">
+          <span class="print">发送</span>
         </van-col>
         <van-col span="3" class="zan">
           <span class="fenxiang">
-            <van-icon name="like" id="zan" class="icon animated tada infinite" />
+            <van-icon name="like" class="icon" />
           </span>
         </van-col>
         <van-col span="3" class="liwu">
           <span>
-            <van-icon name="http://qiniu.ybc365.com/liwu.png" class="icon" />
+            <van-icon name="http://qiniu.ybc365.com/%E6%94%B6%20%E8%97%8F.png" class="icon" />
           </span>
         </van-col>
       </van-row>
@@ -38,6 +35,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -52,6 +50,10 @@ export default {
       if (isiOS) {
         window.scrollTo(0, 0);
       }
+    },
+    //发送信息
+    printMsg() {
+      alert(this.msgValue)
     }
   }
 };
@@ -67,18 +69,18 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #f8f8f8;
-  color: #fff;
+  background: #ffffff;
+  color: #333;
 }
 .bottom .zan {
   display: inline-block;
   margin-top: 5px;
 }
 .bottom .zan .icon {
-  font-size: 56px;
+  font-size: 45px;
   color: red;
   position: relative;
-  top: 5px;
+  top: 0px;
   left: 3px;
 }
 .bottom .zan span {
@@ -95,7 +97,7 @@ export default {
   top: 5px;
 }
 .bottom .liwu.ppt {
-  transform: scale(0.9);
+  top: -5px;
 }
 .bottom .liwu span {
   display: inline-block;
@@ -106,13 +108,13 @@ export default {
   line-height: 60px;
 }
 .bottom .liwu .icon {
-  font-size: 55px;
+  font-size: 40px;
   color: #fff;
   position: relative;
-  top: 6px;
+  top: -2px;
 }
 .bottom .input {
-  color: #fff;
+  color: #333;
   font-size: 30px;
   border: none;
   width: 100%;
@@ -181,6 +183,7 @@ export default {
   color: red;
   vertical-align: middle;
   margin-left: 5px;
+  
 }
 .wrapper ul li >>> img {
   width: 50px;
@@ -191,5 +194,9 @@ export default {
 .dashang {
   color: #fc7d5e;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.print {
+  font-size: 30px;
+  color: #5dd6c7;
 }
 </style>
