@@ -16,7 +16,12 @@
               <span class="name_3 a">课时{{teacherListObj.res_count}}</span>
             </van-col>
             <van-col span="9" class="gz_warp">
-              <span class="guanzhu">+关注</span>
+              <span
+                class="guanzhu"
+                v-if="is_follow == 0"
+                @click="guanzhu(teacherListObj.id,is_user_follow)"
+              >+关注</span>
+              <span class="guanzhu" v-if="is_follow == 1">已关注</span>
             </van-col>
           </van-row>
         </div>
@@ -28,8 +33,16 @@
 
 <script>
 export default {
-  props: {
-    teacherListObj: Object
+  props: ["teacherListObj", "is_user_follow", "is_guanzhu"],
+  data() {
+    return {
+      is_follow: this.is_guanzhu
+    };
+  },
+  methods: {
+    guanzhu(id, is_user_follow) {
+      this.$emit("event", id, is_user_follow);
+    }
   }
 };
 </script>
@@ -104,5 +117,4 @@ export default {
   padding-right: 40px;
   margin-bottom: 20px;
 }
-
 </style>

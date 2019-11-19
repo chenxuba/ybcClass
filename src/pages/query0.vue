@@ -33,7 +33,7 @@ export default {
       SchoolList: [], //机构列表
       TeacherList: [], //导师列表
       page1: 1,
-      page2: 1
+      page2: 1,
     };
   },
   methods: {
