@@ -16,7 +16,8 @@
             </p>
           </van-col>
           <van-col span="6" class="span3">
-            <span>已关注</span>
+            <span v-if="word.is_user_follow != 0" @click="GuanZhu">已关注</span>
+            <span v-else @click="GuanZhu">关注</span>
           </van-col>
         </van-row>
       </div>
@@ -116,7 +117,13 @@
     </van-popup>
     <goHome></goHome>
     <goBack></goBack>
-    <bottom @print="FabuComment" ref="child"></bottom>
+    <bottom
+      @print="FabuComment"
+      ref="child"
+      :bottom_data="word.bottom_data"
+      @dianzan="wordDianZan"
+      @collection="wordCollection"
+    ></bottom>
   </div>
 </template>
 
@@ -126,7 +133,9 @@ import {
   reqWordComment,
   reqFabuComment,
   reqDeleteComment,
-  reqTeacherGuanzhu
+  reqTeacherGuanzhu,
+  reqwordZan,
+  reqwordShouCang
 } from "../api/index";
 import { isIos } from "../util";
 import { wxJS_SDk } from "../util/share";
@@ -146,7 +155,8 @@ export default {
     return {
       article_id: this.$route.params.id, //上一级传过来的id，通过id去找详情资源
       word: {
-        reward: {}
+        reward: {},
+        bottom_data: {}
       },
       comment: [],
       my_member_id: "",
@@ -201,7 +211,53 @@ export default {
         this.$toast("删除失败");
       }
     },
-    // 
+    // 关注导师
+    async GuanZhu() {
+      if (this.word.is_user_follow == 1) {
+        const result = await reqTeacherGuanzhu("", this.word.user_id, 0);
+        if (result.code == 1) {
+          this.$toast(result.data.msg);
+          this.getWordDetail();
+        }
+      } else if (this.word.is_user_follow == 0) {
+        const result = await reqTeacherGuanzhu("", this.word.user_id, 1);
+        if (result.code == 1) {
+          this.$toast(result.data.msg);
+          this.getWordDetail();
+        }
+      }
+    },
+    //软文点赞取消点赞
+    async wordDianZan() {
+      if (this.word.bottom_data.is_like == 0) {
+        const result = await reqwordZan("", this.word.id, this.word.user_id, 1);
+        if (result.code == 1) {
+          this.$toast("点赞成功");
+          this.getWordDetail();
+        }
+      } else if (this.word.bottom_data.is_like == 1) {
+        const result = await reqwordZan("", this.word.id, this.word.user_id, 0);
+        if (result.code == 1) {
+          this.$toast("已取消点赞");
+          this.getWordDetail();
+        }
+      }
+    },
+    async wordCollection() {
+      if (this.word.bottom_data.is_collection == 0) {
+        const result = await reqwordShouCang("", this.word.id, this.word.user_id, 1);
+        if (result.code == 1) {
+          this.$toast("收藏成功");
+          this.getWordDetail();
+        }
+      } else if (this.word.bottom_data.is_collection == 1) {
+        const result = await reqwordShouCang("", this.word.id, this.word.user_id, 0);
+        if (result.code == 1) {
+          this.$toast("已取消收藏");
+          this.getWordDetail();
+        }
+      }
+    }
   },
   mounted() {
     this.getWordDetail();
@@ -303,7 +359,7 @@ export default {
 }
 .word .content .title .span3 span {
   border: 2px solid #9dd300;
-  padding: 4px 20px;
+  padding: 0px 20px;
   color: #9dd300;
   border-radius: 30px;
 }

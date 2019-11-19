@@ -16,7 +16,7 @@
                 <span class="name_2 a">导师{{schoolListObj.user_count}}</span>
               </van-col>
               <van-col span="6" class="gz_warp">
-                <span class="guanzhu">+关注</span>
+                <span class="guanzhu">查看详情</span>
               </van-col>
             </van-row>
           </div>

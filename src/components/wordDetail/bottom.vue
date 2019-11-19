@@ -5,12 +5,7 @@
       <van-row>
         <van-col span="15">
           <div class="input_warp">
-            <input
-              type="text"
-              placeholder="下一个神评论就是你..."
-              class="input"
-              v-model="msgValue"
-            />
+            <input type="text" placeholder="下一个神评论就是你..." class="input" v-model="msgValue" />
           </div>
         </van-col>
         <van-col span="3" class="liwu ppt">
@@ -18,12 +13,34 @@
         </van-col>
         <van-col span="3" class="zan">
           <span class="fenxiang">
-            <van-icon name="like" class="icon" />
+            <van-icon
+              name="https://kf.ybc365.com/train/Public/train/user/article/img/like.png"
+              class="icon"
+              v-if="bottom_data.is_like == 0"
+              @click="dianzan"
+            />
+            <van-icon
+              name="http://qiniu.ybc365.com/%E5%B7%B2%E7%82%B9%E8%B5%9E.png"
+              class="icon"
+              v-if="bottom_data.is_like == 1"
+              @click="dianzan"
+            />
           </span>
         </van-col>
         <van-col span="3" class="liwu">
           <span>
-            <van-icon name="http://qiniu.ybc365.com/%E6%94%B6%20%E8%97%8F.png" class="icon" />
+            <van-icon
+              name="http://qiniu.ybc365.com/%E6%94%B6%20%E8%97%8F.png"
+              class="icon"
+              v-if="bottom_data.is_collection == 0"
+              @click="collection"
+            />
+            <van-icon
+              name="http://qiniu.ybc365.com/%E6%94%B6%20%E8%97%8F%20.png"
+              class="icon"
+              v-if="bottom_data.is_collection == 1"
+              @click="collection"
+            />
           </span>
         </van-col>
       </van-row>
@@ -33,6 +50,7 @@
 
 <script>
 export default {
+  props: ["bottom_data"],
   data() {
     return {
       msgValue: ""
@@ -46,6 +64,14 @@ export default {
       } else {
         this.$emit("print", this.msgValue);
       }
+    },
+    // 软文点赞
+    dianzan() {
+      this.$emit("dianzan");
+    },
+    //软文收藏
+    collection(){
+      this.$emit("collection");
     }
   }
 };
@@ -67,6 +93,10 @@ export default {
 .bottom .zan {
   display: inline-block;
   margin-top: 5px;
+}
+.bottom .zan .fenxiang > .icon {
+  font-size: 38px;
+  top: -2px;
 }
 .bottom .zan .icon {
   font-size: 45px;

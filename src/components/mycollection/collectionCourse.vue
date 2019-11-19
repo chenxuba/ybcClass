@@ -13,7 +13,7 @@
               </van-row>
               <van-row class="name_state">
                 <van-col span="12">
-                  <span class="course_name">{{item.name}}</span>
+                  <span class="course_name">{{item.user_name || '未加载'}}</span>
                   <span class="course_number">
                     <NumberGrow :value="item.readings"></NumberGrow>人观看
                   </span>
@@ -23,7 +23,7 @@
                   <span class="course_state" v-if="item.needpay == 0">公开</span>
                   <span class="course_state" v-if="item.needpay == 4">密码</span>
                   <span class="course_state money" v-if="item.needpay == 1">{{item.money}}</span>
-                  <span class="course_geng">取消收藏</span>
+                  <!-- <span class="course_geng">取消收藏</span> -->
                 </van-col>
               </van-row>
             </van-col>

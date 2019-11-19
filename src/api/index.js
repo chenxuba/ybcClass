@@ -262,3 +262,11 @@ export const reqCommentZan = (cookie,article_id,user_id,comm_id) => ajax(`${BASE
  * 导师关注和取消关注
  */
 export const reqTeacherGuanzhu = (cookie,user_id,active) => ajax(`${BASE_URL2}/api/5d81fbf53aad8`, {cookie,user_id,active}, 'POST');
+/**
+ * 软文点赞/取消点赞
+ */
+export const reqwordZan = (cookie,article_id,user_id,mtype) => ajax(`${BASE_URL2}/api/5dce0c8cc3973`, {cookie,article_id,user_id,mtype}, 'POST');
+/**
+ * 软文收藏/取消收藏
+ */
+export const reqwordShouCang = (cookie,article_id,user_id,mtype) => ajax(`${BASE_URL2}/api/5dce0e16b788a`, {cookie,article_id,user_id,mtype}, 'POST');
