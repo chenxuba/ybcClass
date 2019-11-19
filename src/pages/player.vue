@@ -11,7 +11,13 @@
       <div class="jieshu" v-show="showjieshu">直播已经结束，稍后查看回放</div>
     </div>
     <!-- 头部 -->
-    <Top :ClassTimePlayer="ClassTimePlayer" :paiHangBang="paiHangBang" :res_id="res_id"></Top>
+    <Top
+      :ClassTimePlayer="ClassTimePlayer"
+      :paiHangBang="paiHangBang"
+      :res_id="res_id"
+      :is_guanzhu="is_guanzhu"
+      @event="guanzhuTeacher"
+    ></Top>
     <!-- 点赞组件 -->
     <Like ref="likes" :user_id="wsConfig.user_id"></Like>
     <!-- 底部 -->
@@ -84,7 +90,8 @@ import {
   reqVideoUrl,
   wsUrl,
   reqLiwu,
-  reqlingQianMsg
+  reqlingQianMsg,
+  reqTeacherGuanzhu
 } from "../api";
 import { wxJS_SDk } from "../util/share";
 import Like from "../components/player/like";
@@ -137,7 +144,8 @@ export default {
       lingQianMoney: "", //用户的零钱余额
       showPPt: false, //ppt容器是否开启
       ppt: [], //ppt数据
-      current: 0
+      current: 0,
+      is_guanzhu: 0 //是否关注导师
     };
   },
   methods: {
@@ -199,6 +207,7 @@ export default {
       const result = await reqVideoUrl(this.res_id, this.pwd);
       // console.log(result);
       if (result.code == 1) {
+        this.is_guanzhu = result.data.is_user_follow;
         if (result.data.videourl != 4004) {
           this.videoUrl = result.data.videourl;
         } else {
@@ -398,8 +407,8 @@ export default {
     showPPtBox() {
       if (this.ppt != "") {
         this.showPPt = true;
-      }else{
-        this.$toast("导师暂未上传PPT")
+      } else {
+        this.$toast("导师暂未上传PPT");
       }
     },
     // 显示聊天框
@@ -451,6 +460,19 @@ export default {
     // 轮播图轮播改变索引值
     onChange(index) {
       this.current = index;
+    },
+    //关注导师
+    async guanzhuTeacher() {
+      const result = await reqTeacherGuanzhu(
+        "",
+        this.ClassTimePlayer.user_id,
+        1
+      );
+      console.log(result);
+      if (result.code == 1) {
+        this.$toast(result.data.msg);
+        this.is_guanzhu = 1; //赋值给是否关注变量，值为1，就让这个按钮消失
+      }
     }
   },
   mounted() {

@@ -20,7 +20,7 @@
               </h1>
             </van-col>
             <van-col span="9" class="span3 span">
-              <span class="guanzhu">关注</span>
+              <span class="guanzhu" v-if="is_guanzhu == 0" @click="guanzhu">关注</span>
             </van-col>
           </van-row>
         </div>
@@ -61,7 +61,7 @@ import paihangbang1 from "../../grandson/top/paiHangBang1";
 import paihangbang2 from "../../grandson/top/paiHangBang2";
 import NumberGrow3 from "../numberGrow/numberGrow3";
 export default {
-  props: ["ClassTimePlayer", "paiHangBang","res_id"],
+  props: ["ClassTimePlayer", "paiHangBang","res_id","is_guanzhu"],
   data() {
     return {
       show: false,
@@ -74,6 +74,10 @@ export default {
     },
     goBack() {
       this.$router.push(`/classDetail/${this.res_id}`);
+    },
+    // 关注导师自定义事件
+    guanzhu(){
+      this.$emit("event") 
     }
   },
   components: {
