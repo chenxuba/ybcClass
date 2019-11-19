@@ -9,7 +9,7 @@
         <p v-html="FollowObj.brief_intro"></p>
       </van-col>
       <van-col span="4" class="list_like">
-        <van-icon name="like" class="icon" v-if="FollowObj.status == 1" />
+        <van-icon name="like" class="icon" v-if="FollowObj.status == 1" @click="cancel(FollowObj)" />
         <van-icon name="like-o" class="icon" v-else />
       </van-col>
     </van-row>
@@ -23,6 +23,12 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    // 取消关注
+    cancel(item){
+      this.$emit("event",item.user_id)
+    }
   }
 };
 </script>

@@ -125,7 +125,8 @@ import {
   reqWordDetail,
   reqWordComment,
   reqFabuComment,
-  reqDeleteComment
+  reqDeleteComment,
+  reqTeacherGuanzhu
 } from "../api/index";
 import { isIos } from "../util";
 import { wxJS_SDk } from "../util/share";
@@ -169,7 +170,6 @@ export default {
         this.word.pic
       );
     },
-
     //获取软文评论
     async getWordComment() {
       const result = await reqWordComment("", this.article_id);
@@ -200,11 +200,11 @@ export default {
       } else {
         this.$toast("删除失败");
       }
-    }
+    },
+    // 
   },
   mounted() {
     this.getWordDetail();
-
     this.getWordComment();
   },
   components: {

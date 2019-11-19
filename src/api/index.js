@@ -258,3 +258,7 @@ export const reqDeleteComment = (cookie,article_id,comm_id) => ajax(`${BASE_URL2
  * 软文评论点赞和取消点赞
  */
 export const reqCommentZan = (cookie,article_id,user_id,comm_id) => ajax(`${BASE_URL2}/api/5dd22d909fd99`, {cookie,article_id,user_id,comm_id}, 'POST');
+/**
+ * 导师关注和取消关注
+ */
+export const reqTeacherGuanzhu = (cookie,user_id,active) => ajax(`${BASE_URL2}/api/5d81fbf53aad8`, {cookie,user_id,active}, 'POST');
