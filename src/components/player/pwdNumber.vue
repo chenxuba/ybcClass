@@ -34,7 +34,8 @@ export default {
       type: "6", //固定type值
       res_id: this.$route.params.id, //课时id
       pay_type: "2", //2是零钱支付
-      batchcode: ""
+      batchcode: "",
+      
     };
   },
   methods: {
@@ -60,8 +61,10 @@ export default {
         this.type,
         this.res_id,
         this.pay_type,
+        "",
         this.multiply,
-        this.value
+        this.value,
+        ""
       );
       console.log(result);
       if (result.code == 1) {
@@ -75,7 +78,7 @@ export default {
     // 检查零钱支付结果
     async getPayResult() {
       let _this = this;
-       const toast2 = Toast.loading({
+      const toast2 = Toast.loading({
         duration: 0, // 持续展示 toast
         forbidClick: true,
         message: "加载中"
@@ -87,10 +90,10 @@ export default {
         _this.$emit("closePwdInput");
         Toast({
           message: "感谢打赏",
-          icon: "like",
+          icon: "like"
         });
         // 打赏成功后,实时刷新用户零钱余额
-        _this.$emit("ShuaXinlingQianMsg")
+        _this.$emit("ShuaXinlingQianMsg");
         switch (_this.Restype) {
           // 正在直播的视频
           case 2:
@@ -174,5 +177,4 @@ export default {
 .number {
   padding-top: 45px;
 }
-
 </style>

@@ -94,7 +94,13 @@
       <van-divider />
       <!-- 评论详情 -->
       <div class="comment-content">
-        <Comment :comment="comment" @event="deleteComment" :my_member_id="my_member_id"></Comment>
+        <Comment
+          :comment="comment"
+          @event="deleteComment"
+          :my_member_id="my_member_id"
+          :article_id="article_id"
+          @chang="getWordComment"
+        ></Comment>
       </div>
       <div class="zhanwei"></div>
     </div>
@@ -188,12 +194,11 @@ export default {
     // 删除评论
     async deleteComment(item) {
       const result = await reqDeleteComment("", this.article_id, item.id);
-
       if (result.code == 1) {
         this.$toast("删除成功");
         this.getWordComment();
-      }else{
-         this.$toast("删除失败");
+      } else {
+        this.$toast("删除失败");
       }
     }
   },

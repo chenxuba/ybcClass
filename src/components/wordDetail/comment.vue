@@ -10,8 +10,10 @@
           <div class="eva-info">
             <p class="eva-name">{{item.name || '游客'}}</p>
             <!---->
-            <div>
-              <img src="https://kf.ybc365.com/train/Public/train/user/article/img/like.png" />1
+            <div @click="zan(item)">
+              <img src="https://kf.ybc365.com/train/Public/train/user/article/img/like.png" v-if="item.my_member_id == null" />
+              <img src="https://kf.ybc365.com/train/Public/train/user/article/img/like2.png" v-if="item.my_member_id == my_member_id" />
+              {{item.likes}}
             </div>
           </div>
           <div class="eva-content">
@@ -19,7 +21,11 @@
           </div>
           <div class="eva-menu">
             <div style="width:40%;display:inline-block;" class="eva-time">{{item.time}}</div>
-            <div class="delete_comm" v-if="item.member_id == my_member_id" @click="deleteComment(item)">删除</div>
+            <div
+              class="delete_comm"
+              v-if="item.member_id == my_member_id"
+              @click="deleteComment(item)"
+            >删除</div>
           </div>
         </div>
       </div>
@@ -29,11 +35,27 @@
 </template>
 
 <script>
+import { reqCommentZan } from "../../api";
 export default {
-  props: ["comment","my_member_id"],
+  props: ["comment", "my_member_id", "article_id"],
+  data() {
+    return {
+      like_count: 0,
+      user_id: localStorage.getItem("user_id")
+    };
+  },
   methods: {
-    deleteComment(item){
-      this.$emit("event", item)
+    deleteComment(item) {
+      this.$emit("event", item);
+    },
+    async zan(item) {
+      console.log(item);
+      const result = await reqCommentZan("",this.article_id,this.user_id,item.id);
+      console.log(result);
+      if(result.code == 1){
+        this.$toast(result.data.msg)
+        this.$emit("chang")
+      }
     }
   }
 };
@@ -104,7 +126,7 @@ export default {
   text-align: right;
   color: #333;
 }
-.commentNull{
+.commentNull {
   text-align: center;
   font-size: 30px;
   color: #333;

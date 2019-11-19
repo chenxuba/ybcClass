@@ -254,3 +254,7 @@ export const reqFabuComment = (cookie,article_id,content) => ajax(`${BASE_URL2}/
  * 软文评论删除
  */
 export const reqDeleteComment = (cookie,article_id,comm_id) => ajax(`${BASE_URL2}/api/5dd22ec451501`, {cookie,article_id,comm_id}, 'POST');
+/**
+ * 软文评论点赞和取消点赞
+ */
+export const reqCommentZan = (cookie,article_id,user_id,comm_id) => ajax(`${BASE_URL2}/api/5dd22d909fd99`, {cookie,article_id,user_id,comm_id}, 'POST');
