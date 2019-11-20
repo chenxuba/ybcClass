@@ -270,3 +270,11 @@ export const reqwordZan = (cookie,article_id,user_id,mtype) => ajax(`${BASE_URL2
  * 软文收藏/取消收藏
  */
 export const reqwordShouCang = (cookie,article_id,user_id,mtype) => ajax(`${BASE_URL2}/api/5dce0e16b788a`, {cookie,article_id,user_id,mtype}, 'POST');
+/**
+ * 机构主页详情
+ */
+export const reqschoolDetail = (cookie,agency_id) => ajax(`${BASE_URL2}/api/5dcb9c5759416`, {cookie,agency_id}, 'POST');
+/**
+ * 机构---导师列表
+ */
+export const reqschoolteacherList = (cookie,agency_id,page) => ajax(`${BASE_URL2}/api/5dcb9db86b938`, {cookie,agency_id,page}, 'POST');

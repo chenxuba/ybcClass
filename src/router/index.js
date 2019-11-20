@@ -573,7 +573,7 @@ router.beforeEach((to, from, next) => {
     to.name == 'classDetail' || to.name == 'userinfo' || to.name == 'openStudent' ||
     to.name == 'ask' || to.name == 'wordDetail' || to.name == 'course_buy_detail' ||
     to.name == 'moduleDetail' || to.name == 'wordModuleDeatil' || to.name == 'teacherUserinfo' ||
-    to.name == 'applyTeacher' || to.name == 'openTeacher' || to.name == 'openSchool') {
+    to.name == 'applyTeacher' || to.name == 'openTeacher' || to.name == 'openSchool' || to.name == 'schoolDetail') {
     var cookie = sessionStorage.getItem("cookie");
     if (cookie) {
       next();
