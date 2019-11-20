@@ -68,7 +68,7 @@ export default {
         this.batchcode = result.data.batchcode;
         this.getPayResult();
       } else if (result.code == -1) {
-        this.error_info = "支付密码不正确";
+        this.error_info = result.msg;
         toast1.clear();
       }
     },

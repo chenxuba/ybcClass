@@ -501,6 +501,11 @@ export default {
         }
       }
     });
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+    if (isAndroid) {
+      this.height = "70%";
+    }
   },
   components: {
     Top,

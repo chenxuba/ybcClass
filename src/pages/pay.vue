@@ -65,7 +65,7 @@ export default {
             "",
             this.pay_type,
             this.money,
-            "",
+            ""
           );
           console.log(result);
           WeixinJSBridge.invoke(
@@ -104,7 +104,13 @@ export default {
       }
     }
   },
-
+  mounted() {
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+    if (isAndroid) {
+      this.height = "70%";
+    }
+  },
   components: {
     pwdNumber
   }
