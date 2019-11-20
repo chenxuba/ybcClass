@@ -9,7 +9,7 @@
         <span>点击下方按钮输入密码 ↓</span>
       </p>
       <div class="commit">
-        <span class="btn">（密码）阅读全文</span>
+        <span class="btn" @click="ShowInputPwd">（密码）阅读全文</span>
       </div>
       <div class="erweima">
         <img src="http://qiniu.ybc365.com/WechatIMG65.jpeg" alt />
@@ -19,7 +19,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data () {
+    return {
+      
+    }
+  },
+  methods: {
+    // 弹出密码输入框
+    ShowInputPwd(){
+      this.$parent.showPwdInput = true
+    }
+  }
+};
 </script>
 
 <style scoped>

@@ -124,6 +124,10 @@
       @dianzan="wordDianZan"
       @collection="wordCollection"
     ></bottom>
+    <!-- 密码输入弹窗 -->
+    <van-popup v-model="showPwdInput" position="bottom" :style="{ height: height }" round>
+      <pwdNumber :article_id="article_id"></pwdNumber>
+    </van-popup>
   </div>
 </template>
 
@@ -149,7 +153,7 @@ import Needpay7 from "../components/wordDetail/needpay7";
 import Comment from "../components/wordDetail/comment";
 import bottom from "../components/wordDetail/bottom";
 import Dashang from "../components/wordDetail/dashang";
-
+import pwdNumber from "../components/wordDetail/pwdNumber";
 export default {
   data() {
     return {
@@ -160,12 +164,17 @@ export default {
       },
       comment: [],
       my_member_id: "",
-      showDashang: false
+      showDashang: false,
+      showPwdInput: false,
+      height: "50%",
+      
     };
   },
   methods: {
+    // 获取软文详情
     async getWordDetail() {
-      const result = await reqWordDetail(this.article_id, "");
+      let password = localStorage.getItem(`wordPwd${this.article_id}`)
+      const result = await reqWordDetail(this.article_id, "",password);
       console.log(result);
       this.word = result.data;
       if (result.code == -8) {
@@ -245,23 +254,39 @@ export default {
     },
     async wordCollection() {
       if (this.word.bottom_data.is_collection == 0) {
-        const result = await reqwordShouCang("", this.word.id, this.word.user_id, 1);
+        const result = await reqwordShouCang(
+          "",
+          this.word.id,
+          this.word.user_id,
+          1
+        );
         if (result.code == 1) {
           this.$toast("收藏成功");
           this.getWordDetail();
         }
       } else if (this.word.bottom_data.is_collection == 1) {
-        const result = await reqwordShouCang("", this.word.id, this.word.user_id, 0);
+        const result = await reqwordShouCang(
+          "",
+          this.word.id,
+          this.word.user_id,
+          0
+        );
         if (result.code == 1) {
           this.$toast("已取消收藏");
           this.getWordDetail();
         }
       }
-    }
+    },
+    
   },
   mounted() {
     this.getWordDetail();
     this.getWordComment();
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+    if (isAndroid) {
+      this.height = "70%";
+    }
   },
   components: {
     Needpay0,
@@ -273,7 +298,8 @@ export default {
     Needpay7,
     Comment,
     bottom,
-    Dashang
+    Dashang,
+    pwdNumber
   }
 };
 </script>
