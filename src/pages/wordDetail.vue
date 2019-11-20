@@ -25,7 +25,7 @@
       <div class="contents">
         <!-- 直接渲染content -->
         <div class="needpay0" v-if="word.content != '' ">
-          <Needpay0 :content="word.content"></Needpay0>
+          <Needpay0 :word="word"></Needpay0>
         </div>
         <!-- 学员文章，needpay == 2 无试看 不是学员-->
         <div
@@ -55,14 +55,14 @@
         >
           <Needpay5 :try_content="word.try_content"></Needpay5>
         </div>
-        <!-- 密码文章，needpay == 3 有试看 没有购买-->
+        <!-- 付费文章，needpay == 3 有试看 没有购买-->
         <div
           class="needpay0"
           v-if="word.needpay == 3 && word.try_content != '' && word.content == null"
         >
           <Needpay6 :try_content="word.try_content" :price="word.price"></Needpay6>
         </div>
-        <!-- 密码文章，needpay == 3 无试看 没有购买-->
+        <!-- 付费文章，needpay == 3 无试看 没有购买-->
         <div
           class="needpay0"
           v-if="word.needpay == 3 && word.try_content == '' && word.content == null"

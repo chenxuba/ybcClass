@@ -63,7 +63,7 @@ export default {
 }
 .needpay2 .student_view .commit .btn {
   border: 2px solid #b94738;
-  padding: 2px 60px 2px 45px;
+  padding: 5px 60px 5px 45px;
   border-radius: 30px;
   color: #b94738;
 }

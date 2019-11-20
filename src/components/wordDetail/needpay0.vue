@@ -1,7 +1,7 @@
 <template>
   <div class="needpay0">
-    <div v-html="content" ></div>
-    <div v-if="!content">
+    <div v-html="word.content" ></div>
+    <div v-if="word.content == null && word.needpay != 2 && word.needpay != 3 && word.needpay != 4">
       <img src="../../../static/img/sholist.svg" v-for="(item,index) in 8" :key="index">
     </div>
   </div>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ["content"]
+  props: ["word"]
 };
 </script>
 
