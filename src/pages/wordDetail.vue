@@ -60,7 +60,7 @@
           class="needpay0"
           v-if="word.needpay == 3 && word.try_content != '' && word.content == null"
         >
-          <Needpay6 :try_content="word.try_content" :price="word.price"></Needpay6>
+          <Needpay6 :try_content="word.try_content" :price="word.price" :id="word.id"></Needpay6>
         </div>
         <!-- 付费文章，needpay == 3 无试看 没有购买-->
         <div

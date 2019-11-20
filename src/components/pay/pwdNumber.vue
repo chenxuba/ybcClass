@@ -93,7 +93,7 @@ export default {
         });
         Toast.success("支付成功");
       } else {
-        Toast.fail("支付未成功");
+        this.$toast(res.msg);
       }
     }
   },

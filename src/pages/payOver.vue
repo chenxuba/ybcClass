@@ -38,7 +38,7 @@ export default {
         this.$router.push({
           path: "/myQa"
         });
-      }else if (this.type == 7) {
+      }else if (this.type == 7 || this.type == 8) {
         this.$router.push({
           path: "/wordDetail/"+ this.id
         });

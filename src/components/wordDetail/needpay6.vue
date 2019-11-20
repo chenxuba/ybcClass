@@ -13,7 +13,7 @@
         <span>点击下方按钮立即支付 ↓</span>
       </p>
       <div class="commit">
-        <span class="btn">（{{price}}元）阅读全文</span>
+        <span class="btn" @click="GoPay">（{{price}}元）阅读全文</span>
       </div>
       <div class="erweima">
         <img src="http://qiniu.ybc365.com/WechatIMG65.jpeg" alt />
@@ -24,7 +24,21 @@
 
 <script>
 export default {
-  props: ["try_content","price"]
+  props: ["try_content", "price","id"],
+  data() {
+    return {};
+  },
+  methods: {
+    GoPay() {
+      this.$router.push({
+        path: "/pay/" + this.id,
+        query: {
+          money: this.price,
+          type: "8"
+        }
+      });
+    }
+  }
 };
 </script>
 
