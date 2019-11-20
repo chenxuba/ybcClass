@@ -538,7 +538,17 @@ const router = new Router({
         title: "线下课程管理员"
       }
     },
-    // myCoupon
+    {
+      path: "/schoolDetail/:id",
+      name: "schoolDetail",
+      component: () =>
+        import('../pages/schoolDetail.vue'),
+      meta: {
+        showFooter: false,
+        title: "机构详情"
+      }
+    },
+    // schoolDetail
 
   ]
 })

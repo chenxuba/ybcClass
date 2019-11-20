@@ -524,6 +524,7 @@ export default {
     clearTimeout(this.timer3);
     clearTimeout(this.timer4);
     clearTimeout(this.timer5);
+    
   }
 };
 </script>
