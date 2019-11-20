@@ -214,6 +214,7 @@ export default {
     setTimeout(() => {
       this.scrollTobottom();
     }, 2000);
+    this.fixScroll();
   },
   computed: {
     randomName() {
