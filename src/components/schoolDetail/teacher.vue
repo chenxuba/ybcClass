@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     onLoad() {
-      this.$emit("pullDown2");
+      this.$emit("pullDown");
     },
     
   },

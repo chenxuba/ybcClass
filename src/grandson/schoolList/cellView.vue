@@ -12,8 +12,10 @@
             <van-row>
               <van-col span="18">
                 <p class="name">{{schoolListObj.name}}</p>
-                <span class="name_1 a">粉丝{{schoolListObj.focus_count}}</span>
-                <span class="name_2 a">导师{{schoolListObj.user_count}}</span>
+                <div class="span2">
+                  <span class="name_1 a">粉丝{{schoolListObj.focus_count}}</span>
+                  <span class="name_2 a">导师{{schoolListObj.user_count}}</span>
+                </div>
               </van-col>
               <van-col span="6" class="gz_warp">
                 <span class="guanzhu" @click="goDetail">查看详情</span>
@@ -32,12 +34,16 @@ export default {
   props: {
     schoolListObj: Object
   },
+  data() {
+    return {};
+  },
   methods: {
     // 跳转详情页
     goDetail() {
       this.$router.push("/schoolDetail/" + this.schoolListObj.id);
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 
@@ -90,7 +96,7 @@ export default {
 .schoolList .school_warp .right .top .a {
   font-size: 24px;
   position: relative;
-  top: -15px;
+  top: 10px;
   color: #888;
 }
 .schoolList .school_warp .right .top {
@@ -104,6 +110,9 @@ export default {
   display: inline-block;
   padding: 4px 15px 2px 15px;
   color: #1ad473;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .schoolList .school_warp .right .top .gz_warp {
   text-align: right;
@@ -124,5 +133,20 @@ export default {
 .schoolList .zhanwei {
   width: 100%;
   height: 80px;
+}
+.span2 {
+  display: flex;
+  margin: 5px 0 20px 0;
+}
+.span2 .a::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 75%;
+  background: #888;
+  margin: 0 10px;
+}
+.span2 .a:last-child:after {
+  display: none;
 }
 </style>

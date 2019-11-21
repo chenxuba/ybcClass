@@ -11,9 +11,11 @@
           <van-row>
             <van-col span="15">
               <p class="name">{{teacherListObj.name}}</p>
-              <span class="name_1 a">粉丝{{teacherListObj.focus_count}}</span>
-              <span class="name_2 a">软文{{teacherListObj.article_count}}</span>
-              <span class="name_3 a">课时{{teacherListObj.res_count}}</span>
+              <div class="span3">
+                <span class="name_1 a">粉丝{{teacherListObj.focus_count}}</span>
+                <span class="name_2 a">软文{{teacherListObj.article_count}}</span>
+                <span class="name_3 a">课时{{teacherListObj.res_count}}</span>
+              </div>
             </van-col>
             <van-col span="9" class="gz_warp">
               <span
@@ -86,9 +88,8 @@ export default {
 }
 .cellView .school_warp .right .top .a {
   font-size: 24px;
-  position: relative;
-  top: -15px;
   color: #888;
+  margin: 30px 0 15px 0;
 }
 .cellView .school_warp .right .top {
   padding-right: 25px;
@@ -116,5 +117,19 @@ export default {
   color: #888;
   padding-right: 40px;
   margin-bottom: 20px;
+}
+.span3{
+  display: flex;
+}
+.span3 .a::after{
+  content:"";
+  display: inline-block;
+  width: 2px;
+  height: 70%;
+  background: #888;
+  margin: 0 10px;
+}
+.span3 .a:last-child:after{
+  display: none;
 }
 </style>

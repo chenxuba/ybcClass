@@ -1,19 +1,26 @@
 <template>
   <div class="jianjie">
     <h1>简介</h1>
-    <div class="jianjie-info" v-html="jianjie.brief_intro"></div>
+    <van-skeleton  :row="6" :loading="Ploading">
+      <div class="jianjie-info" v-html="jianjie.brief_intro"></div>
+    </van-skeleton>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["jianjie"]
+  props: ["jianjie"],
+  data() {
+    return {
+      Ploading: true
+    };
+  },
 };
 </script>
 
 <style scoped>
 .jianjie {
-  padding: 0 30px;
+  padding: 0 30px 60px 30px;
   box-sizing: border-box;
   background-color: #fff;
 }
@@ -28,4 +35,5 @@ h1 {
   background: #fff;
   padding-bottom: 20px;
 }
+
 </style>

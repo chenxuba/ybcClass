@@ -5,28 +5,30 @@
       <div class="pages-head">
         <!-- 头像，机构名字 -->
         <div class="head-main">
-          <div class="img-box">
-            <img v-lazy="user_info.headimgurl" />
-          </div>
-          <div class="txt-box">
-            <div class="name-box">
-              <p class="name">{{user_info.name}}</p>
+          <van-skeleton avatar title :row="1" :loading="loading" avatar-size="55px">
+            <div class="img-box">
+              <img v-lazy="user_info.headimgurl" />
             </div>
-          </div>
+            <div class="txt-box">
+              <div class="name-box">
+                <p class="name">{{user_info.name}}</p>
+              </div>
+            </div>
+          </van-skeleton>
         </div>
         <!-- 作品数、导师、粉丝  -->
         <div class="bottom-main">
           <div class="list width-35" style="width: 32.5%; text-align: center;">
             <p class="name">作品数</p>
-            <p class="num">{{agency_obj.agency_info.res_nums}}</p>
+            <p class="num">{{agency_obj.agency_info.res_nums || 0}}</p>
           </div>
           <div class="list width-35" style="width: 32.5%; text-align: center;">
             <p class="name">导师</p>
-            <p class="num">{{agency_obj.agency_info.count_users}}</p>
+            <p class="num">{{agency_obj.agency_info.count_users || 0}}</p>
           </div>
           <div class="list width-35" style="width: 32.5%; text-align: center;">
             <p class="name">粉丝</p>
-            <p class="num">{{agency_obj.agency_info.agency_fans}}</p>
+            <p class="num">{{agency_obj.agency_info.agency_fans || 0}}</p>
           </div>
         </div>
       </div>
@@ -34,11 +36,11 @@
     <!-- tab页 -->
     <van-tabs v-model="activeName" line-width="25" color="#5dd6c7" title-active-color="#5dd6c7">
       <van-tab title="简介" name="a">
-        <jianjie :jianjie="user_info"></jianjie>
+        <jianjie :jianjie="user_info" ref="child1"></jianjie>
       </van-tab>
       <van-tab title="内容" name="b">内容</van-tab>
       <van-tab title="导师" name="c">
-        <teacher :teacherList="SchoolteacherList"></teacher>
+        <teacher :teacherList="SchoolteacherList" @pullDown="pullDown1" ref="child"></teacher>
       </van-tab>
     </van-tabs>
     <goBack></goBack>
@@ -59,8 +61,9 @@ export default {
         agency_info: {}
       },
       user_info: "",
-      page: 1 ,//从第一页开始
-      SchoolteacherList:[] //导师列表
+      page: 1, //从第一页开始
+      SchoolteacherList: [], //导师列表
+      loading: true
     };
   },
   components: {
@@ -76,13 +79,30 @@ export default {
         this.agency_obj = result.data;
         this.user_info = result.data.agency_info.user_info;
         this.getSchoolteacherList();
+        this.$refs.child1.Ploading = false;
+        this.loading = false;
       }
     },
     // 获取导师列表
     async getSchoolteacherList() {
       const result = await reqschoolteacherList("", this.agency_id, this.page);
       console.log(result);
-      this.SchoolteacherList = result.data
+      this.SchoolteacherList = result.data;
+    },
+    //上拉加载更多导师
+    async pullDown1() {
+      this.page++;
+      const result = await reqschoolteacherList("", this.agency_id, this.page);
+      if (result.code == 1) {
+        result.data.forEach(item => {
+          this.SchoolteacherList.push(item);
+        });
+        // 加载状态结束
+        this.$refs.child.loading = false;
+      } else if (result.code == -3) {
+        this.$refs.child.finished = true;
+        this.$refs.child.loading = false;
+      }
     }
   },
   mounted() {

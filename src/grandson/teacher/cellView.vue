@@ -14,7 +14,7 @@
               <div class="span3">
                 <span class="name_1 a">课程{{teacherListObj.res_count}}</span>
                 <span class="name_2 a">软文{{teacherListObj.article_count}}</span>
-                <span class="name_3 a">会员{{teacherListObj.focus_count}}</span>
+                <span class="name_3 a">粉丝{{teacherListObj.focus_count}}</span>
               </div>
             </van-col>
             <van-col span="9" class="gz_warp">
