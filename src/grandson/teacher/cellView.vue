@@ -1,6 +1,6 @@
 <template>
   <div class="cellView">
-    <div class="school_warp">
+    <div class="school_warp" @click="goDetail(teacherListObj)">
       <div class="left">
         <div class="img_warp">
           <img :src="teacherListObj.headimgurl" alt />
@@ -22,10 +22,7 @@
             </van-col>
           </van-row>
         </div>
-        <div
-          class="bottom"
-          escape="true"
-        >{{teacherListObj.brief_intro}}</div>
+        <div class="bottom" escape="true">{{teacherListObj.brief_intro}}</div>
       </div>
     </div>
   </div>
@@ -37,7 +34,11 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    goDetail(teacherListObj) {
+      this.$router.push("/teacherDetail/" + teacherListObj.id);
+    }
+  }
 };
 </script>
 

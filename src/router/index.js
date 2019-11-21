@@ -548,7 +548,17 @@ const router = new Router({
         title: "机构详情"
       }
     },
-    // schoolDetail
+    {
+      path: "/teacherDetail/:id",
+      name: "teacherDetail",
+      component: () =>
+        import('../pages/teacherDetail.vue'),
+      meta: {
+        showFooter: false,
+        title: "导师详情"
+      }
+    },
+    // teacherDetail
 
   ]
 })

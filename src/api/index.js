@@ -275,6 +275,10 @@ export const reqwordShouCang = (cookie,article_id,user_id,mtype) => ajax(`${BASE
  */
 export const reqschoolDetail = (cookie,agency_id) => ajax(`${BASE_URL2}/api/5dcb9c5759416`, {cookie,agency_id}, 'POST');
 /**
+ * 导师主页详情
+ */
+export const reqteacherDetail = (cookie,user_id) => ajax(`${BASE_URL2}/api/5dcb97bf900ec`, {cookie,user_id}, 'POST');
+/**
  * 机构---导师列表
  */
 export const reqschoolteacherList = (cookie,agency_id,page) => ajax(`${BASE_URL2}/api/5dcb9db86b938`, {cookie,agency_id,page}, 'POST');
