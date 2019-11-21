@@ -7,7 +7,7 @@
         <div class="head-main">
           <div class="img-box">
             <img v-lazy="user_obj.teacher_info.headimgurl" v-if="user_obj.teacher_info.headimgurl" />
-            <img src="../../static/img/pic.svg" alt="" v-else>
+            <img src="../../static/img/pic.svg" alt v-else />
           </div>
           <div class="txt-box">
             <div class="name-box">
@@ -42,7 +42,9 @@
       <van-tab title="内容" name="b">
         <contents :user_obj="user_obj"></contents>
       </van-tab>
-      <van-tab title="问答" name="c">3</van-tab>
+      <van-tab title="问答" name="c">
+        <Qa :question="QaList" :headimgUrl="user_obj.teacher_info.headimgurl" :user_id="user_id" @pullDown2="pullDown1" ref="child"></Qa>
+      </van-tab>
     </van-tabs>
     <goBack></goBack>
     <footer>医佰康提供技术支持</footer>
@@ -52,15 +54,15 @@
 <script>
 import jianjie from "../components/teacherDetail/jianjie";
 import contents from "../components/teacherDetail/content";
-import { reqteacherDetail } from "../api";
+import Qa from "../components/teacherDetail/Qa";
+import { reqteacherDetail, reqCorresponding } from "../api";
 export default {
   data() {
     return {
       activeName: "a",
       user_id: this.$route.params.id,
-      user_info: "",
+      QaList: [], //问答列表
       page: 1, //从第一页开始
-      loading: true,
       user_obj: {
         teacher_article: {},
         teacher_course: {},
@@ -71,7 +73,8 @@ export default {
   },
   components: {
     jianjie,
-    contents
+    contents,
+    Qa
   },
   methods: {
     // 获取机构主页详情
@@ -80,29 +83,27 @@ export default {
       console.log(result);
       if (result.code == 1) {
         this.user_obj = result.data;
-        // this.user_info = result.data.agency_info.user_info;
-        // this.getSchoolteacherList();
+        this.getQaList();
         this.$refs.child1.Ploading = false;
-        // this.loading = false;
       }
     },
     // 获取导师列表
-    async getSchoolteacherList() {
-      const result = await reqschoolteacherList("", this.agency_id, this.page);
+    async getQaList() {
+      const result = await reqCorresponding(this.user_id, "", this.page);
       console.log(result);
-      this.SchoolteacherList = result.data;
+      this.QaList = result.data;
     },
     //上拉加载更多导师
     async pullDown1() {
       this.page++;
-      const result = await reqschoolteacherList("", this.agency_id, this.page);
+      const result = await reqCorresponding(this.user_id, "", this.page);
       if (result.code == 1) {
         result.data.forEach(item => {
-          this.SchoolteacherList.push(item);
+          this.QaList.push(item);
         });
         // 加载状态结束
         this.$refs.child.loading = false;
-      } else if (result.code == -3) {
+      } else if (result.code == -1) {
         this.$refs.child.finished = true;
         this.$refs.child.loading = false;
       }
