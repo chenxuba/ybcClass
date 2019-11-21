@@ -38,7 +38,9 @@
       <van-tab title="简介" name="a">
         <jianjie :jianjie="user_info" ref="child1"></jianjie>
       </van-tab>
-      <van-tab title="内容" name="b">内容</van-tab>
+      <van-tab title="内容" name="b">
+        <contents :agency_obj="agency_obj"></contents>
+      </van-tab>
       <van-tab title="导师" name="c">
         <teacher :teacherList="SchoolteacherList" @pullDown="pullDown1" ref="child"></teacher>
       </van-tab>
@@ -51,6 +53,7 @@
 <script>
 import jianjie from "../components/schoolDetail/jianjie";
 import teacher from "../components/schoolDetail/teacher";
+import contents from "../components/schoolDetail/content";
 import { reqschoolDetail, reqschoolteacherList } from "../api";
 export default {
   data() {
@@ -58,7 +61,12 @@ export default {
       activeName: "a",
       agency_id: this.$route.params.id,
       agency_obj: {
-        agency_info: {}
+        agency_info: {},
+        agency_article:{},
+        agency_clockin:{},
+        agency_course:{},
+        agency_resource:{},
+        agency_offline:{}
       },
       user_info: "",
       page: 1, //从第一页开始
@@ -68,7 +76,8 @@ export default {
   },
   components: {
     jianjie,
-    teacher
+    teacher,
+    contents
   },
   methods: {
     // 获取机构主页详情
