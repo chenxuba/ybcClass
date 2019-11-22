@@ -558,7 +558,27 @@ const router = new Router({
         title: "导师详情"
       }
     },
-    // teacherDetail
+    {
+      path: "/changeiPhone",
+      name: "changeiPhone",
+      component: () =>
+        import('../pages/changeiPhone.vue'),
+      meta: {
+        showFooter: false,
+        title: "更改手机号"
+      }
+    },
+    {
+      path: "/changePhone",
+      name: "changePhone",
+      component: () =>
+        import('../pages/changePhone.vue'),
+      meta: {
+        showFooter: false,
+        title: "更改手机号"
+      }
+    },
+    // changeiPhone
 
   ]
 })

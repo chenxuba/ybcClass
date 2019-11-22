@@ -11,7 +11,7 @@
           <div class="top">
             <van-row>
               <van-col span="18">
-                <p class="name">{{schoolListObj.name}}</p>
+                <p class="name">{{schoolListObj.agency_name}}</p>
                 <div class="span2">
                   <span class="name_1 a">粉丝{{schoolListObj.focus_count}}</span>
                   <span class="name_2 a">导师{{schoolListObj.user_count}}</span>
@@ -22,7 +22,7 @@
               </van-col>
             </van-row>
           </div>
-          <div class="bottom" escape="true">{{schoolListObj.brief_intro}}</div>
+          <div class="bottom" escape="true">{{schoolListObj.brief_intro || '暂无简介'}}</div>
         </div>
       </div>
     </div>
@@ -106,10 +106,10 @@ export default {
   display: inline-block;
   font-size: 24px;
   border-radius: 30px;
-  border: 2px solid #1ad473;
+  border: 2px solid #5dd6c7;
   display: inline-block;
   padding: 4px 15px 2px 15px;
-  color: #1ad473;
+  color: #5dd6c7;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

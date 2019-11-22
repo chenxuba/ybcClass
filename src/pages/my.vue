@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { reqUserInfo } from "../api/index.js";
+import { reqBdUserinfo,reqUserRescount,reqUserMenu } from "../api/index.js";
 import { isWx } from "../util/index";
 import { Dialog } from "vant";
 export default {
@@ -137,21 +137,32 @@ export default {
     };
   },
   methods: {
+    // 获取用户信息
     async getUserInfo() {
-      const result = await reqUserInfo();
+      const result = await reqBdUserinfo();
       // alert(JSON.stringify(result));
       if (result.code == 1) {
-        this.List = result.data.center_set;
-        this.userinfo = result.data.user_info;
-        this.res_count = result.data.res_count;
-        localStorage.setItem(
-          "user_id",
-          result.data.user_info.binding_acount_master
-        ); //绑定的导师id
-        localStorage.setItem(
-          "agency_id",
-          result.data.user_info.binding_acount_agency
-        ); //绑定的机构id
+        // this.List = result.data.center_set;
+        this.userinfo = result.data;
+        // this.res_count = result.data.res_count;
+        localStorage.setItem("user_id", result.data.binding_acount_master); //绑定的导师id
+        localStorage.setItem("agency_id", result.data.binding_acount_agency); //绑定的机构id
+      }
+    },
+    // 获取统计数量
+     async getresCount() {
+      const result = await reqUserRescount();
+      // alert(JSON.stringify(result));
+      if (result.code == 1) {
+        // this.List = result.data.center_set;
+        this.res_count = result.data;
+      }
+    },
+    // 获取列表
+    async getList() {
+      const result = await reqUserMenu();
+      if (result.code == 1) {
+        this.List = result.data;
       }
     },
     zuji() {
@@ -165,7 +176,7 @@ export default {
         .then(() => {
           // on confirm
           sessionStorage.clear();
-          this.$router.push('/login')
+          this.$router.push("/login");
         })
         .catch(() => {
           // on cancel
@@ -174,6 +185,8 @@ export default {
   },
   mounted() {
     this.getUserInfo();
+    this.getList();
+    this.getresCount();
     if (isWx()) {
       this.isWx = false;
     } else {

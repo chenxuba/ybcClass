@@ -8,11 +8,25 @@
         </van-search>
       </van-col>
     </van-row>
-    <van-tabs v-model="activeName" swipeable>
+    <van-tabs
+      v-model="activeName"
+      swipeable
+      line-width="50"
+      title-active-color="#5dd6c7"
+      color="#5dd6c7"
+    >
       <van-tab title="机构列表" name="5">
+        <!-- 专家列表展示 -->
+        <div class="swiper">
+          <swiper :swiper="swiper"></swiper>
+        </div>
         <schoolList :schoolList="SchoolList" @pullDown1="pullDown1" ref="child1"></schoolList>
       </van-tab>
       <van-tab title="导师列表" name="7">
+        <!-- 专家列表展示 -->
+        <div class="swiper">
+          <swiper :swiper="swiper"></swiper>
+        </div>
         <teacherList :teacherList="TeacherList" @pullDown2="pullDown2" ref="child2"></teacherList>
       </van-tab>
     </van-tabs>
@@ -24,6 +38,7 @@
 import { reqTeacherAndSchoolList } from "../api/index";
 import schoolList from "../components/query0/schoolList";
 import teacherList from "../components/query0/teacherList";
+import swiper from "../components/query0/swiper";
 export default {
   name: "query",
   data() {
@@ -34,6 +49,7 @@ export default {
       TeacherList: [], //导师列表
       page1: 1,
       page2: 1,
+      swiper: []
     };
   },
   methods: {
@@ -51,6 +67,7 @@ export default {
       const result = await reqTeacherAndSchoolList("", 7, "", "", "", "");
       if (result.code == 1) {
         this.TeacherList = result.data.data;
+        this.swiper = result.data.expert[0].carousel;
       }
     },
     // 上拉加载，触底触发
@@ -108,9 +125,12 @@ export default {
         this.$refs.child2.finished = false;
       } else {
         const result = await reqTeacherAndSchoolList(
+          "",
           this.activeName,
-          "-1",
-          this.value
+          "",
+          this.value,
+          "",
+          "-1"
         );
         if (this.activeName == "5") {
           this.SchoolList = result.data.data;
@@ -122,7 +142,8 @@ export default {
   },
   components: {
     schoolList,
-    teacherList
+    teacherList,
+    swiper
   },
   computed: {},
   mounted() {
@@ -138,6 +159,6 @@ export default {
 }
 .btn {
   font-size: 30px;
-  color: #1ad473;
+  color: #5dd7c7;
 }
 </style>

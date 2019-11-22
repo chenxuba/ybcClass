@@ -17,21 +17,23 @@
     <p class="taocan">VIP学员</p>
     <!-- 学员费列表 -->
     <div class="rows">
-      <div class="stuList" v-for="(item,index) in Price_list" :key="index">
-        <van-row class="row">
-          <van-col
-            span="12"
-            class="span"
-          >{{item.validity_time}}{{item.validity_time_unit == 1 ? '个月' : '年'}}VIP学员费</van-col>
-          <van-col span="4" class="span price">¥ {{item.price}}</van-col>
-          <van-col span="8" class="span kaitong">
-            <span
-              :class="active == index ? 'active' : ''"
-              @click="open(item,index)"
-            >{{student == 0?'开通':'续费'}}</span>
-          </van-col>
-        </van-row>
-      </div>
+      <van-skeleton :row="6" :loading="loading" row-width="100%" class="skeleton">
+        <div class="stuList" v-for="(item,index) in Price_list" :key="index">
+          <van-row class="row">
+            <van-col
+              span="12"
+              class="span"
+            >{{item.validity_time}}{{item.validity_time_unit == 1 ? '个月' : '年'}}VIP学员费</van-col>
+            <van-col span="4" class="span price">¥ {{item.price}}</van-col>
+            <van-col span="8" class="span kaitong">
+              <span
+                :class="active == index ? 'active' : ''"
+                @click="open(item,index)"
+              >{{student == 0?'开通':'续费'}}</span>
+            </van-col>
+          </van-row>
+        </div>
+      </van-skeleton>
     </div>
     <!-- 高级特权 -->
     <div class="tequan">
@@ -74,7 +76,8 @@ export default {
       endtime: "",
       student: "",
       type: 3,
-      price: ""
+      price: "",
+      loading: true
     };
   },
   methods: {
@@ -98,6 +101,7 @@ export default {
       this.endtime = result.data.user_info.endtime;
       this.student = result.data.student;
       this.price = result.data.platform_info[0].price;
+      this.loading = false
     }
   },
   mounted() {
@@ -230,7 +234,11 @@ export default {
   background-color: #efeff5;
   box-sizing: border-box;
 }
-.openStudent .rows{
+.openStudent .rows {
   height: 400px;
+  background-color: #fff;
+}
+.skeleton{
+  padding-top: 50px;
 }
 </style>

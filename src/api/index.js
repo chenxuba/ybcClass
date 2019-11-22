@@ -133,7 +133,7 @@ export const reqFollow = (name,cookie) => ajax(`${BASE_URL2}/api/5d81f12bab632`,
 /**
  * 获取用户个人信息
  */
-export const reqUserInfo2 = (cookie) => ajax(`${BASE_URL2}/api/5da8188a00160`, {cookie}, 'POST');
+export const reqUserRescount = (cookie) => ajax(`${BASE_URL2}/api/5dd799bd613db`, {cookie}, 'POST');
 /**
  * 修改昵称
  */
@@ -282,3 +282,19 @@ export const reqteacherDetail = (cookie,user_id) => ajax(`${BASE_URL2}/api/5dcb9
  * 机构---导师列表
  */
 export const reqschoolteacherList = (cookie,agency_id,page) => ajax(`${BASE_URL2}/api/5dcb9db86b938`, {cookie,agency_id,page}, 'POST');
+/**
+ * 判断用户是否关注微信
+ */
+export const reqisGuanzhuWx = (cookie) => ajax(`${BASE_URL2}/api/5dd36203d4836`, {cookie}, 'POST');
+/**
+ * 绑定手机页面获取用户信息
+ */
+export const reqBdUserinfo = (cookie) => ajax(`${BASE_URL2}/api/5dd798969a414`, {cookie}, 'POST');
+/**
+ * 获取用户中心菜单
+ */
+export const reqUserMenu = (cookie) => ajax(`${BASE_URL2}/api/5dd79ff4b9afe`, {cookie}, 'POST');
+/**
+ * 获取用户信息
+ */
+export const reqUserInfo2 = (cookie) => ajax(`${BASE_URL2}/api/5da8188a00160`, {cookie}, 'POST');

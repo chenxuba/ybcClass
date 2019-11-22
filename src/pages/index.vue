@@ -22,6 +22,14 @@
     <div class="hongbao animated tada infinite">
       <img src="../../static/img/hongbao.png" alt />
     </div>
+    <van-popup v-model="showToast" >
+      <img src="../../static/img/shouci.png" alt="" class="shouci">
+      <h4 class="h4" @click="dianjiguanzhu">立即关注</h4>
+    </van-popup>
+    <van-popup v-model="erweima" >
+      <img src="../../static/img/ybcerweima.png" alt="" class="erweima">
+      <h4 class="h42" @click="dianjiguanzhu">长按识别关注</h4>
+    </van-popup>
   </div>
 </template>
 
@@ -33,8 +41,16 @@ import Menu4 from "../components/index/menu4";
 import HotCourse from "../components/index/hotCourse";
 import HotCourse2 from "../components/index/hotCourse2";
 import Word from "../components/index/word";
+import { reqisGuanzhuWx } from "../api";
+import { isWx } from "../util";
 import { mapState, mapActions } from "vuex";
 export default {
+  data() {
+    return {
+      showToast: false,
+      erweima:false
+    };
+  },
   components: {
     Search,
     Swiper,
@@ -48,10 +64,30 @@ export default {
     ...mapState(["NoticeBar"])
   },
   methods: {
-    ...mapActions(["getHomePageData"])
+    ...mapActions(["getHomePageData"]),
+    // 判断用户是否关注了医佰康公众号
+    async isGuanZhuWx() {
+      const result = await reqisGuanzhuWx("");
+      console.log(result);
+      if (result.code == 1) {
+        this.is_follow = result.data.is_follow;
+        if (this.is_follow == 1) {
+          console.log("该用户关注了公众号");
+        } else {
+          this.showToast = true;
+        }
+      }
+    },
+    dianjiguanzhu(){
+      this.erweima = true
+      this.showToast = false
+    }
   },
   mounted() {
     this.getHomePageData();
+    if (isWx()) {
+      this.isGuanZhuWx();
+    }
   }
 };
 </script>
@@ -91,5 +127,32 @@ export default {
   width: 80px;
   height: 100px;
   transform: rotate(-40deg);
+}
+.shouci{
+  width: 100%;
+  height: 100%;
+}
+.van-popup{
+  background: transparent;
+  width: 100%;
+  text-align: center;
+}
+
+.h4{
+  color: #fff;
+  font-size: 34px;
+  position: absolute;
+  bottom: 40px;
+  left: 43%;
+  font-family: 'Courier New', Courier, monospace;
+}
+.h42{
+  color: #fff;
+  font-size: 38px;
+  margin-top: 20px;
+}
+.erweima{
+  width: 40%;
+  padding-top: 30px;
 }
 </style>

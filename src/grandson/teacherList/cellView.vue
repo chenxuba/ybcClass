@@ -1,6 +1,6 @@
 <template>
   <div class="cellView">
-    <div class="school_warp">
+    <div class="school_warp" @click="goDetail(teacherListObj)">
       <div class="left">
         <div class="img_warp">
           <img v-lazy="teacherListObj.headimgurl" alt />
@@ -44,6 +44,9 @@ export default {
   methods: {
     guanzhu(id, is_user_follow) {
       this.$emit("event", id, is_user_follow);
+    },
+    goDetail(teacherListObj) {
+      this.$router.push("/teacherDetail/" + teacherListObj.id);
     }
   }
 };
@@ -98,10 +101,10 @@ export default {
   display: inline-block;
   font-size: 24px;
   border-radius: 30px;
-  border: 2px solid #1ad473;
+  border: 2px solid #5dd6c7;
   display: inline-block;
   padding: 4px 15px 2px 15px;
-  color: #1ad473;
+  color: #5dd6c7;
 }
 .cellView .school_warp .right .top .gz_warp {
   text-align: right;

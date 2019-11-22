@@ -11,7 +11,7 @@
             </div>
             <div class="txt-box">
               <div class="name-box">
-                <p class="name">{{user_info.name}}</p>
+                <p class="name">{{user_info.agency_name}}</p>
               </div>
             </div>
           </van-skeleton>

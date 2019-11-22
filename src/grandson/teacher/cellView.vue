@@ -108,10 +108,10 @@ export default {
   display: inline-block;
   font-size: 24px;
   border-radius: 30px;
-  border: 2px solid #1ad473;
+  border: 2px solid #5dd6c7;
   display: inline-block;
   padding: 0px 15px 0px 15px;
-  color: #1ad473;
+  color: #5dd6c7;
   position: relative;
   top: -20px;
 }

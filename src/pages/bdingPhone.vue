@@ -1,59 +1,72 @@
 <template>
-  <div class="login">
-    <!-- 返回键 -->
-    <div class="back">
-      <van-icon name="arrow-left" class="icon" @click="$router.push('/')" />
+  <div class="bdphone" v-height>
+    <h1>绑定手机</h1>
+    <!-- 头像 -->
+    <div class="img-box">
+      <img v-lazy="userinfo.headimgurl" alt />
+      <h2>{{userinfo.name}}</h2>
+      <h3>为了您的账号安全，请绑定手机号</h3>
     </div>
-    <!-- title -->
-    <div class="login_txt">绑定手机号码</div>
-    <!-- 表单区域 -->
-    <van-cell-group>
-      <van-field
-        v-model="phone"
-        required
-        clearable
-        label="手机号"
-        @blur="isTell()"
-        :error-message="error_message"
-        maxlength="11"
-        placeholder="请输入手机号"
-        size="large"
-        @focus="isfocus1()"
-      />
-      <van-field
-        v-model="code"
-        center
-        clearable
-        label="短信验证码"
-        placeholder="请输入短信验证码"
-        required
-        size="large"
-      >
-        <van-button slot="button" size="small" type="primary" v-if="sendBtn" @click="sendCode">发送验证码</van-button>
-        <van-button slot="button" size="small" type="primary" v-else>倒计时{{authTime}}秒</van-button>
-      </van-field>
-    </van-cell-group>
-    <!-- 切换登录 -->
-    <div class="btn">
-      <el-button type="success" @click="actionBding">确定绑定</el-button>
+    <div class="from">
+      <div class="inpu1-box">
+        <span>+86</span>
+        <input
+          type="tel"
+          placeholder="输入手机号"
+          class="input1"
+          v-model="phone"
+          @blur="isTell()"
+          maxlength="11"
+        />
+      </div>
+      <div class="inpu2-box">
+        <input type="tel" placeholder="输入验证码" class="input1" v-model="code" />
+        <span v-if="sendBtn" @click="sendCode">获取验证码</span>
+        <span  v-else >倒计时{{authTime}}秒</span>
+      </div>
     </div>
+    <div class="over">
+      <button class="btn" @click="actionBding">完成</button>
+    </div>
+    <div class="wenxitishi">
+      <p>点击「完成」，即表示您同意并愿意遵守</p>
+      <p class="p">《医佰康云课堂用户协议》</p>
+    </div>
+    <goHome></goHome>
   </div>
 </template>
 
 <script>
-import { reqBdingPhoneCode, reqBdingPhone } from "../api/index.js";
+import { reqBdUserinfo, reqBdingPhoneCode, reqBdingPhone } from "../api";
 import { Toast } from "vant";
 export default {
   data() {
     return {
+      userinfo: "",
       phone: "",
       code: "",
-      error_message: "",
       sendBtn: true, // 控制发送验证码按钮显示
       authTime: 0 // 倒计时
     };
   },
   methods: {
+    async getUserinfo() {
+      const result = await reqBdUserinfo();
+      console.log(result);
+      if (result.code == 1) {
+        this.userinfo = result.data;
+      }
+    },
+    //校验是否符合手机号规则
+    isTell() {
+      let reg = /^1[3|4|5|6|7|8][0-9]\d{8}$/;
+      if (!reg.test(this.phone)) {
+        this.$toast("手机号格式错误");
+      }
+      if (this.phone == "") {
+        this.$toast("手机不能为空");
+      }
+    },
     // 发送验证码
     async sendCode() {
       const result = await reqBdingPhoneCode(this.phone);
@@ -77,20 +90,6 @@ export default {
         Toast.fail(result.msg);
       }
     },
-    //校验是否符合手机号规则
-    isTell() {
-      let reg = /^1[3|4|5|6|7|8][0-9]\d{8}$/;
-      if (!reg.test(this.phone)) {
-        this.error_message = "手机号格式错误";
-      }
-      if (this.phone == "") {
-        this.error_message = "手机不能为空";
-      }
-    },
-    //输入框获取焦点后触发
-    isfocus1() {
-      this.error_message = "";
-    },
     async actionBding() {
       if (this.phone == "" || this.code == "") {
         Toast.fail("号码或验证码不能为空");
@@ -105,57 +104,127 @@ export default {
         }
       }
     }
+  },
+  mounted() {
+    this.getUserinfo();
   }
 };
 </script>
 
 <style scoped>
-/* 返回键 */
-.login {
-  width: 100%;
-  height: 100%;
-  padding: 0 25px;
+.bdphone {
+  padding: 0 80px;
   box-sizing: border-box;
 }
-.login .back {
+.bdphone h1 {
   width: 100%;
-  height: 80px;
-  background: #fff;
-  line-height: 80px;
-  padding-top: 20px;
-}
-.login .back .icon {
-  font-size: 50px;
-  color: #999;
-}
-/* title */
-.login .login_txt {
-  width: 100%;
-  height: 100px;
-  background: #fff;
-  line-height: 100px;
-  font-size: 50px;
-  letter-spacing: 1px;
+  font-size: 45px;
+  text-align: center;
   color: #333;
-  margin-top: 40px;
-  margin-bottom: 60px;
-  padding-left: 20px;
-  box-sizing: border-box;
+  padding: 50px 0 40px 0;
+  border-bottom: 2px solid #eee;
 }
-/* 登录按钮 */
-.login .btn {
+.bdphone .img-box {
   width: 100%;
+  height: auto;
+  text-align: center;
+  margin-top: 40px;
+}
+.bdphone .img-box img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+.bdphone .img-box h2 {
+  font-size: 30px;
+  color: #888;
+  line-height: 50px;
+}
+.bdphone .img-box h3 {
+  font-size: 26px;
+  color: #888;
+  line-height: 100px;
+}
+.from {
+  margin-top: 30px;
+}
+.from .input1 {
+  width: 100%;
+  height: 70px;
+  font-size: 28px;
+  color: #888;
+  border: 1px solid #eee;
+  text-indent: 1em;
+  box-shadow: inset 0px 2px 6px #888;
+  border-left: none;
+}
+.from .inpu1-box {
+  display: flex;
+  margin-bottom: 40px;
+}
+.from .inpu1-box span {
+  color: #333;
+  font-size: 28px;
+  line-height: 70px;
+  border: 1px solid #eee;
+  border-right: none;
+  width: 20%;
   text-align: center;
 }
-
-.el-button {
-  width: 80%;
-  margin-top: 200px;
-  background-color: #5dd6c7;
-  border: 1px solid #5dd6c7;
+.from .inpu1-box span .icon {
+  position: relative;
+  top: 3px;
 }
-.van-button--primary {
-  background-color: #5dd6c7;
-  border: 1px solid #5dd6c7;
+
+.from .input2 {
+  width: 100%;
+  height: 70px;
+  font-size: 28px;
+  color: #888;
+  border: 1px solid #eee;
+  text-indent: 1em;
+  box-shadow: inset 0px 2px 6px #888;
+}
+.from .inpu2-box {
+  display: flex;
+}
+.from .inpu2-box span {
+  color: #fff;
+  font-size: 28px;
+  line-height: 70px;
+  width: 60%;
+  text-align: center;
+  margin-left: 40px;
+  background: #5dd6c7;
+  border-radius: 4px;
+}
+.from .inpu2-box span .icon {
+  position: relative;
+  top: 3px;
+}
+.over {
+  margin-top: 50px;
+}
+.over .btn {
+  width: 100%;
+  background: #5dd6c7;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 30px;
+  padding: 22px 0;
+  border-radius: 5px;
+}
+.wenxitishi {
+  text-align: center;
+  margin-top: 30px;
+}
+.wenxitishi p {
+  font-size: 26px;
+  color: #888;
+}
+.wenxitishi p.p {
+  margin-top: 15px;
+  color: #5dd6c7;
 }
 </style>

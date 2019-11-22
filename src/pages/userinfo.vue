@@ -1,5 +1,5 @@
 <template>
-  <div class="userinfo">
+  <div class="userinfo" v-height>
     <!-- top部分 -->
     <div class="contbox">
       <!-- 头像 -->
@@ -118,14 +118,20 @@
         </div>
       </div>
     </div>
+    <!-- 刷新微信资料 -->
+    <div class="setting" v-if="isWx">
+      <span class="input" @click="Refresh">刷新微信资料</span>
+    </div>
     <!-- 返回按钮 -->
-    <goBack></goBack>
+    <goHome></goHome>
   </div>
 </template>
 
 <script>
 import { reqUserInfo2, reqUserName, reqRealName } from "../api";
 import { Toast } from "vant";
+import { isWx } from "../util";
+import { getCode } from "../api/user";
 export default {
   data() {
     return {
@@ -133,7 +139,8 @@ export default {
       name: "",
       oldName: "",
       oldRealName: "",
-      real_name: ""
+      real_name: "",
+      isWx: false
     };
   },
   methods: {
@@ -174,10 +181,18 @@ export default {
           phone: this.userInfo.phone
         }
       });
+    },
+    Refresh() {
+      sessionStorage.clear();
+      localStorage.clear();
+        getCode()
     }
   },
   mounted() {
     this.getUserinfo();
+    if (isWx()) {
+      this.isWx = true;
+    }
   },
   watch: {
     name(newVal, oldVal) {
@@ -259,5 +274,19 @@ export default {
 .userinfo .contbox .title .title_img .title_icon {
   font-size: 40px;
   color: #ccc;
+}
+.setting {
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+.setting .input {
+  padding: 22px 200px;
+  background-color: #ffc803;
+  color: #b27629;
+  border-radius: 50px;
+  font-size: 24px;
+  box-shadow: 3px 3px 20px;
+  display: inline-block;
 }
 </style>

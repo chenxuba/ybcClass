@@ -18,6 +18,14 @@ export default {
       reload: this.reload
     };
   },
+  data() {
+    return {
+      is_follow: ""
+    };
+  },
+  methods: {
+   
+  },
   components: {
     tabBar
   },
