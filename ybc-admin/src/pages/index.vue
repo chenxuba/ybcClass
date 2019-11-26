@@ -1,13 +1,38 @@
 <template>
-  <div class="index"></div>
+    <div class="index">
+    <HeadNav></HeadNav>
+    <LeftMenu></LeftMenu>
+    <div class="rightContainer">
+      <router-view></router-view>
+    </div>
+    </div>
 </template>
 
 <script>
+import HeadNav from "../components/index/HeadNav";
+import LeftMenu from "../components/index/LeftMenu";
+
 export default {
-  methods: {},
-  mounted() {}
+    name:'index',
+    components:{
+        HeadNav,
+        LeftMenu
+    }
 };
 </script>
 
-<style scoped>
+<style>
+.index{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.rightContainer {
+  position: fixed;
+  top: 70px;
+  left: 180px;
+  width: calc(100% - 180px);
+  height: calc(100% - 70px);
+  overflow: auto;
+}
 </style>

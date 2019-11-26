@@ -14,6 +14,23 @@ const router = new Router({
       name: "index",
       component: () =>
         import('../pages/index.vue'),
+      children: [{
+          path: '',
+          component: () => import('../pages/home.vue')
+        },
+        { path: '/home', name: 'home', component: () => import('../pages/home.vue') }, 
+        { path: '/base', name: 'base', component: () => import('../pages/base.vue') },
+        { path: '/liveRoomSet', name: 'liveRoomSet', component: () => import('../pages/liveRoomSet.vue')},
+        { path: '/classHour', name: 'classHour', component: () => import('../pages/classHour.vue')},
+        { path: '/course', name: 'course', component: () => import('../pages/course.vue')},
+        { path: '/word', name: 'word', component: () => import('../pages/word.vue')},
+        { path: '/payQa', name: 'payQa', component: () => import('../pages/payQa.vue')},
+        { path: '/dakaSchool', name: 'dakaSchool', component: () => import('../pages/dakaSchool.vue')},
+        { path: '/test', name: 'test', component: () => import('../pages/test.vue')},
+        { path: '/price', name: 'price', component: () => import('../pages/price.vue')},
+        { path: '/order', name: 'order', component: () => import('../pages/order.vue')},
+        
+      ]
     },
     {
       path: "/login",
