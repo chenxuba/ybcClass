@@ -2,7 +2,7 @@
     <header class="head-nav">
         <el-row>
             <el-col :span="10" class='logo-container'>
-                <img src="http://img.kanzhun.com/enterprise/data/20161018/929fae7ee7ff10dd09fe0f958c15e468.jpg" class='logo' alt="">
+                <img src="../../../static/img/logo.png" class='logo' alt="">
                 <span class='title'>云课堂导师后台管理系统</span>
             </el-col>
             <el-col :span='6' class="user">
@@ -68,8 +68,7 @@ export default {
           type: 'warning'
         }).then(() => {
         // 清除token
-        localStorage.removeItem("eleToken");
-        this.$store.dispatch("clearCurrentState");
+        sessionStorage.removeItem("isLogin");
         // 页面跳转
         this.$router.push("/login");
         this.$message({
@@ -113,6 +112,7 @@ export default {
   margin-right: 5px;
   vertical-align: middle;
   display: inline-block;
+  margin-left: -65px;
 }
 .title {
   vertical-align: middle;

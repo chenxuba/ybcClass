@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const router = new Router({
-  // mode: 'history',
+  mode: 'history',
   routes: [{
       path: "/",
       redirect: "/index"
@@ -29,6 +29,7 @@ const router = new Router({
         { path: '/test', name: 'test', component: () => import('../pages/test.vue')},
         { path: '/price', name: 'price', component: () => import('../pages/price.vue')},
         { path: '/order', name: 'order', component: () => import('../pages/order.vue')},
+        { path: '/fail', name: 'fail', component: () => import('../pages/fail.vue')},
         
       ]
     },

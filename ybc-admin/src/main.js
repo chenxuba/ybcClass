@@ -10,7 +10,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 // axios全局配置
 import axios from 'axios'
 Vue.prototype.$axios = axios
-
+// 引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts 
 Vue.use(ElementUI);
 /* eslint-disable no-new */
 new Vue({

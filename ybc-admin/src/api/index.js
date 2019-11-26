@@ -9,4 +9,8 @@ const BASE_URL = 'https://api.ybc365.com'
  * 用户登录
  */
 export const reqUserLogin = (login_name ,login_pwd,verifycode,type) => ajax(`${BASE_URL}/api/5dbfe3d399960`, { login_name ,login_pwd,verifycode,type}, 'POST'); 
+/**
+ * 导师主页
+ */
+export const reqUserHomepage = () => ajax(`${BASE_URL}/api/5dc25807a5689`, {}, 'POST'); 
 

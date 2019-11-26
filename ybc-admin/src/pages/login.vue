@@ -4,20 +4,40 @@
       <p class="title-txt">导师后台管理系统</p>
       <el-form label-width="80px" :model="loginMsg" class="from">
         <el-form-item label>
-          <el-input v-model="loginMsg.userName" placeholder="账号/手机号/邮箱"></el-input>
+          <el-input
+            v-model="loginMsg.userName"
+            placeholder="账号/手机号/邮箱"
+            @keyup.enter.native="addByEnterKey"
+          ></el-input>
         </el-form-item>
         <el-form-item label>
-          <el-input v-model="loginMsg.password" placeholder="密码"></el-input>
+          <el-input
+            v-model="loginMsg.password"
+            placeholder="密码"
+            type="password"
+            @keyup.enter.native="addByEnterKey"
+          ></el-input>
         </el-form-item>
         <el-form-item label class="verifycode">
-          <el-input v-model="loginMsg.verifycode" placeholder="验证码" class="verifycode_box"></el-input>
+          <el-input
+            v-model="loginMsg.verifycode"
+            placeholder="验证码"
+            class="verifycode_box"
+            @keyup.enter.native="addByEnterKey"
+          ></el-input>
           <img :src="imgCode" width="100%" class="verifycode_img" @click="changeImgCode" />
         </el-form-item>
-
+        <div class="remember">
+          <el-checkbox v-model="checked">记住密码</el-checkbox>
+        </div>
         <el-button type="primary" class="btn" @click="login">登录</el-button>
       </el-form>
       <img id="u1_img" class="img" src="../../static/img/u1.png" />
     </div>
+    <footer id="footer">
+      上海沐月信息技术发展有限公司
+      <img src="https://kf.ybc365.com/train/Public/train/img/icon-police.png" alt /> 沪ICP备15044463号
+    </footer>
   </div>
 </template>
 
@@ -32,7 +52,8 @@ export default {
         verifycode: "", //验证码
         type: 7
       },
-      imgCode: "" //验证码图片链接
+      imgCode: "", //验证码图片链接
+      checked: true
     };
   },
   methods: {
@@ -59,30 +80,92 @@ export default {
           type: "warning"
         });
       } else {
-        const res = await reqUserLogin(
-          this.loginMsg.userName,
-          this.loginMsg.password,
-          this.loginMsg.verifycode,
-          this.loginMsg.type
-        );
-        //   res.code == -1 说明验证码错误，然后刷新获取新的验证码
-        if (res.code == -1) {
-          this.$message.error(res.msg);
-          this.changeImgCode();
-          //   res.code == 1 说明登录成功，然后往sessionStorage里存储一个状态值，提示跳转成功，跳转到主页
-        } else if (res.code == 1) {
-          sessionStorage.setItem("isLogin", true);
-          this.$message({
-            message: "恭喜你，登录成功",
-            type: "success"
-          });
-          this.$router.push("/");
+        if (this.checked == true) {
+          this.setCookie(this.loginMsg.userName, this.loginMsg.password, 7); // 保存期限为7天
+          const res = await reqUserLogin(
+            this.loginMsg.userName,
+            this.loginMsg.password,
+            this.loginMsg.verifycode,
+            this.loginMsg.type
+          );
+          //   res.code == -1 说明验证码错误，然后刷新获取新的验证码
+          if (res.code == -1) {
+            this.$message.error(res.msg);
+            this.changeImgCode();
+            //   res.code == 1 说明登录成功，然后往sessionStorage里存储一个状态值，提示跳转成功，跳转到主页
+          } else if (res.code == 1) {
+            sessionStorage.setItem("isLogin", true);
+            this.$message({
+              message: "恭喜你，登录成功",
+              type: "success"
+            });
+            this.$router.push("/");
+          }
+        } else {
+          this.clearCookie(); // 清空 Cookie
+          const res = await reqUserLogin(
+            this.loginMsg.userName,
+            this.loginMsg.password,
+            this.loginMsg.verifycode,
+            this.loginMsg.type
+          );
+          //   res.code == -1 说明验证码错误，然后刷新获取新的验证码
+          if (res.code == -1) {
+            this.$message.error(res.msg);
+            this.changeImgCode();
+            //   res.code == 1 说明登录成功，然后往sessionStorage里存储一个状态值，提示跳转成功，跳转到主页
+          } else if (res.code == 1) {
+            sessionStorage.setItem("isLogin", true);
+            this.$message({
+              message: "恭喜你，登录成功",
+              type: "success"
+            });
+            this.$router.push("/");
+          }
+        }
+      }
+    },
+    // 按下回车键触发事件
+    addByEnterKey(e) {
+      if (e.keyCode == 13) {
+        this.login();
+      }
+    },
+    // 设置Cookie
+    setCookie(username, password, exdays) {
+      // 用户名, 密码, 保存天数
+      let exdate = new Date(); // 获取时间
+      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays);
+      // 字符串拼接cookie
+      window.document.cookie =
+        "username=" + username + ";path=/;expires=" + exdate.toGMTString();
+      window.document.cookie =
+        "password=" + password + ";path=/;expires=" + exdate.toGMTString();
+    },
+    // 清除Cookie
+    clearCookie() {
+      this.setCookie("", "", -1); // 修改2值都为空，天数为负1天就好了
+    },
+    // 读取Cookie
+    getCookie() {
+      // console.log(document.cookie);
+      if (document.cookie.length > 0) {
+        let arr = document.cookie.split("; "); // 这里显示的格式需要切割一下自己可输出看下
+        for (let i = 0; i < arr.length; i++) {
+          let arr2 = arr[i].split("="); // 再次切割
+          // 判断查找相对应的值
+          if (arr2[0] == "username") {
+            this.loginMsg.userName = arr2[1]; // 保存到保存数据的地方
+          } else if (arr2[0] == "password") {
+            this.loginMsg.password = arr2[1];
+          }
         }
       }
     }
   },
   mounted() {
     this.changeImgCode();
+    this.getCookie();
   }
 };
 </script>
@@ -140,6 +223,7 @@ export default {
   margin-left: 80px;
   height: 50px;
   margin-top: 20px;
+  font-size: 18px;
 }
 .login .verifycode .verifycode_box {
   width: 55%;
@@ -150,5 +234,17 @@ export default {
   width: 40%;
   float: right;
   object-fit: contain;
+}
+.remember {
+  margin-left: -180px;
+}
+#footer {
+  width: 100%;
+  position: fixed;
+  bottom: 20px;
+  color: #fff;
+  left: 50%;
+  margin-left: -50%;
+  text-align: center;
 }
 </style>
