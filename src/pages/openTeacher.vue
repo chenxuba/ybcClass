@@ -236,9 +236,11 @@ export default {
 }
 .openTeacher .school_warp .left {
   color: #333;
+  overflow: hidden;
 }
 .openTeacher .school_warp .right {
   color: #888;
+  overflow: hidden;
 }
 .openTeacher .school_warp .right .icon {
   vertical-align: middle;

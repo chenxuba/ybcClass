@@ -279,6 +279,7 @@ export default {
 }
 .openTeacher .school_warp .left {
   color: #333;
+  overflow: hidden;
 }
 .openTeacher .school_warp .input {
   text-align: right;
