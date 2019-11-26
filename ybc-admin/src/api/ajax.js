@@ -1,14 +1,14 @@
 /*
 ajax 请求函数模块
 */
-import router from "../router/index"
+// import router from "../router/index"
 
 import {
   showLoading,
   hideLoading
 } from '../assets/js/loading';
 import axios from 'axios'
-
+axios.defaults.withCredentials = true; //让ajax携带cookie
 /**Í
  * 向外部暴漏一个函数 ajax
  * @param {*} url 请求路径，默认为空

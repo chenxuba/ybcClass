@@ -1,15 +1,13 @@
 <template>
-  <div class="index">
-      index
-  </div>
+  <div class="index"></div>
 </template>
 
 <script>
 export default {
-
-}
+  methods: {},
+  mounted() {}
+};
 </script>
 
 <style scoped>
-
 </style>

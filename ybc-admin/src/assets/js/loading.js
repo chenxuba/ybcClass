@@ -7,8 +7,7 @@ const startLoading = () => {
     loading = Loading.service({
         lock: true,
         text: 'Loading...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0)',
+        background: 'rgba(0, 0, 0, 0.6)',
         target: document.querySelector('.loading-area')
     });
 };
