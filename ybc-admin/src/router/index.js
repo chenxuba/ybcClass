@@ -1,15 +1,29 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
+const router = new Router({
+  mode: 'history',
+  routes: [{
+      path: "/",
+      redirect: "/index"
+    }, //重定向
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
+      path: "/index",
+      name: "index",
+      component: () =>
+        import('../pages/index.vue'),
+      
+    },
+    
+
   ]
 })
+
+
+// 添加路由守卫
+
+
+
+export default router;
