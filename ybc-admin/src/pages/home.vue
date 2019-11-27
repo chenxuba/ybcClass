@@ -4,38 +4,45 @@
             <h1 class="title">YBC云课堂导师管理后台</h1>
             <p class="lead"> YBC ©️ 版权所有</p>
     </div>-->
-    <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
+    <div id="myChart" :style="{width: '500px', height: '300px'}"></div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {
+      myChart: {}
+    };
   },
   methods: {
     drawLine() {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      this.myChart = this.$echarts.init(document.getElementById("myChart"));
       // 绘制图表
-      myChart.setOption({
+      this.myChart.setOption({
         title: { text: "在Vue中使用echarts" },
         tooltip: {},
         xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+          type: "category",
+          boundaryGap: false,
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         },
-        yAxis: {},
+        yAxis: {
+          type: "value"
+        },
         series: [
           {
-            name: "销量",
-            type: "bar",
-            data: [5, 20, 36, 10, 10, 20]
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: "line",
+             areaStyle: {},
+              smooth: true
           }
         ]
       });
-    },
-    mounted () {
-      this.drawLine();
     }
+  },
+  mounted() {
+    this.drawLine();
   }
 };
 </script>

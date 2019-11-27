@@ -10,7 +10,7 @@
                     <img src="https://www.gravatar.com/avatar/anything?s=200&d=mm" class='avatar' alt="">
                      <div class='welcome'>
                         <p class='name comename'>欢迎</p>
-                         <p class='name avatarname'>admin</p> 
+                         <p class='name avatarname'>{{user}}</p> 
                     </div>
                     <span class='username'>
                         <el-dropdown
@@ -37,7 +37,7 @@ export default {
   name: "head-nav",
   computed: {
     user() {
-      // return this.$store.getters.user;
+      return localStorage.getItem("name");
     }
     
   },

@@ -7,7 +7,7 @@ const router = new Router({
   mode: 'history',
   routes: [{
       path: "/",
-      redirect: "/index"
+      redirect: "/base"
     }, //重定向
     {
       path: "/index",
@@ -18,7 +18,7 @@ const router = new Router({
           path: '',
           component: () => import('../pages/home.vue')
         },
-        { path: '/home', name: 'home', component: () => import('../pages/home.vue') }, 
+        { path: '/home', name: 'home', component: () => import('../pages/base.vue') }, 
         { path: '/base', name: 'base', component: () => import('../pages/base.vue') },
         { path: '/liveRoomSet', name: 'liveRoomSet', component: () => import('../pages/liveRoomSet.vue')},
         { path: '/classHour', name: 'classHour', component: () => import('../pages/classHour.vue')},

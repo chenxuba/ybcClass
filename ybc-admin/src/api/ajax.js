@@ -1,7 +1,7 @@
 /*
 ajax 请求函数模块
 */
-// import router from "../router/index"
+import router from "../router/index"
 
 import {
   showLoading,
@@ -53,7 +53,6 @@ export default function ajax(url = '', data = {}, type = 'GET') {
 }
 /* 请求拦截器（请求之前的操作） */
 axios.interceptors.request.use((req) => {
-  // console.log(req)
   showLoading();
   return req;
 }, err => Promise.reject(err));
@@ -65,6 +64,9 @@ axios.interceptors.response.use((res) => {
   if (code == 1) {
     hideLoading();
     return res;
+  }else if(code == -996){
+    router.push("/fail")
+    hideLoading();
   } else {
     hideLoading();
     return res;

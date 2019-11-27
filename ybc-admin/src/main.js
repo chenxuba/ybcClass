@@ -14,6 +14,9 @@ Vue.prototype.$axios = axios
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts 
 Vue.use(ElementUI);
+// 剪切板
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

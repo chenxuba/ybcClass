@@ -13,4 +13,12 @@ export const reqUserLogin = (login_name ,login_pwd,verifycode,type) => ajax(`${B
  * 导师主页
  */
 export const reqUserHomepage = () => ajax(`${BASE_URL}/api/5dc25807a5689`, {}, 'POST'); 
+/**
+ * 获取直播设备信息
+ */
+export const reqLiveShebeiMsg = () => ajax(`${BASE_URL}/api/5dc1453454d32`, {}, 'POST'); 
+/**
+ * 获取课时资源列表-标题,时间搜索
+ */
+export const reqClassHourList = (title,start_time,end_time,page) => ajax(`${BASE_URL}/api/5dc3e1174d0ba`, {title,start_time,end_time,page}, 'POST'); 
 
