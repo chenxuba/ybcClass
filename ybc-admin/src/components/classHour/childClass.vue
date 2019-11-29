@@ -61,7 +61,12 @@
 
             <!----新增---->
             <div class="tubox">
-              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="hanlddelete(classHourList)"
+              ></el-button>
             </div>
 
             <div class="tubox" style="display: inline-block;">
@@ -75,8 +80,36 @@
 </template>
 
 <script>
+import { reqDeleteClassHour } from "../../api";
 export default {
-  props: ["classHourList"]
+  props: ["classHourList"],
+  methods: {
+    hanlddelete(classHourList) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          const res = reqDeleteClassHour(
+            classHourList[0].id,
+            classHourList[0].type
+          );
+          if (res.code == 1) {
+            this.$message({
+              message: "删除成功",
+              type: "success"
+            });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    }
+  }
 };
 </script>
 

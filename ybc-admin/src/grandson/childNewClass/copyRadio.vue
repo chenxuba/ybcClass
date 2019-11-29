@@ -1,0 +1,315 @@
+<template>
+  <div class="videoLive">
+    <el-form :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+      <!-- 标题 -->
+      <el-form-item label="标题" prop="title" required>
+        <el-input
+          v-model="ruleForm.title"
+          class="input-title"
+          style="width:400px"
+          placeholder="请输入视频标题"
+        ></el-input>
+      </el-form-item>
+       <!-- 开始时间 -->
+      <!-- <el-form-item label="开始时间" required>
+        <el-date-picker v-model="ruleForm.date" prop="date" type="datetime" placeholder="选择日期时间"></el-date-picker>
+      </el-form-item> -->
+      <!-- 封面 -->
+      <el-form-item label="封面" prop="pic">
+        <el-upload
+          class="upload-demo"
+          drag
+          action="#"
+          :auto-upload="false"
+          :on-change="getFile"
+          :show-file-list="false"
+        >
+          <i class="el-icon-upload" v-if="ruleForm.imgUrl == ''"></i>
+          <div class="el-upload__text" v-if="ruleForm.imgUrl==''">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+          <div class="el-upload__text" v-else>
+            <img :src="ruleForm.imgUrl" alt class="img" width="100%" height="100%" />
+          </div>
+          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+      </el-form-item>
+      <!-- 音频文件 -->
+      <el-form-item label="音频文件" required style="padding-right: 65%;">
+        <el-upload
+          class="upload-demo"
+          action="https://api.ybc365.com/api/5dca4fd808929"
+          :on-success="handleSuccess"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          multiple
+          :limit="1"
+          :with-credentials="true"
+        >
+          <div style="display:flex;">
+            <el-input
+              v-model="videoUrl"
+              placeholder="文件地址"
+              size="mini"
+              style="margin-right: 20px;width:300px"
+            ></el-input>
+            <el-button size="mini" type="primary">点击上传</el-button>
+          </div>
+          <div slot="tip" class="el-upload__tip">上传的视频只支持mp3格式</div>
+        </el-upload>
+      </el-form-item>
+      <!-- 简介 -->
+      <el-form-item label="简介" required prop="content">
+        <div class="Editor" style="padding-right:60%;">
+          <Editor ref="froalaEditor" @on-change="changeContent" v-model="ruleForm.content"></Editor>
+        </div>
+      </el-form-item>
+      <!-- 类型，分类 -->
+      <el-form-item label="类型" required>
+        <el-cascader v-model="leixing" :options="options" @change="handleChange"></el-cascader>
+        <span class="span">此选项关系到直播所在的分类，请认真填写</span>
+      </el-form-item>
+      <!-- 收费方式 -->
+      <el-form-item label="收费方式" required>
+        <el-radio-group v-model="ruleForm.radio_fufei">
+          <el-radio :label="3">
+            付费
+            <span v-if="ruleForm.radio_fufei == 3">
+              <input type="text" placeholder="请输入金额" v-model="ruleForm.price" /> 元
+            </span>
+          </el-radio>
+          <el-radio :label="1">学员</el-radio>
+          <el-radio :label="0">公开</el-radio>
+          <el-radio :label="4">
+            密码设置
+            <span v-if="ruleForm.radio_fufei == 4">
+              <input
+                type="password"
+                maxlength="6"
+                placeholder="请输入密码，仅支持6位数字"
+                style="width:200px"
+                v-model="ruleForm.password"
+              />
+            </span>
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- 是否需要试看 -->
+      <el-form-item label="是否需要试看" required v-if="ruleForm.radio_fufei == 3">
+        <el-radio-group v-model="ruleForm.radio_isShikan">
+          <el-radio :label="0">不需要</el-radio>
+          <el-radio :label="1">
+            需要
+            <span v-if="ruleForm.radio_isShikan == 1">
+              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 元
+            </span>
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- 隐私设置 -->
+      <el-form-item label="隐私设置">
+        <el-switch
+          v-model="ruleForm.yinSiSet"
+          active-color="#13ce66"
+          inactive-color="#ccc"
+          active-value="1"
+          inactive-value="0"
+        ></el-switch>
+        <el-popover
+          placement="top-start"
+          width="400"
+          trigger="hover"
+          content="开启后，该直播、视频在平台、个人主页不可见，仅通过您分享链接可见，也不会自动推送给关注粉丝"
+        >
+          <i
+            class="el-icon-warning-outline"
+            slot="reference"
+            style="font-size:15px;vertical-align: middle;"
+          ></i>
+        </el-popover>
+      </el-form-item>
+      <!-- 上架设置，是否立即发布 -->
+      <el-form-item label="上架设置" required>
+        <el-radio-group v-model="ruleForm.shangJiaSet">
+          <el-radio :label="1">立即发布</el-radio>
+          <el-radio :label="2">
+            定时发布
+            <span v-if="ruleForm.shangJiaSet == 2">
+              <el-date-picker v-model="dingShiTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+            </span>
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <!-- 确定，取消 -->
+      <el-form-item>
+        <el-button type="primary" @click="submitForm()">立即创建</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<script>
+import Editor from "../../components/editor";
+import { reqReleaseClassHour } from "../../api";
+export default {
+  data() {
+    return {
+      dingShiTime: new Date(), //定时直播
+      ruleForm: {
+        date:"",
+        title: "", //标题
+        imgUrl: "", //封面图
+        content: "", //直播简介
+        leixing1: "", //一级标签
+        leixing2: "", //二级标签
+        radio_fufei: 1, //收费方式
+        radio_isShikan: "", //是否需要试看
+        yinSiSet: "0", //隐私设置
+        shangJiaSet: 1, //上架设置，是否立即发布
+        price: "", //收费金额
+        password: "", // 密码
+        shikanTime: "" //试看时间
+      },
+      options: [
+        {
+          value: "ziyuan",
+          label: "资源",
+          children: [
+            {
+              value: "axure",
+              label: "Axure Components"
+            },
+            {
+              value: "sketch",
+              label: "Sketch Templates"
+            },
+            {
+              value: "jiaohu",
+              label: "组件交互文档"
+            }
+          ]
+        },
+        {
+          value: "康复训练",
+          label: "康复训练",
+          children: [
+            {
+              value: "感统",
+              label: "感统"
+            },
+            {
+              value: "自闭症",
+              label: "自闭症"
+            },
+            {
+              value: "言语",
+              label: "言语"
+            }
+          ]
+        }
+      ],
+      videoUrl: "",
+      leixing: []
+    };
+  },
+  methods: {
+    async submitForm() {
+      const res = await reqReleaseClassHour(
+        "3",
+        "",
+        this.ruleForm.title,
+        this.ruleForm.date,
+        this.ruleForm.imgUrl,
+        this.videoUrl,
+        "",
+        this.ruleForm.content,
+        this.ruleForm.leixing1,
+        this.ruleForm.leixing2,
+        this.ruleForm.radio_fufei,
+        this.ruleForm.price,
+        this.ruleForm.password,
+        this.ruleForm.radio_isShikan,
+        this.ruleForm.shikanTime,
+        "1", //开启课时页
+        this.ruleForm.yinSiSet,
+        "0", //不关联售卖
+        "1", //强制竖屏
+        this.ruleForm.shangJiaSet,
+        this.dingShiTime
+      );
+      console.log(res);
+      if (res.code == 1) {
+        this.$message({
+          message: "课时发布成功",
+          type: "success"
+        });
+      } else if (res.code == -995) {
+        this.$message.error(res.msg);
+      }
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    changeContent(html) {
+      this.ruleForm.content = html;
+    },
+    getFile(file) {
+      this.getBase64(file.raw).then(res => {
+        console.log(res);
+        this.ruleForm.imgUrl = res;
+      });
+    },
+    getBase64(file) {
+      return new Promise(function(resolve, reject) {
+        let reader = new FileReader();
+        let imgResult = "";
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+          imgResult = reader.result;
+        };
+        reader.onerror = function(error) {
+          reject(error);
+        };
+        reader.onloadend = function() {
+          resolve(imgResult);
+        };
+      });
+    },
+    handleChange(value) {
+      console.log(value);
+      this.leixing = value;
+      this.ruleForm.leixing1 = value[0];
+      this.ruleForm.leixing2 = value[1];
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.videoUrl = "";
+    },
+    handleSuccess(file) {
+      let str;
+      str = file.link.split("com/");
+      this.videoUrl = str[1];
+      console.log(this.videoUrl);
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    
+  },
+  components: {
+    Editor
+  }
+};
+</script>
+
+<style scoped>
+.span {
+  font-size: 12px;
+  color: #9e9e9e;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+</style>

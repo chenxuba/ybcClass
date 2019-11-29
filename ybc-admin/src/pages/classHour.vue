@@ -12,7 +12,7 @@
           <span slot="label">
             <i class="el-icon-view"></i>新建课时
           </span>
-          sss
+          <childNewClass></childNewClass>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -22,6 +22,7 @@
 <script>
 import { reqClassHourList } from "../api";
 import childClass from "../components/classHour/childClass";
+import childNewClass from "../components/classHour/childNewClass";
 export default {
   data() {
     return {
@@ -29,16 +30,17 @@ export default {
     };
   },
   components: {
-    childClass
+    childClass,
+    childNewClass
   },
   methods: {
     async getClassHourList() {
       const res = await reqClassHourList();
-      console.log(res);
       if (res.code == 1) {
         this.classHourList = res.data.res_list;
       }
-    }
+    },
+    
   },
   mounted() {
     this.getClassHourList();
