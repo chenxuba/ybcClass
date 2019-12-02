@@ -136,7 +136,13 @@
           <el-radio :label="2">
             定时发布
             <span v-if="ruleForm.shangJiaSet == 2">
-              <el-date-picker v-model="dingShiTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+              <el-date-picker
+                v-model="dingShiTime"
+                type="datetime"
+                placeholder="选择日期时间"
+                format="yyyy 年 MM 月 dd 日 HH 时 mm 分 ss 秒"
+                value-format="yyyy-MM-dd HH:mm:ss"
+              ></el-date-picker>
             </span>
           </el-radio>
         </el-radio-group>
@@ -208,9 +214,14 @@ export default {
           message: "课时发布成功",
           type: "success"
         });
+        this.$refs.ruleForm.resetFields();
+        this.ruleForm.content = "";
+        this.ruleForm.imgUrl = "";
+        this.videoUrl = "";
+
         // 发布后触发自定义事件shuaxinList，父组件childNewClass
-        this.$emit("shuaxinList")
-      } else if (res.code == -995) {
+        this.$emit("shuaxinList");
+      } else if (res.code == -995 || res.code == -998) {
         this.$message.error(res.msg);
       }
     },
@@ -258,7 +269,7 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    },
+    }
   },
   components: {
     Editor

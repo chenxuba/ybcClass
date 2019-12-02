@@ -23,7 +23,7 @@
         <span slot="label">
           <i class="el-icon-service"></i> 音频
         </span>
-        <copyRadio></copyRadio>
+        <copyRadio :menuLabel="menuLabel" @RadioshuaxinList="shuaxinLists"></copyRadio>
       </el-tab-pane>
     </el-tabs>
   </div>

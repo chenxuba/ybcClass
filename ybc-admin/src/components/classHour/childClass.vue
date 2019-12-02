@@ -36,6 +36,7 @@
                   <span class="res_needpay" v-if="item.needpay == 3">收费</span>
                   <span class="res_needpay" v-if="item.needpay == 4">密码</span>
                   <span class="res_type" v-if="item.type == 3">视频</span>
+                  <span class="res_type" v-if="item.type == 10">音频</span>
                 </p>
                 <p
                   class="details_data"
@@ -57,6 +58,7 @@
           </td>
           <td>{{item.label1}} &gt; {{item.label2}}</td>
           <td v-if="item.status == 1">已发布</td>
+          <td v-if="item.status == 5">待发布</td>
           <td>{{item.intime}}</td>
           <td>
             <div class="tubox">
