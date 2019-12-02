@@ -102,7 +102,7 @@
           <el-radio :label="1">
             需要
             <span v-if="ruleForm.radio_isShikan == 1">
-              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 元
+              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 分钟
             </span>
           </el-radio>
         </el-radio-group>
@@ -208,7 +208,8 @@ export default {
           message: "课时发布成功",
           type: "success"
         });
-        this.$router.go(0);
+        // 发布后触发自定义事件shuaxinList，父组件childNewClass
+        this.$emit("shuaxinList")
       } else if (res.code == -995) {
         this.$message.error(res.msg);
       }

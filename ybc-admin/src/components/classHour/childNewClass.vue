@@ -17,7 +17,7 @@
         <span slot="label">
           <i class="el-icon-orange"></i> 视频
         </span>
-        <copyVideo :menuLabel="menuLabel"></copyVideo>
+        <copyVideo :menuLabel="menuLabel" @shuaxinList="shuaxinLists"></copyVideo>
       </el-tab-pane>
       <el-tab-pane name="audio">
         <span slot="label">
@@ -49,6 +49,10 @@ export default {
       if (res.code == 1) {
         this.menuLabel = res.data;
       }
+    },
+    // 触发自定义事件shuaxinListss，并把“first”当作参数传过去
+    shuaxinLists(){
+      this.$emit("shuaxinListss",'first')
     }
   },
   mounted() {

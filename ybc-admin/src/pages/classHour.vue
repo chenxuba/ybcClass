@@ -1,18 +1,18 @@
 <template>
   <div class="classHour">
     <div class="tabs">
-      <el-tabs type="card">
-        <el-tab-pane>
+      <el-tabs type="card" v-model="activeName">
+        <el-tab-pane name="first">
           <span slot="label">
             <i class="el-icon-view"></i> 课时
           </span>
-          <childClass :classHourList="classHourList"></childClass>
+          <childClass :classHourList="classHourList" @shuxinList="shuxinLists"></childClass>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="second">
           <span slot="label">
             <i class="el-icon-view"></i>新建课时
           </span>
-          <childNewClass></childNewClass>
+          <childNewClass @shuaxinListss="shuaxinListsss"></childNewClass>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -26,7 +26,8 @@ import childNewClass from "../components/classHour/childNewClass";
 export default {
   data() {
     return {
-      classHourList: ""
+      classHourList: "",
+      activeName: "first"
     };
   },
   components: {
@@ -34,13 +35,23 @@ export default {
     childNewClass
   },
   methods: {
+    // 获取课时列表
     async getClassHourList() {
       const res = await reqClassHourList();
       if (res.code == 1) {
         this.classHourList = res.data.res_list;
       }
     },
-    
+    // 自定义事件，接收子组件的参数“first”，切换tab页
+    shuaxinListsss(item) {
+      this.getClassHourList();
+      this.activeName = item;
+    },
+    shuxinLists(){
+      console.log(111);
+      
+      this.getClassHourList();
+    }
   },
   mounted() {
     this.getClassHourList();
@@ -49,4 +60,7 @@ export default {
 </script>
 
 <style scoped>
+.classHour {
+  min-width: 1200px;
+}
 </style>

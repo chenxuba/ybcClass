@@ -12,7 +12,7 @@
           <th width="8%" style="min-width: 380px;">操作</th>
         </tr>
       </thead>
-      <tbody id="contact">
+      <tbody id="contact" v-if="classHourList != ''">
         <tr class="WSY_body" v-for="(item,index) in classHourList" :key="index">
           <td>
             <input
@@ -32,10 +32,14 @@
 
                 <p class="details_data">
                   <span class="res_needpay" v-if="item.needpay == 0">公开</span>
+                  <span class="res_needpay" v-if="item.needpay == 1">学员</span>
+                  <span class="res_needpay" v-if="item.needpay == 3">收费</span>
+                  <span class="res_needpay" v-if="item.needpay == 4">密码</span>
                   <span class="res_type" v-if="item.type == 3">视频</span>
                 </p>
                 <p
                   class="details_data"
+                  v-if="item.course_name"
                   style="-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
                 >课程：{{item.course_name}}</p>
               </div>
@@ -75,6 +79,9 @@
           </td>
         </tr>
       </tbody>
+      <div v-else>
+        <img src="../../../static/img/zwsj.jpeg" alt="" class="zwsj">
+      </div>
     </table>
   </div>
 </template>
@@ -90,16 +97,19 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       })
-        .then(() => {
-          const res = reqDeleteClassHour(
+        .then( async () => {
+          const res = await reqDeleteClassHour(
             classHourList[0].id,
             classHourList[0].type
           );
+          console.log(res);
+          
           if (res.code == 1) {
             this.$message({
-              message: "删除成功",
+              message: "删除成功了",
               type: "success"
             });
+            this.$emit("shuxinList")
           }
         })
         .catch(() => {
@@ -107,6 +117,7 @@ export default {
             type: "info",
             message: "已取消删除"
           });
+
         });
     }
   }
@@ -235,5 +246,13 @@ table {
   display: inline-block;
   text-align: center;
   width: 70px;
+}
+.zwsj{
+position: fixed;
+top: 50%;
+left: 0;
+right: 0;
+bottom: 0;
+margin: auto;
 }
 </style>
