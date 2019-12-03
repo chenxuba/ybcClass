@@ -10,9 +10,17 @@
           placeholder="请输入视频标题"
         ></el-input>
       </el-form-item>
-       <!-- 开始时间 -->
+      <!-- 开始时间 -->
       <el-form-item label="开始时间" required>
-        <el-date-picker v-model="ruleForm.date" prop="date" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        <el-date-picker
+          v-model="ruleForm.date"
+          prop="date"
+          type="datetime"
+          placeholder="选择日期时间"
+          format="yyyy-MM-dd HH:mm:ss "
+          value-format="yyyy-MM-dd HH:mm:ss"
+          :picker-options="pickerOptions"
+        ></el-date-picker>
       </el-form-item>
       <!-- 封面 -->
       <el-form-item label="封面" prop="pic">
@@ -58,7 +66,7 @@
           </div>
           <div slot="tip" class="el-upload__tip">上传的视频只支持mp4格式</div>
         </el-upload>
-      </el-form-item> -->
+      </el-form-item>-->
       <!-- 简介 -->
       <el-form-item label="简介" required prop="content">
         <div class="Editor" style="padding-right:60%;">
@@ -67,7 +75,7 @@
       </el-form-item>
       <!-- 类型，分类 -->
       <el-form-item label="类型" required>
-        <el-cascader v-model="leixing" :options="options" @change="handleChange"></el-cascader>
+        <el-cascader v-model="leixing" :options="menuLabel" @change="handleChange"></el-cascader>
         <span class="span">此选项关系到直播所在的分类，请认真填写</span>
       </el-form-item>
       <!-- 收费方式 -->
@@ -136,7 +144,14 @@
           <el-radio :label="2">
             定时发布
             <span v-if="ruleForm.shangJiaSet == 2">
-              <el-date-picker v-model="dingShiTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+              <el-date-picker
+                v-model="dingShiTime"
+                type="datetime"
+                placeholder="选择日期时间"
+                format="yyyy-MM-dd HH:mm:ss "
+                value-format="yyyy-MM-dd HH:mm:ss"
+                :picker-options="pickerOptions"
+              ></el-date-picker>
             </span>
           </el-radio>
         </el-radio-group>
@@ -154,75 +169,44 @@
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
+  props: ["menuLabel"],
   data() {
     return {
       dingShiTime: new Date(), //定时直播
       ruleForm: {
-        date:"",
+        date: "",
         title: "", //标题
         imgUrl: "", //封面图
         content: "", //直播简介
         leixing1: "", //一级标签
         leixing2: "", //二级标签
         radio_fufei: 1, //收费方式
-        radio_isShikan: "", //是否需要试看
+        radio_isShikan: 0, //是否需要试看
         yinSiSet: "0", //隐私设置
         shangJiaSet: 1, //上架设置，是否立即发布
         price: "", //收费金额
         password: "", // 密码
         shikanTime: "" //试看时间
       },
-      options: [
-        {
-          value: "ziyuan",
-          label: "资源",
-          children: [
-            {
-              value: "axure",
-              label: "Axure Components"
-            },
-            {
-              value: "sketch",
-              label: "Sketch Templates"
-            },
-            {
-              value: "jiaohu",
-              label: "组件交互文档"
-            }
-          ]
-        },
-        {
-          value: "康复训练",
-          label: "康复训练",
-          children: [
-            {
-              value: "感统",
-              label: "感统"
-            },
-            {
-              value: "自闭症",
-              label: "自闭症"
-            },
-            {
-              value: "言语",
-              label: "言语"
-            }
-          ]
-        }
-      ],
       videoUrl: "",
-      leixing: []
+      leixing: [],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7;
+        },
+        selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
+      }
     };
   },
   methods: {
     async submitForm() {
       const res = await reqReleaseClassHour(
-        "3",
+        "1",
         "",
         this.ruleForm.title,
         this.ruleForm.date,
         this.ruleForm.imgUrl,
-        this.videoUrl,
+        "",
         "",
         this.ruleForm.content,
         this.ruleForm.leixing1,
@@ -245,6 +229,7 @@ export default {
           message: "课时发布成功",
           type: "success"
         });
+        this.$emit("videoLiveshuaxin")
       } else if (res.code == -995) {
         this.$message.error(res.msg);
       }
@@ -295,8 +280,7 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    
+    }
   },
   components: {
     Editor

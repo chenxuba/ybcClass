@@ -32,9 +32,33 @@
 
                 <p class="details_data">
                   <span class="res_needpay" v-if="item.needpay == 0">公开</span>
-                  <span class="res_needpay" v-if="item.needpay == 1">学员</span>
+                  <span class="res_needpay" v-if="item.needpay == 1">公开</span>
+                  <span class="res_needpay" v-if="item.needpay == 2">学员</span>
                   <span class="res_needpay" v-if="item.needpay == 3">收费</span>
                   <span class="res_needpay" v-if="item.needpay == 4">密码</span>
+                  <span class="res_type" v-if="item.type == 2">视频直播</span>
+                  <span class="res_type" v-if="item.type == 4">直播回放</span>
+                  <span class="res_type" v-if="item.type == 8">音频直播</span>
+                  <span
+                    class="res_needpay"
+                    v-if="(item.type == 2 && item.live_status == 0) || (item.type == 8 && item.live_status == 0)"
+                  >预告</span>
+                  <span
+                    class="res_needpay"
+                    v-if="(item.type == 2 && item.live_status == 1) || (item.type == 8 && item.live_status == 1)"
+                  >直播中</span>
+                  <span
+                    class="res_needpay"
+                    v-if="(item.type == 2 && item.live_status == 6) || (item.type == 8 && item.live_status == 6)"
+                  >暂停中</span>
+                  <span
+                    class="res_needpay"
+                    v-if="(item.type == 2 && item.live_status == 5) || (item.type == 8 && item.live_status == 5)"
+                  >暂停中</span>
+                  <span
+                    class="res_needpay"
+                    v-if="(item.type == 2 && item.live_status == 2) || (item.type == 8 && item.live_status == 2)"
+                  >暂停中</span>
                   <span class="res_type" v-if="item.type == 3">视频</span>
                   <span class="res_type" v-if="item.type == 10">音频</span>
                 </p>
@@ -61,57 +85,93 @@
           <td v-if="item.status == 5">待发布</td>
           <td>{{item.intime}}</td>
           <td>
+            <!-- 编辑 -->
             <div class="tubox">
-              <el-button type="primary" icon="el-icon-edit" circle></el-button>
+              <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                <el-button type="primary" icon="el-icon-edit" circle @click="hanldedit(item)"></el-button>
+              </el-tooltip>
             </div>
-
-            <!----新增---->
+            <!----删除---->
             <div class="tubox">
-              <el-button
-                type="danger"
-                icon="el-icon-delete"
-                circle
-                @click="hanlddelete(classHourList)"
-              ></el-button>
+              <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                <el-button type="danger" icon="el-icon-delete" circle @click="hanlddelete(item)"></el-button>
+              </el-tooltip>
             </div>
-
+            <!-- 上传ppt -->
             <div class="tubox" style="display: inline-block;">
-              <el-button type="warning" icon="el-icon-folder-opened" circle></el-button>
+              <el-tooltip class="item" effect="dark" content="上传ppt" placement="top">
+                <el-button type="warning" icon="el-icon-folder-opened" circle></el-button>
+              </el-tooltip>
+            </div>
+            <!-- 开始直播 -->
+            <div
+              class="tubox"
+              style="display: inline-block;"
+              v-if="item.type == 2 || item.type == 8"
+            >
+              <el-tooltip class="item" effect="dark" content="开始直播" placement="top">
+                <el-button
+                  type="success"
+                  icon="el-icon-caret-right"
+                  circle
+                  @click="startLive(item,'1')"
+                ></el-button>
+              </el-tooltip>
+            </div>
+            <!-- 进入直播间 -->
+            <div
+              class="tubox"
+              style="display: inline-block;"
+              v-if="item.type == 2 || item.type == 8"
+            >
+              <el-tooltip class="item" effect="dark" content="进入直播间" placement="top">
+                <el-button type="danger" icon="el-icon-video-camera" circle></el-button>
+              </el-tooltip>
+            </div>
+            <!-- 结束直播 -->
+            <div
+              class="tubox"
+              style="display: inline-block;"
+              v-if="item.type == 2 || item.type == 8"
+            >
+              <el-tooltip class="item" effect="dark" content="结束直播" placement="top">
+                <el-button type="info" icon="el-icon-close" circle @click="startLive(item,'2')"></el-button>
+              </el-tooltip>
             </div>
           </td>
         </tr>
       </tbody>
       <div v-else>
-        <img src="../../../static/img/zwsj.jpeg" alt="" class="zwsj">
+        <img src="../../../static/img/zwsj.png" alt class="zwsj" />
       </div>
     </table>
   </div>
 </template>
 
 <script>
-import { reqDeleteClassHour } from "../../api";
+import { reqDeleteClassHour, reqStartLive } from "../../api";
 export default {
   props: ["classHourList"],
   methods: {
-    hanlddelete(classHourList) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+    hanlddelete(item) {
+      console.log(item);
+      this.$confirm("此操作将删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
-        .then( async () => {
-          const res = await reqDeleteClassHour(
-            classHourList[0].id,
-            classHourList[0].type
-          );
+        .then(async () => {
+          const res = await reqDeleteClassHour(item.id, item.type);
           console.log(res);
-          
+
           if (res.code == 1) {
             this.$message({
               message: "删除成功了",
               type: "success"
             });
-            this.$emit("shuxinList")
+            this.$emit("shuxinList");
+          } else if (res.code == -1) {
+            this.$message.error(res.msg);
           }
         })
         .catch(() => {
@@ -119,8 +179,27 @@ export default {
             type: "info",
             message: "已取消删除"
           });
-
         });
+    },
+    // 开始直播
+    async startLive(item, type) {
+      const res = await reqStartLive(type, item.id);
+      console.log(res);
+      if (res.code == 1) {
+        this.$emit("shuxinList");
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
+    // 编辑
+    hanldedit(item) {
+      // 说明是录播视频
+      if (item.type == 3) {
+        this.$emit("changActiveName",item)
+        // 说明是录播音频
+      } else if (item.type == 10) {
+        // 说明是
+      }
     }
   }
 };
@@ -204,7 +283,7 @@ table {
 .details_data {
   height: 20px;
   vertical-align: middle;
-  margin: 16px 0 0 0;
+  margin: 16px -6px 0 0;
 }
 .details_data span {
   margin-right: 5px;
@@ -227,7 +306,6 @@ table {
 .tubox {
   display: inline-block;
   overflow: hidden;
-  border-radius: 18px;
 }
 .tubox {
   cursor: pointer;
@@ -249,12 +327,12 @@ table {
   text-align: center;
   width: 70px;
 }
-.zwsj{
-position: fixed;
-top: 50%;
-left: 0;
-right: 0;
-bottom: 0;
-margin: auto;
+.zwsj {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
 }
 </style>

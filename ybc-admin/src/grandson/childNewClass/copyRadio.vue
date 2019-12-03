@@ -7,7 +7,7 @@
           v-model="ruleForm.title"
           class="input-title"
           style="width:400px"
-          placeholder="请输入视频标题"
+          placeholder="请输入标题"
         ></el-input>
       </el-form-item>
       <!-- 开始时间 -->
@@ -80,7 +80,7 @@
               <input type="text" placeholder="请输入金额" v-model="ruleForm.price" /> 元
             </span>
           </el-radio>
-          <el-radio :label="1">学员</el-radio>
+          <el-radio :label="2">学员</el-radio>
           <el-radio :label="0">公开</el-radio>
           <el-radio :label="4">
             密码设置
@@ -174,7 +174,7 @@ export default {
         content: "", //简介
         leixing1: "", //一级标签
         leixing2: "", //二级标签
-        radio_fufei: 1, //收费方式
+        radio_fufei: 2, //收费方式
         radio_isShikan: 0, //是否需要试看，默认不试看
         yinSiSet: "0", //隐私设置
         shangJiaSet: 1, //上架设置，是否立即发布

@@ -1,5 +1,6 @@
 <template>
   <div class="videoLive">
+    {{ruleForm}}
     <el-form :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <!-- 标题 -->
       <el-form-item label="标题" prop="title" required>
@@ -49,7 +50,7 @@
         >
           <div style="display:flex;">
             <el-input
-              v-model="videoUrl"
+              v-model="ruleForm.videoUrl"
               placeholder="文件地址"
               size="mini"
               style="margin-right: 20px;width:300px"
@@ -160,26 +161,26 @@
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
-  props: ["menuLabel"],
+  props: ["menuLabel","ruleForm"],
   data() {
     return {
-      dingShiTime: new Date(), //定时直播
-      ruleForm: {
-        date: "", //直播开始时间
-        title: "", //标题
-        imgUrl: "", //封面图
-        content: "", //直播简介
-        leixing1: "", //一级标签
-        leixing2: "", //二级标签
-        radio_fufei: 1, //收费方式
-        radio_isShikan: "", //是否需要试看
-        yinSiSet: "0", //隐私设置
-        shangJiaSet: 1, //上架设置，是否立即发布
-        price: "", //收费金额
-        password: "", // 密码
-        shikanTime: "" //试看时间
-      },
-      videoUrl: "", //视频文件url
+      // dingShiTime: new Date(), //定时直播
+      // ruleForm: {
+      //   date: "", //直播开始时间
+      //   title: "", //标题
+      //   imgUrl: "", //封面图
+      //   content: "", //直播简介
+      //   leixing1: "", //一级标签
+      //   leixing2: "", //二级标签
+      //   radio_fufei: 1, //收费方式
+      //   radio_isShikan: 0, //是否需要试看,默认不需要
+      //   yinSiSet: "0", //隐私设置
+      //   shangJiaSet: 1, //上架设置，是否立即发布
+      //   price: "", //收费金额
+      //   password: "", // 密码
+      //   shikanTime: "" ,//试看时间
+      //   videoUrl:""
+      // },
       leixing: [] //
     };
   },
@@ -191,7 +192,7 @@ export default {
         this.ruleForm.title,
         this.ruleForm.date,
         this.ruleForm.imgUrl,
-        this.videoUrl,
+        this.ruleForm.videoUrl,
         "",
         this.ruleForm.content,
         this.ruleForm.leixing1,
@@ -206,7 +207,7 @@ export default {
         "0", //不关联售卖
         "1", //强制竖屏
         this.ruleForm.shangJiaSet,
-        this.dingShiTime
+        this.ruleForm.dingShiTime
       );
       console.log(res);
       if (res.code == 1) {
@@ -217,7 +218,7 @@ export default {
         this.$refs.ruleForm.resetFields();
         this.ruleForm.content = "";
         this.ruleForm.imgUrl = "";
-        this.videoUrl = "";
+        this.ruleForm.videoUrl = "";
 
         // 发布后触发自定义事件shuaxinList，父组件childNewClass
         this.$emit("shuaxinList");
@@ -229,7 +230,9 @@ export default {
       this.$refs[formName].resetFields();
     },
     changeContent(html) {
-      this.ruleForm.content = html;
+      console.log(html);
+      this.ruleForm.content = html
+      this.$refs.froalaEditor.setHtml(html)
     },
     getFile(file) {
       this.getBase64(file.raw).then(res => {
@@ -261,11 +264,11 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
-      this.videoUrl = "";
+      this.ruleForm.videoUrl = "";
     },
     handleSuccess(file) {
-      this.videoUrl = file.link;
-      console.log(this.videoUrl);
+      this.ruleForm.videoUrl = file.link;
+      console.log(this.ruleForm.videoUrl);
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
@@ -273,6 +276,9 @@ export default {
   },
   components: {
     Editor
+  },
+  watch: {
+    
   }
 };
 </script>

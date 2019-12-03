@@ -17,6 +17,9 @@ Vue.use(ElementUI);
 // 剪切板
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
+// 粒子特效
+import VueParticles from 'vue-particles'  
+Vue.use(VueParticles)  
 //-------------------- 富文本编辑配置区 --------------------------------------------------//
 
 import jQuery from 'jquery'

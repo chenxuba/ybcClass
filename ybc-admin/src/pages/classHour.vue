@@ -6,13 +6,13 @@
           <span slot="label">
             <i class="el-icon-view"></i> 课时
           </span>
-          <childClass :classHourList="classHourList" @shuxinList="shuxinLists"></childClass>
+          <childClass :classHourList="classHourList" @shuxinList="shuxinLists" @changActiveName="changActiveNames"></childClass>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
             <i class="el-icon-view"></i>新建课时
           </span>
-          <childNewClass @shuaxinListss="shuaxinListsss"></childNewClass>
+          <childNewClass @shuaxinListss="shuaxinListsss" ref="childNewClass"></childNewClass>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -51,6 +51,11 @@ export default {
       console.log(111);
       
       this.getClassHourList();
+    },
+    changActiveNames(item){
+      this.activeName = 'second'
+      this.$refs.childNewClass.activeName = 'video'
+      this.$refs.childNewClass.getEditMsg(item)
     }
   },
   mounted() {
@@ -61,6 +66,6 @@ export default {
 
 <style scoped>
 .classHour {
-  min-width: 1200px;
+  min-width: 1350px;
 }
 </style>

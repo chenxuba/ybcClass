@@ -33,3 +33,11 @@ export const reqMenuLabel = (pros_type) => ajax(`${BASE_URL}/api/5de076cd343cc`,
  * 课时资源删除
  */
 export const reqDeleteClassHour = (id,type) => ajax(`${BASE_URL}/api/5dccc7d463277`, {id,type}, 'POST');
+/**
+ * 开始/结束视频直播
+ */
+export const reqStartLive = (type,live_id) => ajax(`${BASE_URL}/api/5de5d919b1ea4`, {type,live_id}, 'POST');
+/**
+ * 课时资源编辑
+ */
+export const reqResourceEdit = (res_id) => ajax(`${BASE_URL}/api/5dca854b00572`, {res_id}, 'POST');
