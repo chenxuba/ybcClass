@@ -41,3 +41,7 @@ export const reqStartLive = (type,live_id) => ajax(`${BASE_URL}/api/5de5d919b1ea
  * 课时资源编辑
  */
 export const reqResourceEdit = (res_id) => ajax(`${BASE_URL}/api/5dca854b00572`, {res_id}, 'POST');
+/**
+ * 获取课程列表
+ */
+export const reqCourseList = (title,start_time,end_time) => ajax(`${BASE_URL}/api/5dcce8d430b73`, {title,start_time,end_time}, 'POST');

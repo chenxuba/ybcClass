@@ -7,13 +7,13 @@
             <i class="el-icon-view"></i> 课程
           </span>
           <childCourse
-            :classHourList="classHourList"
+            :courseList="courseList"
           ></childCourse>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
             <i class="el-icon-view"></i>
-            {{tabsNmae}}
+            {{tabsName}}
           </span>
           <childNewCourse></childNewCourse>
         </el-tab-pane>
@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import { reqClassHourList } from "../api";
+import { reqCourseList } from "../api";
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
 export default {
   data() {
     return {
-      classHourList: "",
+      courseList: "",
       activeName: "first",
-      tabsNmae: "新建课程"
+      tabsName: "新建课程"
     };
   },
   components: {
@@ -41,9 +41,10 @@ export default {
   methods: {
     // 获取课程列表
     async getCourseList() {
-      const res = await reqClassHourList();
+      const res = await reqCourseList();
+      console.log(res);
       if (res.code == 1) {
-        this.classHourList = res.data.res_list;
+        this.courseList = res.data.course_list;
       }
     },
   },
