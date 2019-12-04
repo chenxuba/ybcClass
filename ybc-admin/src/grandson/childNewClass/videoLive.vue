@@ -75,7 +75,7 @@
       </el-form-item>
       <!-- 类型，分类 -->
       <el-form-item label="类型" required>
-        <el-cascader v-model="leixing" :options="menuLabel" @change="handleChange"></el-cascader>
+        <el-cascader v-model="ruleForm.leixing" :options="menuLabel" @change="handleChange"></el-cascader>
         <span class="span">此选项关系到直播所在的分类，请认真填写</span>
       </el-form-item>
       <!-- 收费方式 -->
@@ -145,7 +145,7 @@
             定时发布
             <span v-if="ruleForm.shangJiaSet == 2">
               <el-date-picker
-                v-model="dingShiTime"
+                v-model="ruleForm.dingShiTime"
                 type="datetime"
                 placeholder="选择日期时间"
                 format="yyyy-MM-dd HH:mm:ss "
@@ -169,27 +169,9 @@
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
-  props: ["menuLabel"],
+  props: ["menuLabel", "ruleForm"],
   data() {
     return {
-      dingShiTime: new Date(), //定时直播
-      ruleForm: {
-        date: "",
-        title: "", //标题
-        imgUrl: "", //封面图
-        content: "", //直播简介
-        leixing1: "", //一级标签
-        leixing2: "", //二级标签
-        radio_fufei: 1, //收费方式
-        radio_isShikan: 0, //是否需要试看
-        yinSiSet: "0", //隐私设置
-        shangJiaSet: 1, //上架设置，是否立即发布
-        price: "", //收费金额
-        password: "", // 密码
-        shikanTime: "" //试看时间
-      },
-      videoUrl: "",
-      leixing: [],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 8.64e7;
@@ -202,7 +184,7 @@ export default {
     async submitForm() {
       const res = await reqReleaseClassHour(
         "1",
-        "",
+        this.ruleForm.res_id,
         this.ruleForm.title,
         this.ruleForm.date,
         this.ruleForm.imgUrl,
@@ -221,7 +203,7 @@ export default {
         "0", //不关联售卖
         "1", //强制竖屏
         this.ruleForm.shangJiaSet,
-        this.dingShiTime
+        this.ruleForm.dingShiTime
       );
       console.log(res);
       if (res.code == 1) {
@@ -229,7 +211,7 @@ export default {
           message: "课时发布成功",
           type: "success"
         });
-        this.$emit("videoLiveshuaxin")
+        this.$emit("videoLiveshuaxin");
       } else if (res.code == -995) {
         this.$message.error(res.msg);
       }
@@ -239,6 +221,7 @@ export default {
     },
     changeContent(html) {
       this.ruleForm.content = html;
+      this.$refs.froalaEditor.setHtml(html);
     },
     getFile(file) {
       this.getBase64(file.raw).then(res => {
@@ -264,7 +247,6 @@ export default {
     },
     handleChange(value) {
       console.log(value);
-      this.leixing = value;
       this.ruleForm.leixing1 = value[0];
       this.ruleForm.leixing2 = value[1];
     },

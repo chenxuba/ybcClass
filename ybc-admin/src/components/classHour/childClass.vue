@@ -195,10 +195,14 @@ export default {
     hanldedit(item) {
       // 说明是录播视频
       if (item.type == 3) {
-        this.$emit("changActiveName",item)
+        this.$emit("changActiveName", item, "video");
         // 说明是录播音频
       } else if (item.type == 10) {
-        // 说明是
+        this.$emit("changActiveName", item, "audio");
+      } else if (item.type == 2) {
+        this.$emit("changActiveName", item, "videoLive");
+      } else if (item.type == 8) {
+        this.$emit("changActiveName", item, "audioLive");
       }
     }
   }

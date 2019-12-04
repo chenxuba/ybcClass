@@ -5,13 +5,23 @@
         <span slot="label">
           <i class="el-icon-video-camera-solid"></i> 视频直播
         </span>
-        <videoLive :menuLabel="menuLabel" @videoLiveshuaxin="shuaxinLists"></videoLive>
+        <videoLive
+          :menuLabel="menuLabel"
+          @videoLiveshuaxin="shuaxinLists"
+          ref="childvideoLive"
+          :ruleForm="ruleForm"
+        ></videoLive>
       </el-tab-pane>
       <el-tab-pane name="audioLive">
         <span slot="label">
           <i class="el-icon-headset"></i> 电台直播
         </span>
-        <audioLive :menuLabel="menuLabel"></audioLive>
+        <audioLive
+          :menuLabel="menuLabel"
+          @audioLiveshuaxin="shuaxinLists"
+          ref="childaudioLive"
+          :ruleForm="ruleForm"
+        ></audioLive>
       </el-tab-pane>
       <el-tab-pane name="video">
         <span slot="label">
@@ -28,7 +38,12 @@
         <span slot="label">
           <i class="el-icon-service"></i> 音频
         </span>
-        <copyRadio :menuLabel="menuLabel" @RadioshuaxinList="shuaxinLists"></copyRadio>
+        <copyRadio
+          :menuLabel="menuLabel"
+          @RadioshuaxinList="shuaxinLists"
+          :ruleForm="ruleForm"
+          ref="childCopyRadio"
+        ></copyRadio>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -62,6 +77,8 @@ export default {
         shikanTime: "", //试看时间
         videoUrl: "",
         dingShiTime: new Date(), //定时直播
+        res_id: "",
+        leixing: []
       }
     };
   },
@@ -82,17 +99,24 @@ export default {
       console.log(res);
       if (res.code == 1) {
         this.ruleForm.title = res.data.title;
+        this.ruleForm.date = res.data.starttime;
         this.ruleForm.imgUrl = res.data.cover;
         this.ruleForm.videoUrl = res.data.videourl;
         this.$refs.childCopyVideo.changeContent(res.data.introduce);
+        this.$refs.childCopyRadio.changeContent(res.data.introduce);
+        this.$refs.childvideoLive.changeContent(res.data.introduce);
+        this.$refs.childaudioLive.changeContent(res.data.introduce);
         this.ruleForm.leixing1 = res.data.label1;
         this.ruleForm.leixing2 = res.data.label2;
-        this.ruleForm.radio_fufei = res.data.needpay;
-        this.ruleForm.radio_isShikan = res.data.cantry;
+        this.ruleForm.radio_fufei = Number(res.data.needpay);
+        this.ruleForm.radio_isShikan = Number(res.data.cantry);
         this.ruleForm.shikanTime = res.data.cantrytime;
-        this.ruleForm.yinSiSet = res.data.is_open_privacy
-        this.ruleForm.shangJiaSet = res.data.is_specify
-        this.ruleForm.dingShiTime = res.data.release_time
+        this.ruleForm.yinSiSet = res.data.is_privacy;
+        this.ruleForm.shangJiaSet = Number(res.data.is_specify);
+        this.ruleForm.dingShiTime = res.data.release_time;
+        this.ruleForm.res_id = res.data.res_id;
+        this.ruleForm.leixing = [res.data.label1, res.data.label2];
+        this.ruleForm.price = res.data.price
       }
     }
   },

@@ -52,9 +52,9 @@ export default {
       
       this.getClassHourList();
     },
-    changActiveNames(item){
+    changActiveNames(item,tabs){
       this.activeName = 'second'
-      this.$refs.childNewClass.activeName = 'video'
+      this.$refs.childNewClass.activeName = tabs
       this.$refs.childNewClass.getEditMsg(item)
     }
   },

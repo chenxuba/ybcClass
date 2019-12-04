@@ -1,6 +1,5 @@
 <template>
   <div class="videoLive">
-    {{ruleForm}}
     <el-form :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <!-- 标题 -->
       <el-form-item label="标题" prop="title" required>
@@ -68,7 +67,7 @@
       </el-form-item>
       <!-- 类型，分类 -->
       <el-form-item label="类型" required>
-        <el-cascader v-model="leixing" :options="menuLabel" @change="handleChange"></el-cascader>
+        <el-cascader v-model="ruleForm.leixing" :options="menuLabel" @change="handleChange"></el-cascader>
         <span class="span">此选项关系到直播所在的分类，请认真填写</span>
       </el-form-item>
       <!-- 收费方式 -->
@@ -138,11 +137,12 @@
             定时发布
             <span v-if="ruleForm.shangJiaSet == 2">
               <el-date-picker
-                v-model="dingShiTime"
+                v-model="ruleForm.dingShiTime"
                 type="datetime"
                 placeholder="选择日期时间"
                 format="yyyy 年 MM 月 dd 日 HH 时 mm 分 ss 秒"
                 value-format="yyyy-MM-dd HH:mm:ss"
+                :picker-options="pickerOptions"
               ></el-date-picker>
             </span>
           </el-radio>
@@ -161,34 +161,22 @@
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
-  props: ["menuLabel","ruleForm"],
+  props: ["menuLabel", "ruleForm"],
   data() {
     return {
-      // dingShiTime: new Date(), //定时直播
-      // ruleForm: {
-      //   date: "", //直播开始时间
-      //   title: "", //标题
-      //   imgUrl: "", //封面图
-      //   content: "", //直播简介
-      //   leixing1: "", //一级标签
-      //   leixing2: "", //二级标签
-      //   radio_fufei: 1, //收费方式
-      //   radio_isShikan: 0, //是否需要试看,默认不需要
-      //   yinSiSet: "0", //隐私设置
-      //   shangJiaSet: 1, //上架设置，是否立即发布
-      //   price: "", //收费金额
-      //   password: "", // 密码
-      //   shikanTime: "" ,//试看时间
-      //   videoUrl:""
-      // },
-      leixing: [] //
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7;
+        },
+        selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
+      }
     };
   },
   methods: {
     async submitForm() {
       const res = await reqReleaseClassHour(
         "3",
-        "",
+        this.ruleForm.res_id,
         this.ruleForm.title,
         this.ruleForm.date,
         this.ruleForm.imgUrl,
@@ -219,7 +207,6 @@ export default {
         this.ruleForm.content = "";
         this.ruleForm.imgUrl = "";
         this.ruleForm.videoUrl = "";
-
         // 发布后触发自定义事件shuaxinList，父组件childNewClass
         this.$emit("shuaxinList");
       } else if (res.code == -995 || res.code == -998) {
@@ -231,8 +218,8 @@ export default {
     },
     changeContent(html) {
       console.log(html);
-      this.ruleForm.content = html
-      this.$refs.froalaEditor.setHtml(html)
+      this.ruleForm.content = html;
+      this.$refs.froalaEditor.setHtml(html);
     },
     getFile(file) {
       this.getBase64(file.raw).then(res => {
@@ -258,7 +245,7 @@ export default {
     },
     handleChange(value) {
       console.log(value);
-      this.leixing = value;
+      this.leixing = ["190", "191"];
       this.ruleForm.leixing1 = value[0];
       this.ruleForm.leixing2 = value[1];
     },
@@ -277,9 +264,7 @@ export default {
   components: {
     Editor
   },
-  watch: {
-    
-  }
+  watch: {}
 };
 </script>
 

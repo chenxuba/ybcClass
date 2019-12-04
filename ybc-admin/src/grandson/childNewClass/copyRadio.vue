@@ -7,7 +7,7 @@
           v-model="ruleForm.title"
           class="input-title"
           style="width:400px"
-          placeholder="请输入标题"
+          placeholder="请输入视频标题"
         ></el-input>
       </el-form-item>
       <!-- 开始时间 -->
@@ -35,7 +35,7 @@
           <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </el-form-item>
-      <!-- 音频文件 -->
+      <!-- 视频文件 -->
       <el-form-item label="音频文件" required style="padding-right: 65%;">
         <el-upload
           class="upload-demo"
@@ -46,11 +46,10 @@
           multiple
           :limit="1"
           :with-credentials="true"
-          ref="upload"
         >
           <div style="display:flex;">
             <el-input
-              v-model="videoUrl"
+              v-model="ruleForm.videoUrl"
               placeholder="文件地址"
               size="mini"
               style="margin-right: 20px;width:300px"
@@ -68,7 +67,7 @@
       </el-form-item>
       <!-- 类型，分类 -->
       <el-form-item label="类型" required>
-        <el-cascader v-model="leixing" :options="menuLabel" @change="handleChange"></el-cascader>
+        <el-cascader v-model="ruleForm.leixing" :options="menuLabel" @change="handleChange"></el-cascader>
         <span class="span">此选项关系到直播所在的分类，请认真填写</span>
       </el-form-item>
       <!-- 收费方式 -->
@@ -80,7 +79,7 @@
               <input type="text" placeholder="请输入金额" v-model="ruleForm.price" /> 元
             </span>
           </el-radio>
-          <el-radio :label="2">学员</el-radio>
+          <el-radio :label="1">学员</el-radio>
           <el-radio :label="0">公开</el-radio>
           <el-radio :label="4">
             密码设置
@@ -103,7 +102,7 @@
           <el-radio :label="1">
             需要
             <span v-if="ruleForm.radio_isShikan == 1">
-              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 元
+              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 分钟
             </span>
           </el-radio>
         </el-radio-group>
@@ -138,12 +137,11 @@
             定时发布
             <span v-if="ruleForm.shangJiaSet == 2">
               <el-date-picker
-                v-model="dingShiTime"
+                v-model="ruleForm.dingShiTime"
                 type="datetime"
                 placeholder="选择日期时间"
-                format="yyyy-MM-dd HH:mm:ss "
+                format="yyyy 年 MM 月 dd 日 HH 时 mm 分 ss 秒"
                 value-format="yyyy-MM-dd HH:mm:ss"
-                @change="changeTime"
                 :picker-options="pickerOptions"
               ></el-date-picker>
             </span>
@@ -163,45 +161,27 @@
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
-  props: ["menuLabel"],
+  props: ["menuLabel", "ruleForm"],
   data() {
     return {
-      dingShiTime: new Date(), //定时直播
-      ruleForm: {
-        date: "",
-        title: "", //标题
-        imgUrl: "", //封面图
-        content: "", //简介
-        leixing1: "", //一级标签
-        leixing2: "", //二级标签
-        radio_fufei: 2, //收费方式
-        radio_isShikan: 0, //是否需要试看，默认不试看
-        yinSiSet: "0", //隐私设置
-        shangJiaSet: 1, //上架设置，是否立即发布
-        price: "", //收费金额
-        password: "", // 密码
-        shikanTime: "" //试看时间
-      },
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 8.64e7;
         },
         selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
-      },
-      videoUrl: "",
-      leixing: []
+      }
     };
   },
   methods: {
     async submitForm() {
       const res = await reqReleaseClassHour(
         "4",
-        "",
+        this.ruleForm.res_id,
         this.ruleForm.title,
         this.ruleForm.date,
         this.ruleForm.imgUrl,
         "",
-        this.videoUrl,
+        this.ruleForm.videoUrl,
         this.ruleForm.content,
         this.ruleForm.leixing1,
         this.ruleForm.leixing2,
@@ -215,7 +195,7 @@ export default {
         "0", //不关联售卖
         "1", //强制竖屏
         this.ruleForm.shangJiaSet,
-        this.dingShiTime
+        this.ruleForm.dingShiTime
       );
       console.log(res);
       if (res.code == 1) {
@@ -223,10 +203,11 @@ export default {
           message: "课时发布成功",
           type: "success"
         });
-        this.$refs.upload.clearFiles();
         this.$refs.ruleForm.resetFields();
-        this.videoUrl = "";
+        this.ruleForm.content = "";
         this.ruleForm.imgUrl = "";
+        this.ruleForm.videoUrl = "";
+        // 发布后触发自定义事件shuaxinList，父组件childNewClass
         this.$emit("RadioshuaxinList");
       } else if (res.code == -995 || res.code == -998) {
         this.$message.error(res.msg);
@@ -236,7 +217,9 @@ export default {
       this.$refs[formName].resetFields();
     },
     changeContent(html) {
+      console.log(html);
       this.ruleForm.content = html;
+      this.$refs.froalaEditor.setHtml(html);
     },
     getFile(file) {
       this.getBase64(file.raw).then(res => {
@@ -262,32 +245,26 @@ export default {
     },
     handleChange(value) {
       console.log(value);
-      this.leixing = value;
+      this.leixing = ["190", "191"];
       this.ruleForm.leixing1 = value[0];
       this.ruleForm.leixing2 = value[1];
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
-      this.videoUrl = "";
+      this.ruleForm.videoUrl = "";
     },
     handleSuccess(file) {
-      console.log(file);
-      let str;
-      str = file.link.split("com/");
-      this.videoUrl = str[1];
-      console.log(this.videoUrl);
+      this.ruleForm.videoUrl = file.link;
+      console.log(this.ruleForm.videoUrl);
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    // 格式化事件
-    changeTime() {
-      console.log(this.dingShiTime);
     }
   },
   components: {
     Editor
-  }
+  },
+  watch: {}
 };
 </script>
 
