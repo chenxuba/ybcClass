@@ -6,7 +6,11 @@
           <span slot="label">
             <i class="el-icon-view"></i> 课时
           </span>
-          <childClass :classHourList="classHourList" @shuxinList="shuxinLists" @changActiveName="changActiveNames"></childClass>
+          <childClass
+            :classHourList="classHourList"
+            @shuxinList="shuxinLists"
+            @changActiveName="changActiveNames"
+          ></childClass>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
@@ -47,15 +51,15 @@ export default {
       this.getClassHourList();
       this.activeName = item;
     },
-    shuxinLists(){
+    shuxinLists() {
       console.log(111);
-      
+
       this.getClassHourList();
     },
-    changActiveNames(item,tabs){
-      this.activeName = 'second'
-      this.$refs.childNewClass.activeName = tabs
-      this.$refs.childNewClass.getEditMsg(item)
+    changActiveNames(item, tabs) {
+      this.activeName = "second";
+      this.$refs.childNewClass.activeName = tabs;
+      this.$refs.childNewClass.getEditMsg(item);
     }
   },
   mounted() {
