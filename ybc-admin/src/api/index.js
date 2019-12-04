@@ -45,3 +45,7 @@ export const reqResourceEdit = (res_id) => ajax(`${BASE_URL}/api/5dca854b00572`,
  * 获取课程列表
  */
 export const reqCourseList = (title,start_time,end_time) => ajax(`${BASE_URL}/api/5dcce8d430b73`, {title,start_time,end_time}, 'POST');
+/**
+ * 删除课程资源
+ */
+export const reqDeleteCourse = (id) => ajax(`${BASE_URL}/api/5dcd1ef33efda`, {id}, 'POST');

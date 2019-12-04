@@ -22,7 +22,7 @@
               <th width="13%">操作</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="courseList != ''">
             <tr class="WSY_body" v-for="(item,index) in courseList" :key="index">
               <td>
                 <label class="checkla">
@@ -94,6 +94,9 @@
               </td>
             </tr>
           </tbody>
+          <div v-else>
+            <img src="../../../static/img/zwsj.png" alt class="zwsj" />
+          </div>
         </table>
       </div>
     </div>
@@ -109,6 +112,14 @@ export default {
       checkAll: false,
       isIndeterminate: true
     };
+  },
+  methods: {
+    //   删除课程
+    hanlddelete(item) {
+      console.log(item.id);
+      //自定义事件 ,父组件course
+      this.$emit("event0", item.id);
+    }
   }
 };
 </script>
@@ -189,5 +200,13 @@ table {
   display: inline-block;
   text-align: center;
   width: 70px;
+}
+.zwsj {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
 }
 </style>
