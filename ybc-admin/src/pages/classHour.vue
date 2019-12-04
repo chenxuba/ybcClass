@@ -14,7 +14,8 @@
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
-            <i class="el-icon-view"></i>新建课时
+            <i class="el-icon-view"></i>
+            {{tabsNmae}}
           </span>
           <childNewClass @shuaxinListss="shuaxinListsss" ref="childNewClass"></childNewClass>
         </el-tab-pane>
@@ -31,7 +32,8 @@ export default {
   data() {
     return {
       classHourList: "",
-      activeName: "first"
+      activeName: "first",
+      tabsNmae: "新建课时"
     };
   },
   components: {
@@ -50,15 +52,18 @@ export default {
     shuaxinListsss(item) {
       this.getClassHourList();
       this.activeName = item;
+      this.tabsNmae = '新建课时'
     },
     shuxinLists() {
       console.log(111);
 
       this.getClassHourList();
     },
-    changActiveNames(item, tabs) {
+    changActiveNames(item, tabs, txt) {
+      this.tabsNmae = txt;
       this.activeName = "second";
       this.$refs.childNewClass.activeName = tabs;
+      this.$refs.childNewClass.tabsDisabled = true;
       this.$refs.childNewClass.getEditMsg(item);
     }
   },

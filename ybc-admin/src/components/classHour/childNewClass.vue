@@ -1,7 +1,7 @@
 <template>
   <div class="childNewClass">
-    <el-tabs type="border-card" v-model="activeName">
-      <el-tab-pane name="videoLive">
+    <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane name="videoLive" :disabled="tabsDisabled">
         <span slot="label">
           <i class="el-icon-video-camera-solid"></i> 视频直播
         </span>
@@ -12,7 +12,7 @@
           :ruleForm="ruleForm"
         ></videoLive>
       </el-tab-pane>
-      <el-tab-pane name="audioLive">
+      <el-tab-pane name="audioLive" :disabled="tabsDisabled">
         <span slot="label">
           <i class="el-icon-headset"></i> 电台直播
         </span>
@@ -23,7 +23,7 @@
           :ruleForm="ruleForm"
         ></audioLive>
       </el-tab-pane>
-      <el-tab-pane name="video">
+      <el-tab-pane name="video" :disabled="tabsDisabled">
         <span slot="label">
           <i class="el-icon-orange"></i> 视频
         </span>
@@ -34,7 +34,7 @@
           ref="childCopyVideo"
         ></copyVideo>
       </el-tab-pane>
-      <el-tab-pane name="audio">
+      <el-tab-pane name="audio" :disabled="tabsDisabled">
         <span slot="label">
           <i class="el-icon-service"></i> 音频
         </span>
@@ -79,7 +79,8 @@ export default {
         dingShiTime: new Date(), //定时直播
         res_id: "",
         leixing: []
-      }
+      },
+      tabsDisabled: false //tabs是否禁用，默认不禁用
     };
   },
   methods: {
@@ -91,6 +92,7 @@ export default {
     },
     // 触发自定义事件shuaxinListss，并把“first”当作参数传过去
     shuaxinLists() {
+      this.tabsDisabled = false;
       this.$emit("shuaxinListss", "first");
     },
     async getEditMsg(item) {
@@ -116,10 +118,15 @@ export default {
         this.ruleForm.dingShiTime = res.data.release_time;
         this.ruleForm.res_id = res.data.res_id;
         this.ruleForm.leixing = [res.data.label1, res.data.label2];
-        this.ruleForm.price = res.data.price
-        this.ruleForm.password = res.data.res_pwd
-        
+        this.ruleForm.price = res.data.price;
+        this.ruleForm.password = res.data.res_pwd;
       }
+    },
+    handleClick(){
+      this.$refs.childvideoLive.clearContent()
+      this.$refs.childaudioLive.clearContent()
+      this.$refs.childCopyVideo.clearContent()
+      this.$refs.childCopyRadio.clearContent()
     }
   },
   mounted() {

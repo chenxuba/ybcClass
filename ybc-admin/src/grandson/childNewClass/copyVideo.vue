@@ -2,7 +2,7 @@
   <div class="videoLive">
     <el-form :model="ruleForm" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <!-- 标题 -->
-      <el-form-item label="标题" prop="title" required>
+      <el-form-item label="标题" prop="title">
         <el-input
           v-model="ruleForm.title"
           class="input-title"
@@ -198,15 +198,29 @@ export default {
         this.ruleForm.dingShiTime
       );
       console.log(res);
+
       if (res.code == 1) {
         this.$message({
           message: "课时发布成功",
           type: "success"
         });
-        this.$refs.ruleForm.resetFields();
-        this.ruleForm.content = "";
-        this.ruleForm.imgUrl = "";
-        this.ruleForm.videoUrl = "";
+        (this.ruleForm.res_id = ""),
+          (this.ruleForm.title = ""),
+          (this.ruleForm.date = ""),
+          (this.ruleForm.imgUrl = ""),
+          (this.ruleForm.videoUrl = ""),
+          this.$refs.froalaEditor.setHtml(""),
+          (this.ruleForm.leixing1 = ""),
+          (this.ruleForm.leixing2 = ""),
+          (this.ruleForm.radio_fufei = 1),
+          (this.ruleForm.price = ""),
+          (this.ruleForm.password = ""),
+          (this.ruleForm.radio_isShikan = 0),
+          (this.ruleForm.shikanTime = ""),
+          (this.ruleForm.yinSiSet = "0"),
+          (this.ruleForm.shangJiaSet = 1),
+          (this.ruleForm.dingShiTime = new Date());
+        this.ruleForm.leixing = [];
         // 发布后触发自定义事件shuaxinList，父组件childNewClass
         this.$emit("shuaxinList");
       } else if (res.code == -995 || res.code == -998) {
@@ -259,6 +273,10 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    // 清空编辑器的内容
+    clearContent(){
+      this.$refs.froalaEditor.setHtml("");
     }
   },
   components: {

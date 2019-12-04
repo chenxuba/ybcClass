@@ -2,6 +2,7 @@
   <div>
     <table border="0" cellpadding="0" cellspacing="0">
       <thead>
+        <!-- 表头 -->
         <tr class="WSY_biaohead">
           <th width="3%">ID</th>
           <th width="15%" style="min-width: 300px;">课时信息</th>
@@ -12,8 +13,10 @@
           <th width="8%" style="min-width: 380px;">操作</th>
         </tr>
       </thead>
+      <!-- 主题内容 -->
       <tbody id="contact" v-if="classHourList != ''">
         <tr class="WSY_body" v-for="(item,index) in classHourList" :key="index">
+          <!-- ID -->
           <td>
             <input
               type="text"
@@ -24,12 +27,12 @@
               data-sort-id="781"
             />
           </td>
+          <!-- 课时信息 -->
           <td style="text-align:left;">
             <div class="details_box">
               <img :src="item.cover" class="details_img" />
               <div class="details_content">
                 <p class="details_title">{{item.title}}</p>
-
                 <p class="details_data">
                   <span class="res_needpay" v-if="item.needpay == 0">公开</span>
                   <span class="res_needpay" v-if="item.needpay == 1">公开</span>
@@ -70,7 +73,7 @@
               </div>
             </div>
           </td>
-          <!--<td>经典成语故事</td>-->
+          <!-- 浏览量 -->
           <td>
             独立访客：{{item.class_views}}
             <!-- <span style="color:#1ad572;">查看</span> -->
@@ -80,10 +83,14 @@
             播放量：{{item.u_visitors}}
             <br />
           </td>
+          <!-- 分类 -->
           <td>{{item.label1}} &gt; {{item.label2}}</td>
+          <!-- 审核状态 -->
           <td v-if="item.status == 1">已发布</td>
           <td v-if="item.status == 5">待发布</td>
+          <!-- 更新时间 -->
           <td>{{item.intime}}</td>
+          <!-- 操作 -->
           <td>
             <!-- 编辑 -->
             <div class="tubox">
@@ -153,6 +160,7 @@ import { reqDeleteClassHour, reqStartLive } from "../../api";
 export default {
   props: ["classHourList"],
   methods: {
+    // 删除资源
     hanlddelete(item) {
       console.log(item);
       this.$confirm("此操作将删除该文件, 是否继续?", "提示", {
@@ -191,18 +199,21 @@ export default {
         this.$message.error(res.msg);
       }
     },
-    // 编辑
+    // 编辑资源
     hanldedit(item) {
-      // 说明是录播视频
+      let txt = "编辑课时"
+        // 说明是录播视频
       if (item.type == 3) {
-        this.$emit("changActiveName", item, "video");
+        this.$emit("changActiveName", item, "video",txt);
         // 说明是录播音频
       } else if (item.type == 10) {
-        this.$emit("changActiveName", item, "audio");
+        this.$emit("changActiveName", item, "audio",txt);
+        // 说明是直播视频
       } else if (item.type == 2) {
-        this.$emit("changActiveName", item, "videoLive");
+        this.$emit("changActiveName", item, "videoLive",txt);
+        // 说明是直播音频
       } else if (item.type == 8) {
-        this.$emit("changActiveName", item, "audioLive");
+        this.$emit("changActiveName", item, "audioLive",txt);
       }
     }
   }
