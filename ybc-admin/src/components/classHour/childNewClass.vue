@@ -117,6 +117,8 @@ export default {
         this.ruleForm.res_id = res.data.res_id;
         this.ruleForm.leixing = [res.data.label1, res.data.label2];
         this.ruleForm.price = res.data.price
+        this.ruleForm.password = res.data.res_pwd
+        
       }
     }
   },
