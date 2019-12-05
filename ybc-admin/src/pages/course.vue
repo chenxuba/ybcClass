@@ -6,10 +6,15 @@
           <span slot="label" @click="tabClick">
             <i class="el-icon-view"></i> 课程
           </span>
-          <childCourse :courseList="courseList" @event0="deleteCourse" @event2="hanldEdit"></childCourse>
+          <childCourse
+            :courseList="courseList"
+            @event0="deleteCourse"
+            @event2="hanldEdit"
+            @event3="showXiangguankes"
+          ></childCourse>
         </el-tab-pane>
         <el-tab-pane name="second">
-          <span slot="label">
+          <span slot="label" @click="tabClick2">
             <i class="el-icon-view"></i>
             {{tabsName}}
           </span>
@@ -19,6 +24,13 @@
             @event1="AddCourse"
             ref="childNewCourse"
           ></childNewCourse>
+        </el-tab-pane>
+        <el-tab-pane name="san" v-if="showXiangguanke">
+           <span slot="label">
+            <i class="el-icon-view"></i> 相关课
+          </span>
+          相关课
+          {{}}
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -56,7 +68,8 @@ export default {
         price: "",
         res_id: "", //课程id
         dingShiTime: ""
-      }
+      },
+      showXiangguanke: false//相关课
     };
   },
   components: {
@@ -122,7 +135,7 @@ export default {
           type: "success"
         });
         this.activeName = "first";
-        this.tabsName = '新建课程'
+        this.tabsName = "新建课程";
         this.getCourseList();
         this.ruleForm = {
           title: "",
@@ -139,9 +152,9 @@ export default {
           dingShiTime: ""
         };
         this.$refs.childNewCourse.clearContent();
-      }else if(res.code == -995){
-        this.$message.error(res.msg)
-      }else if(res.code == -1){
+      } else if (res.code == -995) {
+        this.$message.error(res.msg);
+      } else if (res.code == -1) {
         this.$message.error(res.msg);
       }
     },
@@ -231,6 +244,20 @@ export default {
             };
           });
       }
+      // 点击课程tabs让相关课tabs消失
+      this.showXiangguanke = false
+    },
+    // 点击新建课程tabs让相关课tabs消失
+    tabClick2(){
+      this.showXiangguanke = false
+    },
+    // 显示相关课tabs
+    showXiangguankes(id){
+      this.showXiangguanke = true
+      this.activeName = 'san'
+      console.log(id);
+      // 在这里请求相关课的接口
+      
     }
   },
   mounted() {

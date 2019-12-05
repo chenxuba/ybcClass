@@ -69,7 +69,7 @@
                 <!-- 相关课时 -->
                 <div class="tubox" style="display: inline-block;">
                   <el-tooltip class="item" effect="dark" content="相关课时" placement="top">
-                    <el-button type="warning" icon="el-icon-warning" circle></el-button>
+                    <el-button type="warning" icon="el-icon-warning" circle @click="addTab(item)"></el-button>
                   </el-tooltip>
                 </div>
                 <!-- 查看已订阅 -->
@@ -121,6 +121,10 @@ export default {
     hanldedit(item) {
       //自定义事件 ,父组件course
       this.$emit("event2", item.id);
+    },
+    // 点击相关课按钮触发的方法 自定义事件 ,父组件course
+    addTab(item){
+      this.$emit("event3",item.id)
     }
   }
 };
