@@ -45,10 +45,10 @@
               </td>
               <td class="shutdomn" v-if="item.status == 1">连载</td>
               <td class="shutdomn" v-if="item.status == 2">完结</td>
+              <td class="shutdomn" v-if="item.status == 3">待发布</td>
               <td class="redtext" v-if="item.money_type == 3">公开</td>
               <td class="redtext" v-if="item.money_type == 2">学员</td>
               <td class="redtext" v-if="item.money_type == 1">付费</td>
-
               <td>{{item.createtime}}</td>
               <td>
                 <!-- 编辑 -->
