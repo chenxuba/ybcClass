@@ -53,3 +53,11 @@ export const reqDeleteCourse = (id) => ajax(`${BASE_URL}/api/5dcd1ef33efda`, {id
  * 保存课程信息
  */
 export const reqAddCourse = (title,cover,needpay,pay,money,first_label,second_label,liveintro,id,is_specify,release_time) => ajax(`${BASE_URL}/api/5dccf910268c9`, {title,cover,needpay,pay,money,first_label,second_label,liveintro,id,is_specify,release_time}, 'POST');
+/**
+ * 编辑课程-获取内容
+ */
+export const reqEditCourse = (id) => ajax(`${BASE_URL}/api/5de8950c521dd`, {id}, 'POST');
+/**
+ * 获取课程相关课列表
+ */
+export const reqRelevantCourse = (course_id,title,page) => ajax(`${BASE_URL}/api/5de8adc24fa0b`, {course_id,title,page}, 'POST');

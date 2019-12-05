@@ -21,7 +21,7 @@
           :show-file-list="false"
         >
           <i class="el-icon-upload" v-if="ruleForm.imgUrl == ''"></i>
-          <div class="el-upload__text" v-if="ruleForm.imgUrl==''">
+          <div class="el-upload__text img_box" v-if="ruleForm.imgUrl==''">
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
@@ -87,7 +87,7 @@
 import Editor from "../editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
-  props:["ruleForm","menuLabel"],
+  props: ["ruleForm", "menuLabel"],
   data() {
     return {
       pickerOptions: {
@@ -95,64 +95,10 @@ export default {
           return time.getTime() < Date.now() - 8.64e7;
         },
         selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
-      },
+      }
     };
   },
   methods: {
-    async submitForm() {
-      const res = await reqReleaseClassHour(
-        "3",
-        this.ruleForm.res_id,
-        this.ruleForm.title,
-        this.ruleForm.date,
-        this.ruleForm.imgUrl,
-        this.ruleForm.videoUrl,
-        "",
-        this.ruleForm.content,
-        this.ruleForm.leixing1,
-        this.ruleForm.leixing2,
-        this.ruleForm.radio_fufei,
-        this.ruleForm.price,
-        this.ruleForm.password,
-        this.ruleForm.radio_isShikan,
-        this.ruleForm.shikanTime,
-        "1", //开启课时页
-        this.ruleForm.yinSiSet,
-        "0", //不关联售卖
-        "1", //强制竖屏
-        this.ruleForm.shangJiaSet,
-        this.ruleForm.dingShiTime
-      );
-      console.log(res);
-
-      if (res.code == 1) {
-        this.$message({
-          message: "课时发布成功",
-          type: "success"
-        });
-        (this.ruleForm.res_id = ""),
-          (this.ruleForm.title = ""),
-          (this.ruleForm.date = ""),
-          (this.ruleForm.imgUrl = ""),
-          (this.ruleForm.videoUrl = ""),
-          this.$refs.froalaEditor.setHtml(""),
-          (this.ruleForm.leixing1 = ""),
-          (this.ruleForm.leixing2 = ""),
-          (this.ruleForm.radio_fufei = 1),
-          (this.ruleForm.price = ""),
-          (this.ruleForm.password = ""),
-          (this.ruleForm.radio_isShikan = 0),
-          (this.ruleForm.shikanTime = ""),
-          (this.ruleForm.yinSiSet = "0"),
-          (this.ruleForm.shangJiaSet = 1),
-          (this.ruleForm.dingShiTime = new Date());
-        this.ruleForm.leixing = [];
-        // 发布后触发自定义事件shuaxinList，父组件childNewClass
-        this.$emit("shuaxinList");
-      } else if (res.code == -995 || res.code == -998) {
-        this.$message.error(res.msg);
-      }
-    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -194,8 +140,8 @@ export default {
       this.$refs.froalaEditor.setHtml("");
     },
     // 触发父组件coursea的自定义方法event1
-    submitForm(){
-      this.$emit("event1")
+    submitForm() {
+      this.$emit("event1");
     }
   },
   components: {
@@ -212,5 +158,12 @@ export default {
   display: inline-block;
   vertical-align: middle;
   margin-left: 10px;
+}
+
+.videoLive >>> .el-upload__text {
+  height: 100%;
+}
+.img {
+  height: 100%;
 }
 </style>

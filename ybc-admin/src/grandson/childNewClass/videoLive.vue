@@ -231,6 +231,8 @@ export default {
         this.$emit("videoLiveshuaxin");
       } else if (res.code == -995) {
         this.$message.error(res.msg);
+      }else if(res.code == -1){
+        this.$message.error(res.msg);
       }
     },
     resetForm(formName) {

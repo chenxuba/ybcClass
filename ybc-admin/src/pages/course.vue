@@ -3,10 +3,10 @@
     <div class="tabs">
       <el-tabs type="card" v-model="activeName">
         <el-tab-pane name="first">
-          <span slot="label">
+          <span slot="label" @click="tabClick">
             <i class="el-icon-view"></i> 课程
           </span>
-          <childCourse :courseList="courseList" @event0="deleteCourse"></childCourse>
+          <childCourse :courseList="courseList" @event0="deleteCourse" @event2="hanldEdit"></childCourse>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
@@ -30,7 +30,8 @@ import {
   reqCourseList,
   reqDeleteCourse,
   reqAddCourse,
-  reqMenuLabel
+  reqMenuLabel,
+  reqEditCourse
 } from "../api";
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
@@ -117,10 +118,11 @@ export default {
       console.log(res);
       if (res.code == 1) {
         this.$message({
-          message: "新建课程成功～",
+          message: "操作成功～",
           type: "success"
         });
         this.activeName = "first";
+        this.tabsName = '新建课程'
         this.getCourseList();
         this.ruleForm = {
           title: "",
@@ -137,6 +139,10 @@ export default {
           dingShiTime: ""
         };
         this.$refs.childNewCourse.clearContent();
+      }else if(res.code == -995){
+        this.$message.error(res.msg)
+      }else if(res.code == -1){
+        this.$message.error(res.msg);
       }
     },
     //获取分类
@@ -144,6 +150,86 @@ export default {
       const res = await reqMenuLabel(this.pros_type);
       if (res.code == 1) {
         this.menuLabel = res.data;
+      }
+    },
+    // 编辑课程资源
+    async hanldEdit(id) {
+      const res = await reqEditCourse(id);
+      console.log(res);
+      if (res.code == 1) {
+        if (res.data.column.money_type == 1) {
+          this.ruleForm = {
+            title: res.data.column.title,
+            imgUrl: res.data.column.pic_cover,
+            radio_fufei: Number(res.data.column.money_type),
+            leixing: [res.data.column.label1, res.data.column.label2],
+            shangJiaSet: Number(res.data.column.is_specify),
+            content: res.data.column.brief_intro,
+            leixing1: res.data.column.label1,
+            leixing2: res.data.column.label2,
+            pay: 1,
+            price: res.data.column.pay[0].money,
+            res_id: res.data.column.id, //课程id
+            dingShiTime: res.data.column.release_time
+          };
+        } else {
+          this.ruleForm = {
+            title: res.data.column.title,
+            imgUrl: res.data.column.pic_cover,
+            radio_fufei: Number(res.data.column.money_type),
+            leixing: [res.data.column.label1, res.data.column.label2],
+            shangJiaSet: Number(res.data.column.is_specify),
+            content: res.data.column.brief_intro,
+            leixing1: res.data.column.label1,
+            leixing2: res.data.column.label2,
+            pay: 1,
+            // price: res.data.column.pay[0].money,
+            res_id: res.data.column.id, //课程id
+            dingShiTime: res.data.column.release_time
+          };
+        }
+        this.$refs.childNewCourse.changeContent(res.data.column.brief_intro);
+      }
+      this.activeName = "second";
+      this.tabsName = "编辑课程";
+    },
+    // tabClick ,如果tabsName == '编辑课程'时，会触发这个方法
+    tabClick() {
+      if (this.tabsName == "编辑课程") {
+        this.$confirm(
+          "是否要暂时保存内容，确定后编辑的内容会暂时保存!",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
+        )
+          .then(() => {
+            this.$notify({
+              title: "成功",
+              message: "编辑的内容已经暂时保存～",
+              type: "success",
+              position: "top-left"
+            });
+          })
+          .catch(() => {
+            this.tabsName = "新建课程";
+            this.ruleForm = {
+              title: "",
+              imgUrl: "",
+              radio_fufei: 3,
+              leixing: "",
+              shangJiaSet: 1,
+              content: "",
+              leixing1: "",
+              leixing2: "",
+              pay: 1,
+              price: "",
+              res_id: "", //课程id
+              dingShiTime: ""
+            };
+          });
       }
     }
   },

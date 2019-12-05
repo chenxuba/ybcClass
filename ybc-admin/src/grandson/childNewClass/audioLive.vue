@@ -208,6 +208,8 @@ export default {
         this.$emit("audioLiveshuaxin");
       } else if (res.code == -995 || res.code == -998) {
         this.$message.error(res.msg);
+      }else if(res.code == -1){
+        this.$message.error(res.msg);
       }
     },
     resetForm(formName) {

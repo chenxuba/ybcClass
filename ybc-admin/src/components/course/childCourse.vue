@@ -11,7 +11,6 @@
                 </label>
               </th>
               <th width="3%">编号</th>
-              <th width="4%">排序</th>
               <th width="6%">课程名称</th>
               <th width="6%" style="min-width: 50px">封面</th>
               <th width="6%">总期数/直播/视频</th>
@@ -29,8 +28,7 @@
                   <el-checkbox v-model="checked"></el-checkbox>
                 </label>
               </td>
-              <td>77</td>
-              <td class="sort_num">{{item.sort}}</td>
+              <td>{{item.id}}</td>
               <td>{{item.title}}</td>
               <td>
                 <img :src="item.pic_cover" />
@@ -116,9 +114,13 @@ export default {
   methods: {
     //   删除课程
     hanlddelete(item) {
-      console.log(item.id);
       //自定义事件 ,父组件course
       this.$emit("event0", item.id);
+    },
+    // 编辑课程
+    hanldedit(item) {
+      //自定义事件 ,父组件course
+      this.$emit("event2", item.id);
     }
   }
 };
