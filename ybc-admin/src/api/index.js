@@ -49,3 +49,7 @@ export const reqCourseList = (title,start_time,end_time) => ajax(`${BASE_URL}/ap
  * 删除课程资源
  */
 export const reqDeleteCourse = (id) => ajax(`${BASE_URL}/api/5dcd1ef33efda`, {id}, 'POST');
+/**
+ * 保存课程信息
+ */
+export const reqAddCourse = (title,cover,needpay,pay,money,first_label,second_label,liveintro,id,is_specify,release_time) => ajax(`${BASE_URL}/api/5dccf910268c9`, {title,cover,needpay,pay,money,first_label,second_label,liveintro,id,is_specify,release_time}, 'POST');

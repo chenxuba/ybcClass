@@ -140,7 +140,7 @@
                 v-model="ruleForm.dingShiTime"
                 type="datetime"
                 placeholder="选择日期时间"
-                format="yyyy 年 MM 月 dd 日 HH 时 mm 分 ss 秒"
+                format="yyyy-MM-dd HH:mm:ss"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 :picker-options="pickerOptions"
               ></el-date-picker>

@@ -13,7 +13,7 @@
             <i class="el-icon-view"></i>
             {{tabsName}}
           </span>
-          <childNewCourse></childNewCourse>
+          <childNewCourse :ruleForm="ruleForm" :menuLabel="menuLabel" @event1="AddCourse"></childNewCourse>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { reqCourseList, reqDeleteCourse } from "../api";
+import { reqCourseList, reqDeleteCourse, reqAddCourse ,reqMenuLabel} from "../api";
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
 export default {
@@ -29,7 +29,23 @@ export default {
     return {
       courseList: "",
       activeName: "first",
-      tabsName: "新建课程"
+      tabsName: "新建课程",
+      menuLabel:[],//分类
+      pros_type:1,//1-视频 2-软文
+      ruleForm: {
+        title: "",
+        imgUrl: "",
+        radio_fufei: "",
+        leixing: "",
+        shangJiaSet: "",
+        content: "",
+        leixing1: "",
+        leixing2: "",
+        pay: 1,
+        price:"",
+        res_id:"",//课程id
+        dingShiTime: ""
+      }
     };
   },
   components: {
@@ -43,6 +59,7 @@ export default {
       console.log(res);
       if (res.code == 1) {
         this.courseList = res.data.course_list;
+        this.getMenuLabel();
       }
     },
     // 删除课程资源
@@ -71,7 +88,32 @@ export default {
             message: "已取消删除"
           });
         });
-    }
+    },
+    // 新增课程资源
+    async AddCourse() {
+      const res = await reqAddCourse(
+        this.ruleForm.title, //标题
+        this.ruleForm.imgUrl, //封面
+        this.ruleForm.radio_fufei,//收费方式
+        this.ruleForm.pay,//固定收费
+        this.ruleForm.price,//收费金额
+        this.ruleForm.leixing1,//一级分类id
+        this.ruleForm.leixing2,//二级分类id
+        this.ruleForm.content,//课程简介
+        this.ruleForm.res_id,//课程id,编辑的时候需要传
+        this.ruleForm.shangJiaSet,//是否定时发布
+        this.ruleForm.dingShiTime//定时发布时间
+      );
+      console.log(res);
+      
+    },
+    //获取分类
+    async getMenuLabel() {
+      const res = await reqMenuLabel(this.pros_type);
+      if (res.code == 1) {
+        this.menuLabel = res.data;
+      }
+    },
   },
   mounted() {
     this.getCourseList();

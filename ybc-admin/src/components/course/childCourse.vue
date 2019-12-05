@@ -30,7 +30,7 @@
                 </label>
               </td>
               <td>77</td>
-              <td class="sort_num">1</td>
+              <td class="sort_num">{{item.sort}}</td>
               <td>{{item.title}}</td>
               <td>
                 <img :src="item.pic_cover" />
