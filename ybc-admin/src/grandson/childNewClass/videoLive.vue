@@ -100,7 +100,7 @@
               <input type="text" placeholder="请输入金额" v-model="ruleForm.price" /> 元
             </span>
           </el-radio>
-          <el-radio :label="1">学员</el-radio>
+          <el-radio :label="2">学员</el-radio>
           <el-radio :label="0">公开</el-radio>
           <el-radio :label="4">
             密码设置
@@ -123,7 +123,7 @@
           <el-radio :label="1">
             需要
             <span v-if="ruleForm.radio_isShikan == 1">
-              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 元
+              <input type="text" placeholder="请输入试看时间" v-model="ruleForm.shikanTime" /> 分钟
             </span>
           </el-radio>
         </el-radio-group>

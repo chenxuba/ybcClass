@@ -112,7 +112,7 @@
               <input type="text" placeholder="请输入金额" v-model="ruleForm.price" /> 元
             </span>
           </el-radio>
-          <el-radio :label="1">学员</el-radio>
+          <el-radio :label="2">学员</el-radio>
           <el-radio :label="0">公开</el-radio>
           <el-radio :label="4">
             密码设置

@@ -111,6 +111,7 @@ export default {
               clockin_id: "" //关联打卡学堂ID
             };
             this.$refs.childNewClass.handleClick();
+            this.$refs.childNewClass.tabsDisabled = false;
           });
       }
       // 点击课程tabs让相关课tabs消失
