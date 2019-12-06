@@ -124,7 +124,7 @@ export default {
     },
     // 点击相关课按钮触发的方法 自定义事件 ,父组件course
     addTab(item){
-      this.$emit("event3",item.id)
+      this.$emit("event3",item)
     }
   }
 };

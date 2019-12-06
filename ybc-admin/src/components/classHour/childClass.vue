@@ -42,6 +42,7 @@
                   <span class="res_type" v-if="item.type == 2">视频直播</span>
                   <span class="res_type" v-if="item.type == 4">直播回放</span>
                   <span class="res_type" v-if="item.type == 8">音频直播</span>
+                  <span class="res_type" v-if="item.type == 9">音频回放</span>
                   <span
                     class="res_needpay"
                     v-if="(item.type == 2 && item.live_status == 0) || (item.type == 8 && item.live_status == 0)"
@@ -114,14 +115,14 @@
             <div
               class="tubox"
               style="display: inline-block;"
-              v-if="item.type == 2 || item.type == 8"
+              v-if="(item.type == 2 && item.live_status == 0) || (item.type == 8 && item.live_status == 0)"
             >
               <el-tooltip class="item" effect="dark" content="开始直播" placement="top">
                 <el-button
                   type="success"
                   icon="el-icon-caret-right"
                   circle
-                  @click="startLive(item,'1')"
+                  @click="startLive(item,'1',item.type)"
                 ></el-button>
               </el-tooltip>
             </div>
@@ -142,7 +143,7 @@
               v-if="(item.type == 2 && item.live_status != 0) || (item.type == 8 && item.live_status != 0)"
             >
               <el-tooltip class="item" effect="dark" content="结束直播" placement="top">
-                <el-button type="info" icon="el-icon-close" circle @click="startLive(item,'2')"></el-button>
+                <el-button type="info" icon="el-icon-close" circle @click="startLive(item,'2',item.type)"></el-button>
               </el-tooltip>
             </div>
           </td>
@@ -189,9 +190,9 @@ export default {
           });
         });
     },
-    // 开始直播
-    async startLive(item, type) {
-      const res = await reqStartLive(type, item.id);
+    // 开始/结束直播
+    async startLive(item,live_type, type) {
+      const res = await reqStartLive(live_type, item.id,type);
       console.log(res);
       if (res.code == 1) {
         this.$emit("shuxinList");

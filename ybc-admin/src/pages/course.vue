@@ -29,8 +29,7 @@
            <span slot="label">
             <i class="el-icon-view"></i> 相关课
           </span>
-          相关课
-          {{}}
+          <xiangguanCourse :seleteCourse="seleteCourse"></xiangguanCourse>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -48,6 +47,7 @@ import {
 } from "../api";
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
+import xiangguanCourse from "../components/course/xiangguanCourse";
 export default {
   data() {
     return {
@@ -70,12 +70,14 @@ export default {
         res_id: "", //课程id
         dingShiTime: ""
       },
-      showXiangguanke: false//相关课
+      showXiangguanke: false,//相关课
+      seleteCourse:"" //选中的课程信息
     };
   },
   components: {
     childCourse,
-    childNewCourse
+    childNewCourse,
+    xiangguanCourse
   },
   methods: {
     // 获取课程列表
@@ -253,12 +255,13 @@ export default {
       this.showXiangguanke = false
     },
     // 显示相关课tabs
-   async showXiangguankes(id){
+   async showXiangguankes(item){
+     this.seleteCourse = item //把点击的课程信息传过去
       this.showXiangguanke = true
       this.activeName = 'san'
-      console.log(id);
+      // alert(item.id);
       // 在这里请求相关课的接口
-      const res = await reqRelevantCourse(id);
+      const res = await reqRelevantCourse(item.id);
       console.log(res);
     }
   },

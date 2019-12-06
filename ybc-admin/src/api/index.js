@@ -36,7 +36,7 @@ export const reqDeleteClassHour = (id,type) => ajax(`${BASE_URL}/api/5dccc7d4632
 /**
  * 开始/结束视频直播
  */
-export const reqStartLive = (type,live_id) => ajax(`${BASE_URL}/api/5de5d919b1ea4`, {type,live_id}, 'POST');
+export const reqStartLive = (live_type,live_id,type) => ajax(`${BASE_URL}/api/5de5d919b1ea4`, {live_type,live_id,type}, 'POST');
 /**
  * 课时资源编辑
  */
