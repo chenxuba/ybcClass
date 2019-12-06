@@ -43,7 +43,8 @@ import {
   reqDeleteCourse,
   reqAddCourse,
   reqMenuLabel,
-  reqEditCourse
+  reqEditCourse,
+  reqRelevantCourse
 } from "../api";
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
@@ -252,12 +253,13 @@ export default {
       this.showXiangguanke = false
     },
     // 显示相关课tabs
-    showXiangguankes(id){
+   async showXiangguankes(id){
       this.showXiangguanke = true
       this.activeName = 'san'
       console.log(id);
       // 在这里请求相关课的接口
-      
+      const res = await reqRelevantCourse(id);
+      console.log(res);
     }
   },
   mounted() {

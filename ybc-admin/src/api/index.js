@@ -24,7 +24,7 @@ export const reqClassHourList = (title, start_time, end_time, page) => ajax(`${B
 /**
  * 发布课时资源
  */
-export const reqReleaseClassHour = (res_type, res_id,title,start_date, cover, video_url, audio_url,intro, first_label, second_label, needpay, real_price, password, cantry, cantrytime, is_open_class,is_open_privacy,associate_sell,screen_type, is_specify, release_time) => ajax(`${BASE_URL}/api/5dc8f73cabf87`, {res_type, res_id,title,start_date, cover, video_url, audio_url,intro, first_label, second_label, needpay, real_price, password, cantry, cantrytime, is_open_class,is_open_privacy, associate_sell,screen_type,is_specify, release_time}, 'POST');
+export const reqReleaseClassHour = (res_type, res_id,title,start_date, cover, video_url, audio_url,intro, first_label, second_label, needpay, real_price, password, cantry, cantrytime, is_open_class,is_open_privacy,associate_sell,screen_type, is_specify, release_time,associate_type,course_id,clockin_id) => ajax(`${BASE_URL}/api/5dc8f73cabf87`, {res_type, res_id,title,start_date, cover, video_url, audio_url,intro, first_label, second_label, needpay, real_price, password, cantry, cantrytime, is_open_class,is_open_privacy, associate_sell,screen_type,is_specify, release_time,associate_type,course_id,clockin_id}, 'POST');
 /**
  * 新增资源_获取分类标签 pros_type	资源类型：1-视频;2-软文
  */
@@ -61,3 +61,7 @@ export const reqEditCourse = (id) => ajax(`${BASE_URL}/api/5de8950c521dd`, {id},
  * 获取课程相关课列表
  */
 export const reqRelevantCourse = (course_id,title,page) => ajax(`${BASE_URL}/api/5de8adc24fa0b`, {course_id,title,page}, 'POST');
+/**
+ * 新增资源-获取课程和打卡学堂列表
+ */
+export const reqHoursCourseList = () => ajax(`${BASE_URL}/api/5de9bb8a43b7b`, {}, 'POST');

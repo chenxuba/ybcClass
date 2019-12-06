@@ -7,7 +7,7 @@
           v-model="ruleForm.title"
           class="input-title"
           style="width:400px"
-          placeholder="请输入视频标题"
+          placeholder="请输入标题"
         ></el-input>
       </el-form-item>
       <!-- 开始时间 -->
@@ -43,35 +43,48 @@
           <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </el-form-item>
-      <!-- 视频文件 -->
-      <!-- <el-form-item label="视频文件" required style="padding-right: 65%;">
-        <el-upload
-          class="upload-demo"
-          action="https://api.ybc365.com/api/5dca4fd808929"
-          :on-success="handleSuccess"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          multiple
-          :limit="1"
-          :with-credentials="true"
-        >
-          <div style="display:flex;">
-            <el-input
-              v-model="videoUrl"
-              placeholder="文件地址"
-              size="mini"
-              style="margin-right: 20px;width:300px"
-            ></el-input>
-            <el-button size="mini" type="primary">点击上传</el-button>
-          </div>
-          <div slot="tip" class="el-upload__tip">上传的视频只支持mp4格式</div>
-        </el-upload>
-      </el-form-item>-->
       <!-- 简介 -->
       <el-form-item label="简介" required prop="content">
         <div class="Editor" style="padding-right:60%;">
           <Editor ref="froalaEditor" @on-change="changeContent" v-model="ruleForm.content"></Editor>
         </div>
+      </el-form-item>
+      <!-- 关联售卖 -->
+      <el-form-item>
+        <el-checkbox v-model="ruleForm.associate_sell" true-label='1' false-label='0'>
+          <span style="vertical-align: middle;">关联售卖</span>
+          <span style="margin-left:20px;" v-show="ruleForm.associate_sell == '1'">
+            <el-radio-group v-model="ruleForm.associate_type">
+              <el-radio :label="99">
+                课程
+                <span v-if="ruleForm.associate_type == 99">
+                  <el-select v-model="ruleForm.course_id" placeholder="请选择">
+                    <el-option
+                      v-for="item in course_data"
+                      :key="item.id"
+                      :label="item.title"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </span>
+              </el-radio>
+              <el-radio :label="100">
+                打卡学堂
+                <span v-if="ruleForm.associate_type == 100">
+                  <el-select v-model="ruleForm.clockin_id" placeholder="请选择">
+                    <el-option
+                      v-for="item in clockin_school"
+                      :key="item.id"
+                      :label="item.title"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </span>
+              </el-radio>
+            </el-radio-group>
+          </span>
+          <span class="span">该商品放入课程/打卡学堂中售卖</span>
+        </el-checkbox>
       </el-form-item>
       <!-- 类型，分类 -->
       <el-form-item label="类型" required>
@@ -169,7 +182,7 @@
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
 export default {
-  props: ["menuLabel", "ruleForm"],
+  props: ["menuLabel", "ruleForm","clockin_school", "course_data"],
   data() {
     return {
       pickerOptions: {
@@ -177,7 +190,8 @@ export default {
           return time.getTime() < Date.now() - 8.64e7;
         },
         selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
-      }
+      },
+      
     };
   },
   methods: {
@@ -200,10 +214,13 @@ export default {
         this.ruleForm.shikanTime,
         "1", //开启课时页
         this.ruleForm.yinSiSet,
-        "0", //不关联售卖
+        this.ruleForm.associate_sell, //是否关联售卖，默认不关联
         "1", //强制竖屏
         this.ruleForm.shangJiaSet,
-        this.ruleForm.dingShiTime
+        this.ruleForm.dingShiTime,
+        this.ruleForm.associate_type,//关联售卖类型，是关联课程还是关联打卡学堂，99是课程，100是打卡学堂,默认关联课程
+        this.ruleForm.course_id,//关联课程ID
+        this.ruleForm.clockin_id//关联打卡学堂ID
       );
       console.log(res);
       if (res.code == 1) {
@@ -289,6 +306,9 @@ export default {
   },
   components: {
     Editor
+  },
+  watch:{
+    
   }
 };
 </script>

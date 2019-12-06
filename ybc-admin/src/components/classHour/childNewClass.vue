@@ -10,6 +10,8 @@
           @videoLiveshuaxin="shuaxinLists"
           ref="childvideoLive"
           :ruleForm="ruleForm"
+          :clockin_school="clockin_school"
+          :course_data="course_data"
         ></videoLive>
       </el-tab-pane>
       <el-tab-pane name="audioLive" :disabled="tabsDisabled">
@@ -21,6 +23,8 @@
           @audioLiveshuaxin="shuaxinLists"
           ref="childaudioLive"
           :ruleForm="ruleForm"
+          :clockin_school="clockin_school"
+          :course_data="course_data"
         ></audioLive>
       </el-tab-pane>
       <el-tab-pane name="video" :disabled="tabsDisabled">
@@ -31,6 +35,8 @@
           :menuLabel="menuLabel"
           @shuaxinList="shuaxinLists"
           :ruleForm="ruleForm"
+          :clockin_school="clockin_school"
+          :course_data="course_data"
           ref="childCopyVideo"
         ></copyVideo>
       </el-tab-pane>
@@ -42,6 +48,8 @@
           :menuLabel="menuLabel"
           @RadioshuaxinList="shuaxinLists"
           :ruleForm="ruleForm"
+          :clockin_school="clockin_school"
+          :course_data="course_data"
           ref="childCopyRadio"
         ></copyRadio>
       </el-tab-pane>
@@ -54,7 +62,7 @@ import videoLive from "../../grandson/childNewClass/videoLive";
 import audioLive from "../../grandson/childNewClass/audioLive";
 import copyVideo from "../../grandson/childNewClass/copyVideo";
 import copyRadio from "../../grandson/childNewClass/copyRadio";
-import { reqMenuLabel, reqResourceEdit } from "../../api";
+import { reqMenuLabel, reqResourceEdit, reqHoursCourseList } from "../../api";
 export default {
   data() {
     return {
@@ -78,9 +86,15 @@ export default {
         videoUrl: "",
         dingShiTime: new Date(), //定时直播
         res_id: "",
-        leixing: []
+        leixing: [],
+        associate_sell: "0", //是否关联售卖，默认不关联
+        associate_type: 99, //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
+        course_id: "", //关联课程ID
+        clockin_id: "" //关联打卡学堂ID
       },
-      tabsDisabled: false //tabs是否禁用，默认不禁用
+      tabsDisabled: false, //tabs是否禁用，默认不禁用
+      clockin_school:[],//打卡学堂列表
+      course_data:[] //课程列表
     };
   },
   methods: {
@@ -122,15 +136,25 @@ export default {
         this.ruleForm.password = res.data.res_pwd;
       }
     },
-    handleClick(){
-      this.$refs.childvideoLive.clearContent()
-      this.$refs.childaudioLive.clearContent()
-      this.$refs.childCopyVideo.clearContent()
-      this.$refs.childCopyRadio.clearContent()
+    handleClick() {
+      this.$refs.childvideoLive.clearContent();
+      this.$refs.childaudioLive.clearContent();
+      this.$refs.childCopyVideo.clearContent();
+      this.$refs.childCopyRadio.clearContent();
+    },
+    // 获取课程列表和打卡学堂列表
+    async getHousrCourseList() {
+      const res = await reqHoursCourseList();
+      console.log(res);
+      if(res.code == 1){
+        this.clockin_school = res.data.clockin_school
+        this.course_data = res.data.course_data
+      }
     }
   },
   mounted() {
     this.getMenuLabel();
+    this.getHousrCourseList();
   },
   components: {
     videoLive,

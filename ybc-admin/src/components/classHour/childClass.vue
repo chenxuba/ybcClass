@@ -139,7 +139,7 @@
             <div
               class="tubox"
               style="display: inline-block;"
-              v-if="item.type == 2 || item.type == 8"
+              v-if="(item.type == 2 && item.live_status != 0) || (item.type == 8 && item.live_status != 0)"
             >
               <el-tooltip class="item" effect="dark" content="结束直播" placement="top">
                 <el-button type="info" icon="el-icon-close" circle @click="startLive(item,'2')"></el-button>
