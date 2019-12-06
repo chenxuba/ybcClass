@@ -202,6 +202,8 @@ export default {
     },
     // 编辑资源
     hanldedit(item) {
+      console.log(item);
+      // return
       let txt = "编辑课时"
         // 说明是录播视频
       if (item.type == 3) {
@@ -210,10 +212,10 @@ export default {
       } else if (item.type == 10) {
         this.$emit("changActiveName", item, "audio",txt);
         // 说明是直播视频
-      } else if (item.type == 2) {
+      } else if (item.type == 2 || item.type == 4) {
         this.$emit("changActiveName", item, "videoLive",txt);
         // 说明是直播音频
-      } else if (item.type == 8) {
+      } else if (item.type == 8 || item.type == 9) {
         this.$emit("changActiveName", item, "audioLive",txt);
       }
     }

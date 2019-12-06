@@ -245,6 +245,10 @@ export default {
           (this.ruleForm.shangJiaSet = 1),
           (this.ruleForm.dingShiTime = new Date());
         this.ruleForm.leixing = [];
+        (this.ruleForm.associate_sell = ""), //是否关联售卖，默认不关联
+          (this.ruleForm.associate_type = 99), //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
+          (this.ruleForm.course_id = ""), //关联课程ID
+          (this.ruleForm.clockin_id = ""); //关联打卡学堂ID
         this.$emit("videoLiveshuaxin");
       } else if (res.code == -995) {
         this.$message.error(res.msg);
@@ -307,9 +311,18 @@ export default {
   components: {
     Editor
   },
-  watch:{
-    
-  }
+ watch: {
+    "ruleForm.associate_sell"() {
+      console.log(this.ruleForm.associate_sell);
+      if(this.ruleForm.associate_sell == '0'){
+        this.ruleForm.associate_type = ''
+        console.log(this.ruleForm.associate_type);
+        this.ruleForm.course_id = "";
+        this.ruleForm.clockin_id = ""
+        
+      }
+    }
+  },
 };
 </script>
 

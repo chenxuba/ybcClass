@@ -207,8 +207,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7;
         },
         selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
-      },
-      
+      }
     };
   },
   methods: {
@@ -263,6 +262,10 @@ export default {
           (this.ruleForm.shangJiaSet = 1),
           (this.ruleForm.dingShiTime = new Date());
         this.ruleForm.leixing = [];
+        (this.ruleForm.associate_sell = ""), //是否关联售卖，默认不关联
+          (this.ruleForm.associate_type = 99), //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
+          (this.ruleForm.course_id = ""), //关联课程ID
+          (this.ruleForm.clockin_id = ""); //关联打卡学堂ID
         // 发布后触发自定义事件shuaxinList，父组件childNewClass
         this.$emit("shuaxinList");
       } else if (res.code == -995 || res.code == -998) {
@@ -329,6 +332,12 @@ export default {
   watch: {
     "ruleForm.associate_sell"() {
       console.log(this.ruleForm.associate_sell);
+      if (this.ruleForm.associate_sell == "0") {
+        this.ruleForm.associate_type = "";
+        console.log(this.ruleForm.associate_type);
+        this.ruleForm.course_id = "";
+        this.ruleForm.clockin_id = "";
+      }
     }
   },
   computed: {}

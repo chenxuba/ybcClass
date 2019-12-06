@@ -87,7 +87,7 @@ export default {
         dingShiTime: new Date(), //定时直播
         res_id: "",
         leixing: [],
-        associate_sell: "0", //是否关联售卖，默认不关联
+        associate_sell: "", //是否关联售卖，默认不关联
         associate_type: 99, //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
         course_id: "", //关联课程ID
         clockin_id: "" //关联打卡学堂ID
@@ -110,7 +110,6 @@ export default {
       this.$emit("shuaxinListss", "first");
     },
     async getEditMsg(item) {
-      console.log(item);
       const res = await reqResourceEdit(item.id);
       console.log(res);
       if (res.code == 1) {
@@ -134,6 +133,11 @@ export default {
         this.ruleForm.leixing = [res.data.label1, res.data.label2];
         this.ruleForm.price = res.data.price;
         this.ruleForm.password = res.data.res_pwd;
+        this.ruleForm.associate_sell = (res.data.associate_type).toString(); //要转成字符串格式
+        this.ruleForm.associate_type = 99;
+        this.ruleForm.course_id = res.data.column_id;
+        this.ruleForm.clockin_id = res.data.clockin_id
+        this.course_data = res.data.course_data
       }
     },
     handleClick() {
