@@ -63,7 +63,7 @@
       </el-form-item>
       <!-- 关联售卖 -->
       <el-form-item>
-        <el-checkbox v-model="ruleForm.associate_sell" true-label='1' false-label='0'>
+        <el-checkbox v-model="ruleForm.associate_sell" true-label="1" false-label="0">
           <span style="vertical-align: middle;">关联售卖</span>
           <span style="margin-left:20px;" v-show="ruleForm.associate_sell == '1'">
             <el-radio-group v-model="ruleForm.associate_type">
@@ -193,8 +193,9 @@
 <script>
 import Editor from "../../components/editor";
 import { reqReleaseClassHour } from "../../api";
+import { all } from "q";
 export default {
-  props: ["menuLabel", "ruleForm","clockin_school", "course_data"],
+  props: ["menuLabel", "ruleForm", "clockin_school", "course_data"],
   data() {
     return {
       pickerOptions: {
@@ -202,8 +203,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7;
         },
         selectableRange: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} - 23:59:59`
-      },
-      
+      }
     };
   },
   methods: {
@@ -230,9 +230,9 @@ export default {
         "1", //强制竖屏
         this.ruleForm.shangJiaSet,
         this.ruleForm.dingShiTime,
-        this.ruleForm.associate_type,//关联售卖类型，是关联课程还是关联打卡学堂，99是课程，100是打卡学堂,默认关联课程
-        this.ruleForm.course_id,//关联课程ID
-        this.ruleForm.clockin_id//关联打卡学堂ID
+        this.ruleForm.associate_type, //关联售卖类型，是关联课程还是关联打卡学堂，99是课程，100是打卡学堂,默认关联课程
+        this.ruleForm.course_id, //关联课程ID
+        this.ruleForm.clockin_id //关联打卡学堂ID
       );
       console.log(res);
       if (res.code == 1) {
@@ -248,7 +248,7 @@ export default {
           this.$refs.froalaEditor.setHtml(""),
           (this.ruleForm.leixing1 = ""),
           (this.ruleForm.leixing2 = ""),
-          (this.ruleForm.radio_fufei = 1),
+          (this.ruleForm.radio_fufei = 2),
           (this.ruleForm.price = ""),
           (this.ruleForm.password = ""),
           (this.ruleForm.radio_isShikan = 0),
@@ -257,15 +257,16 @@ export default {
           (this.ruleForm.shangJiaSet = 1),
           (this.ruleForm.dingShiTime = new Date());
         this.ruleForm.leixing = [];
-        (this.ruleForm.associate_sell = ""), //是否关联售卖，默认不关联
+        (this.ruleForm.associate_sell = "0"), //是否关联售卖，默认不关联
           (this.ruleForm.associate_type = 99), //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
           (this.ruleForm.course_id = ""), //关联课程ID
           (this.ruleForm.clockin_id = ""); //关联打卡学堂ID
         // 发布后触发自定义事件shuaxinList，父组件childNewClass
         this.$emit("RadioshuaxinList");
+        // 清空videourl
       } else if (res.code == -995 || res.code == -998) {
         this.$message.error(res.msg);
-      }else if(res.code == -1){
+      } else if (res.code == -1) {
         this.$message.error(res.msg);
       }
     },
@@ -273,7 +274,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     // 清空编辑器的内容
-    clearContent(){
+    clearContent() {
       this.$refs.froalaEditor.setHtml("");
     },
     changeContent(html) {
@@ -318,6 +319,7 @@ export default {
       console.log(this.ruleForm.videoUrl);
     },
     beforeRemove(file, fileList) {
+      console.log(file, fileList);
       return this.$confirm(`确定移除 ${file.name}？`);
     }
   },
@@ -327,15 +329,14 @@ export default {
   watch: {
     "ruleForm.associate_sell"() {
       console.log(this.ruleForm.associate_sell);
-      if(this.ruleForm.associate_sell == '0'){
-        this.ruleForm.associate_type = ''
+      if (this.ruleForm.associate_sell == "0") {
+        this.ruleForm.associate_type = "";
         console.log(this.ruleForm.associate_type);
         this.ruleForm.course_id = "";
-        this.ruleForm.clockin_id = ""
-        
+        this.ruleForm.clockin_id = "";
       }
     }
-  },
+  }
 };
 </script>
 

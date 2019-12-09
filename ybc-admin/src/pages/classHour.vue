@@ -94,7 +94,7 @@ export default {
               content: "", //直播简介
               leixing1: "", //一级标签
               leixing2: "", //二级标签
-              radio_fufei: 1, //收费方式
+              radio_fufei: 2, //收费方式
               radio_isShikan: 0, //是否需要试看,默认不需要
               yinSiSet: "0", //隐私设置
               shangJiaSet: 1, //上架设置，是否立即发布
@@ -105,8 +105,8 @@ export default {
               dingShiTime: new Date(), //定时直播
               res_id: "",
               leixing: [],
-              associate_sell: "", //是否关联售卖，默认不关联
-              associate_type: 99, //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
+              associate_sell: "0", //是否关联售卖，默认不关联
+              associate_type: "", //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
               course_id: "", //关联课程ID
               clockin_id: "" //关联打卡学堂ID
             };

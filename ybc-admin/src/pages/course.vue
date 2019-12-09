@@ -26,10 +26,27 @@
           ></childNewCourse>
         </el-tab-pane>
         <el-tab-pane name="san" v-if="showXiangguanke">
-           <span slot="label">
+          <span slot="label">
             <i class="el-icon-view"></i> 相关课
           </span>
-          <xiangguanCourse :seleteCourse="seleteCourse"></xiangguanCourse>
+          <xiangguanCourse
+            :seleteCourse="seleteCourse"
+            :xiangguankeList="xiangguankeList"
+            @emitSearch="emitSearch"
+            @xiangguanKehanldedit="xiangguanKehanldedit"
+          ></xiangguanCourse>
+        </el-tab-pane>
+        <el-tab-pane name="edit" v-if="showEditXiangguankeTime">
+          <span slot="label">
+            <i class="el-icon-view"></i> 编辑课时
+            <span
+              @click="yincangEditXiangguankeTimeTabs"
+              class="yincangEditXiangguankeTimeTabs"
+            >
+              <i class="el-icon-error"></i>
+            </span>
+          </span>
+          收拾收拾
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -70,8 +87,10 @@ export default {
         res_id: "", //课程id
         dingShiTime: ""
       },
-      showXiangguanke: false,//相关课
-      seleteCourse:"" //选中的课程信息
+      showXiangguanke: false, //相关课
+      seleteCourse: "", //选中的课程信息
+      xiangguankeList: [], //相关课列表
+      showEditXiangguankeTime: false //是否显示编辑相关课时
     };
   },
   components: {
@@ -248,21 +267,44 @@ export default {
           });
       }
       // 点击课程tabs让相关课tabs消失
-      this.showXiangguanke = false
+      this.showXiangguanke = false;
+      this.showEditXiangguankeTime = false;
     },
     // 点击新建课程tabs让相关课tabs消失
-    tabClick2(){
-      this.showXiangguanke = false
+    tabClick2() {
+      this.showXiangguanke = false;
+      this.showEditXiangguankeTime = false;
     },
     // 显示相关课tabs
-   async showXiangguankes(item){
-     this.seleteCourse = item //把点击的课程信息传过去
-      this.showXiangguanke = true
-      this.activeName = 'san'
+    async showXiangguankes(item) {
+      this.seleteCourse = item; //把点击的课程信息传过去
+      this.showXiangguanke = true;
+      this.activeName = "san";
       // alert(item.id);
       // 在这里请求相关课的接口
       const res = await reqRelevantCourse(item.id);
       console.log(res);
+      if (res.code == 1) {
+        this.xiangguankeList = res.data.rs_list;
+      }
+    },
+    // emitSearch 子组件 xiangguanCourse
+    emitSearch(val) {
+      console.log(val);
+      // 在这里写搜索接口
+    },
+    // 编辑相关课时资源
+    xiangguanKehanldedit(id) {
+      // 在这里写编辑课时接口
+      this.activeName = "edit";
+      this.showEditXiangguankeTime = true;
+    },
+    // 隐藏编辑相关课课时tabs，并跳到 相关课 tabs
+    yincangEditXiangguankeTimeTabs() {
+      this.showEditXiangguankeTime = false;
+      setTimeout(() => {
+        this.activeName = "san";
+      }, 100);
     }
   },
   mounted() {
@@ -274,5 +316,8 @@ export default {
 <style scoped>
 .classHour {
   min-width: 1350px;
+}
+.yincangEditXiangguankeTimeTabs:hover {
+  color: red;
 }
 </style>

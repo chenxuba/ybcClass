@@ -13,7 +13,7 @@
               <th width="3%">编号</th>
               <th width="6%">课程名称</th>
               <th width="6%" style="min-width: 50px">封面</th>
-              <th width="6%">总期数/直播/视频</th>
+              <th width="8%">总期数/直播/视频</th>
               <th width="8%">浏览量</th>
               <th width="5%">状态</th>
               <th width="4%">收费方式</th>
@@ -89,6 +89,21 @@
                     <el-button type="danger" icon="el-icon-question" circle></el-button>
                   </el-tooltip>
                 </div>
+                <!-- 终结连载 -->
+                <div class="tubox" style="display: inline-block;">
+                  <el-tooltip class="item" effect="dark" content="终结连载" placement="top">
+                    <el-popover placement="top" width="260">
+                      <p>是否要终结连载，确定后将不能继续对课程进行更新！</p>
+                      <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text">否</el-button>
+                        <el-button type="primary" size="mini">是</el-button>
+                      </div>
+                      <!-- <el-button slot="reference">删除</el-button> -->
+                    <el-button type="info" icon="el-icon-error" slot="reference" circle></el-button>
+
+                    </el-popover>
+                  </el-tooltip>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -123,8 +138,8 @@ export default {
       this.$emit("event2", item.id);
     },
     // 点击相关课按钮触发的方法 自定义事件 ,父组件course
-    addTab(item){
-      this.$emit("event3",item)
+    addTab(item) {
+      this.$emit("event3", item);
     }
   }
 };

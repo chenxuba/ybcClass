@@ -76,7 +76,7 @@ export default {
         content: "", //直播简介
         leixing1: "", //一级标签
         leixing2: "", //二级标签
-        radio_fufei: 1, //收费方式
+        radio_fufei: 2, //收费方式,默认学员
         radio_isShikan: 0, //是否需要试看,默认不需要
         yinSiSet: "0", //隐私设置
         shangJiaSet: 1, //上架设置，是否立即发布
@@ -87,8 +87,8 @@ export default {
         dingShiTime: new Date(), //定时直播
         res_id: "",
         leixing: [],
-        associate_sell: "", //是否关联售卖，默认不关联
-        associate_type: 99, //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
+        associate_sell: "0", //是否关联售卖，默认不关联
+        associate_type: "", //关联资源类型，是关联课程还是打卡学堂 99-课程 100-打卡学堂 默认关联课程
         course_id: "", //关联课程ID
         clockin_id: "" //关联打卡学堂ID
       },
@@ -109,35 +109,36 @@ export default {
       this.tabsDisabled = false;
       this.$emit("shuaxinListss", "first");
     },
+    // 编辑课时
     async getEditMsg(item) {
       const res = await reqResourceEdit(item.id);
       console.log(res);
       if (res.code == 1) {
-        this.ruleForm.title = res.data.title;
-        this.ruleForm.date = res.data.starttime;
-        this.ruleForm.imgUrl = res.data.cover;
-        this.ruleForm.videoUrl = res.data.videourl;
-        this.$refs.childCopyVideo.changeContent(res.data.introduce);
-        this.$refs.childCopyRadio.changeContent(res.data.introduce);
-        this.$refs.childvideoLive.changeContent(res.data.introduce);
-        this.$refs.childaudioLive.changeContent(res.data.introduce);
-        this.ruleForm.leixing1 = res.data.label1;
-        this.ruleForm.leixing2 = res.data.label2;
-        this.ruleForm.radio_fufei = Number(res.data.needpay);
-        this.ruleForm.radio_isShikan = Number(res.data.cantry);
-        this.ruleForm.shikanTime = res.data.cantrytime;
-        this.ruleForm.yinSiSet = res.data.is_privacy;
-        this.ruleForm.shangJiaSet = Number(res.data.is_specify);
-        this.ruleForm.dingShiTime = res.data.release_time;
-        this.ruleForm.res_id = res.data.res_id;
-        this.ruleForm.leixing = [res.data.label1, res.data.label2];
-        this.ruleForm.price = res.data.price;
-        this.ruleForm.password = res.data.res_pwd;
-        this.ruleForm.associate_sell = (res.data.associate_type).toString(); //要转成字符串格式
+        this.ruleForm.title = res.data.title; //标题
+        this.ruleForm.date = res.data.starttime; //直播开始时间
+        this.ruleForm.imgUrl = res.data.cover; //封面图
+        this.ruleForm.videoUrl = res.data.videourl; //录播视频地址
+        this.$refs.childCopyVideo.changeContent(res.data.introduce); //简介
+        this.$refs.childCopyRadio.changeContent(res.data.introduce); //简介
+        this.$refs.childvideoLive.changeContent(res.data.introduce); //简介
+        this.$refs.childaudioLive.changeContent(res.data.introduce); //简介
+        this.ruleForm.leixing1 = res.data.label1;//类型1
+        this.ruleForm.leixing2 = res.data.label2;//类型2
+        this.ruleForm.radio_fufei = Number(res.data.needpay); //收费方式
+        this.ruleForm.radio_isShikan = Number(res.data.cantry); //是否试看
+        this.ruleForm.shikanTime = res.data.cantrytime; // 试看时间
+        this.ruleForm.yinSiSet = res.data.is_privacy; //隐私设置
+        this.ruleForm.shangJiaSet = Number(res.data.is_specify);//是否定时发布
+        this.ruleForm.dingShiTime = res.data.release_time;//定时发布时间
+        this.ruleForm.res_id = res.data.res_id;//资源ID
+        this.ruleForm.leixing = [res.data.label1, res.data.label2];//类型分类
+        this.ruleForm.price = res.data.price;//收费金额
+        this.ruleForm.password = res.data.res_pwd; //资源密码
+        this.ruleForm.associate_sell = (res.data.associate_type).toString(); //要转成字符串格式 
         this.ruleForm.associate_type = 99;
-        this.ruleForm.course_id = res.data.column_id;
-        this.ruleForm.clockin_id = res.data.clockin_id
-        this.course_data = res.data.course_data
+        this.ruleForm.course_id = res.data.column_id;//关联的课程ID
+        this.ruleForm.clockin_id = res.data.clockin_id//关联的打卡学堂ID
+        this.course_data = res.data.course_data //需要关联的课程列表
       }
     },
     handleClick() {
