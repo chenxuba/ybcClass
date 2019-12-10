@@ -26,7 +26,7 @@
         <el-form-item>
           <el-popover placement="right" width="160">
             <div style="text-align: center; margin: 0">
-              <el-button type="success" size="mini">课时</el-button>
+              <el-button type="success" size="mini" @click="newClassHouse">课时</el-button>
               <el-button type="danger" size="mini">软文</el-button>
             </div>
             <el-button slot="reference" type="warning" size="small">新建</el-button>
@@ -35,7 +35,7 @@
       </el-form>
     </div>
     <!-- 表格 -->
-    <div class="WSY_weishi">
+    <div class="WSY_weishi" v-if="xiangguankeList != ''">
       <table border="0" cellpadding="0" cellspacing="0">
         <thead>
           <tr class="WSY_biaohead">
@@ -59,7 +59,7 @@
             </td>
             <td>
               <div class="details_box">
-                <img :src="item.cover" class="details_img" />
+                <img :src="item.cover || item.pic" class="details_img"  />
                 <div class="details_content">
                   <p class="details_title">{{item.title}}</p>
                   <p class="details_data" style="text-align: left;">
@@ -69,16 +69,17 @@
                     <span class="res_type" v-if="item.type == 4">直播回放</span>
                     <span class="res_type" v-if="item.type == 8">音频直播</span>
                     <span class="res_type" v-if="item.type == 9">音频回放</span>
+                    <span class="res_type" v-else>软文</span>
                   </p>
                 </div>
               </div>
             </td>
             <td>
-              <span v-if="item.needpay == 0">公开</span>
-              <span v-if="item.needpay == 1">公开</span>
-              <span v-if="item.needpay == 2">学员</span>
-              <span v-if="item.needpay == 3">收费</span>
-              <span v-if="item.needpay == 4">密码</span>
+              <span v-if="item.needpay == 0 || item.article_needpay == 0">公开</span>
+              <span v-if="item.needpay == 1 || item.article_needpay == 1">公开</span>
+              <span v-if="item.needpay == 2 || item.article_needpay == 2">学员</span>
+              <span v-if="item.needpay == 3 || item.article_needpay == 3">收费</span>
+              <span v-if="item.needpay == 4 || item.article_needpay == 4">密码</span>
             </td>
             <td>{{item.createtime}}</td>
             <!-- 操作 -->
@@ -89,23 +90,14 @@
                   <el-button type="primary" icon="el-icon-edit" circle @click="hanldedit(item)"></el-button>
                 </el-tooltip>
               </div>
-              <!----删除---->
-              <div class="tubox">
-                <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                  <el-button type="danger" icon="el-icon-delete" circle @click="hanlddelete(item)"></el-button>
-                </el-tooltip>
-              </div>
-              <!-- 上传ppt -->
-              <div class="tubox" style="display: inline-block;">
-                <el-tooltip class="item" effect="dark" content="上传ppt" placement="top">
-                  <el-button type="warning" icon="el-icon-folder-opened" circle></el-button>
-                </el-tooltip>
-              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+     <div v-else>
+        <img src="../../../static/img/zwsj.png" alt class="zwsj" />
+      </div>
   </div>
 </template>
 
@@ -124,7 +116,7 @@ export default {
     },
     // 编辑课时 自定义事件，触发父组件 course 的 xiangguanKehanldedit
     hanldedit(item) {
-        // 说明是录播视频
+      // 说明是录播视频
       if (item.type == 3) {
         this.$emit("xiangguanKehanldedit", item, "video");
         // 说明是录播音频
@@ -138,13 +130,13 @@ export default {
         this.$emit("xiangguanKehanldedit", item, "audioLive");
       }
     },
-    // 删除课时  自定义事件，触发父组件 course 的 hanlddelete
-    hanlddelete(item) {
-      console.log(item.id);
-    },
-    // 开始直播 自定义事件，触发父组件 course 的 startLive
-    startLive() {
-      console.log(item.id);
+    // 新建课时，跳转到课时界面去
+    newClassHouse() {
+      this.$router.push("/classHour");
+      this.$message({
+        message: "请点击新建课时",
+        type: "warning"
+      });
     }
   }
 };
@@ -296,5 +288,13 @@ table {
   /* width: 600px; */
   padding-left: 30px;
   margin-top: 20px;
+}
+.zwsj {
+  position: fixed;
+  top: 40%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
 }
 </style>
