@@ -46,7 +46,7 @@
               <i class="el-icon-error"></i>
             </span>
           </span>
-          收拾收拾
+          <xiangguankeTimeEdit @shuaxinListss="shuaxinListsss" ref="childNewClass"></xiangguankeTimeEdit>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -65,6 +65,7 @@ import {
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
 import xiangguanCourse from "../components/course/xiangguanCourse";
+import xiangguankeTimeEdit from "../components/course/xiangguankeTimeEdit";
 export default {
   data() {
     return {
@@ -96,7 +97,8 @@ export default {
   components: {
     childCourse,
     childNewCourse,
-    xiangguanCourse
+    xiangguanCourse,
+    xiangguankeTimeEdit
   },
   methods: {
     // 获取课程列表
@@ -294,10 +296,16 @@ export default {
       // 在这里写搜索接口
     },
     // 编辑相关课时资源
-    xiangguanKehanldedit(id) {
+    xiangguanKehanldedit(item, tabs) {
+      console.log(item);
       // 在这里写编辑课时接口
       this.activeName = "edit";
       this.showEditXiangguankeTime = true;
+      setTimeout(() => {
+        this.$refs.childNewClass.activeName = tabs;
+        this.$refs.childNewClass.tabsDisabled = true;
+        this.$refs.childNewClass.getEditMsg(item);
+      }, 10);
     },
     // 隐藏编辑相关课课时tabs，并跳到 相关课 tabs
     yincangEditXiangguankeTimeTabs() {
@@ -305,6 +313,13 @@ export default {
       setTimeout(() => {
         this.activeName = "san";
       }, 100);
+    },
+    // 自定义事件，接收子组件的参数“first”，切换tab页
+    shuaxinListsss(item) {
+      this.activeName = item;
+      this.showEditXiangguankeTime = false;
+      this.showXiangguanke = false;
+      // this.tabsNmae = "新建课时";
     }
   },
   mounted() {

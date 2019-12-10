@@ -54,7 +54,7 @@
                 name="personal_sort"
                 class="personal_sort"
                 style="width:50px;"
-                :value="item.id"
+                :value="item.res_id"
               />
             </td>
             <td>
@@ -124,8 +124,19 @@ export default {
     },
     // 编辑课时 自定义事件，触发父组件 course 的 xiangguanKehanldedit
     hanldedit(item) {
-      console.log(item.id);
-      this.$emit("xiangguanKehanldedit",item.id)
+        // 说明是录播视频
+      if (item.type == 3) {
+        this.$emit("xiangguanKehanldedit", item, "video");
+        // 说明是录播音频
+      } else if (item.type == 10) {
+        this.$emit("xiangguanKehanldedit", item, "audio");
+        // 说明是直播视频
+      } else if (item.type == 2 || item.type == 4) {
+        this.$emit("xiangguanKehanldedit", item, "videoLive");
+        // 说明是直播音频
+      } else if (item.type == 8 || item.type == 9) {
+        this.$emit("xiangguanKehanldedit", item, "audioLive");
+      }
     },
     // 删除课时  自定义事件，触发父组件 course 的 hanlddelete
     hanlddelete(item) {
