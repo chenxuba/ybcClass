@@ -65,3 +65,15 @@ export const reqRelevantCourse = (course_id,title,page) => ajax(`${BASE_URL}/api
  * 新增资源-获取课程和打卡学堂列表
  */
 export const reqHoursCourseList = () => ajax(`${BASE_URL}/api/5de9bb8a43b7b`, {}, 'POST');
+/**
+ * 软文列表+搜索
+ */
+export const reqWordList = (title,page) => ajax(`${BASE_URL}/api/5dce40be2fb29`, {title,page}, 'POST');
+/**
+ * 删除软文资源
+ */
+export const reqDeleteWord = (id) => ajax(`${BASE_URL}/api/5dce6cbd81b22`, {id}, 'POST');
+/**
+ * 查看软文删除日志
+ */
+export const reqSeeDeleteRiZhi = (article_id) => ajax(`${BASE_URL}/api/5def5e3075d8e`, {article_id}, 'POST');
