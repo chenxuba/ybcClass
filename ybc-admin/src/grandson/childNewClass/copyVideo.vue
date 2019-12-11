@@ -10,10 +10,7 @@
           placeholder="请输入视频标题"
         ></el-input>
       </el-form-item>
-      <!-- 开始时间 -->
-      <!-- <el-form-item label="开始时间" required>
-        <el-date-picker v-model="ruleForm.date" prop="date" type="datetime" placeholder="选择日期时间"></el-date-picker>
-      </el-form-item>-->
+      
       <!-- 封面 -->
       <el-form-item label="封面" prop="pic">
         <el-upload

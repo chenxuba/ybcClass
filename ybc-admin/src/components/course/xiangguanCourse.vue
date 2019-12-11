@@ -27,7 +27,7 @@
           <el-popover placement="right" width="160">
             <div style="text-align: center; margin: 0">
               <el-button type="success" size="mini" @click="newClassHouse">课时</el-button>
-              <el-button type="danger" size="mini">软文</el-button>
+              <el-button type="danger" size="mini" @click="newWord">软文</el-button>
             </div>
             <el-button slot="reference" type="warning" size="small">新建</el-button>
           </el-popover>
@@ -132,10 +132,20 @@ export default {
     },
     // 新建课时，跳转到课时界面去
     newClassHouse() {
-      this.$router.push("/classHour");
-      this.$message({
-        message: "请点击新建课时",
-        type: "warning"
+      this.$router.push({
+        path:"/classHour",
+        query:{
+          activeName:'second'
+        }
+      });
+    },
+    // 新建软文
+    newWord(){
+      this.$router.push({
+        path:"/word",
+        query:{
+          activeName:'second'
+        }
       });
     }
   }

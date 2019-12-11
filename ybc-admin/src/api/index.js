@@ -77,3 +77,11 @@ export const reqDeleteWord = (id) => ajax(`${BASE_URL}/api/5dce6cbd81b22`, {id},
  * 查看软文删除日志
  */
 export const reqSeeDeleteRiZhi = (article_id) => ajax(`${BASE_URL}/api/5def5e3075d8e`, {article_id}, 'POST');
+/**
+ * 保存软文资源
+ */
+export const reqNewWord = (title,pic,label1,label2,needpay,price,password,try_look,article_try,article_content,column_id,is_published,published_time,id) => ajax(`${BASE_URL}/api/5dce545fd77ba`, {title,pic,label1,label2,needpay,price,password,try_look,article_try,article_content,column_id,is_published,published_time,id}, 'POST');
+/**
+ * 编辑软文-获取内容
+ */
+export const reqEditWord = (id) => ajax(`${BASE_URL}/api/5dce6ea4e108f`, {id}, 'POST');

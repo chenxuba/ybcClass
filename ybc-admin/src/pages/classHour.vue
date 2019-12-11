@@ -55,8 +55,6 @@ export default {
       this.tabsNmae = "新建课时";
     },
     shuxinLists() {
-      console.log(111);
-
       this.getClassHourList();
     },
     changActiveNames(item, tabs, txt) {
@@ -120,6 +118,9 @@ export default {
   },
   mounted() {
     this.getClassHourList();
+    if(this.$route.query.activeName != undefined){
+      this.activeName = this.$route.query.activeName
+    }
   }
 };
 </script>

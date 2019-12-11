@@ -61,7 +61,12 @@
               <!---->
               <div class="tubox">
                 <el-tooltip class="item" effect="dark" content="修改" placement="top">
-                  <el-button type="success" icon="el-icon-edit" circle></el-button>
+                  <el-button
+                    type="success"
+                    icon="el-icon-edit"
+                    circle
+                    @click="handledit(item.id)"
+                  ></el-button>
                 </el-tooltip>
               </div>
               <div class="tubox">
@@ -106,15 +111,20 @@
       ></el-pagination>
     </div>
     <!-- 日志记录的弹窗 -->
-    <el-dialog title="删除日志" :visible.sync="dialogTableVisible" :modal-append-to-body="false" width="30%">
+    <el-dialog
+      title="删除日志"
+      :visible.sync="dialogTableVisible"
+      :modal-append-to-body="false"
+      width="30%"
+    >
       <table class="gridtable">
         <tr>
           <th>删除时间</th>
           <th>操作人</th>
         </tr>
         <tr>
-          <td>{{rizhiMsg.delete_time}}</td>
-          <td>{{rizhiMsg.action_user}}</td>
+          <td>{{rizhiMsg.delete_time || '1999-10-10 10:10:10'}}</td>
+          <td>{{rizhiMsg.action_user || '导师XXX'}}</td>
         </tr>
       </table>
     </el-dialog>
@@ -137,16 +147,34 @@ export default {
     },
     // 点击搜索按钮触发
     search() {
+      if (this.searchVal == "") {
+        this.$message({
+          message: "请输入搜索标题",
+          type: "warning"
+        });
+        return false;
+      }
       this.$emit("search", this.searchVal);
     },
     // 点击删除按钮触发
     handldelete(id) {
       this.$emit("handldelete", id);
     },
+    // 点击修改按钮触发
+    handledit(id){
+      this.$emit("handledit", id);
+    },
     // 点击查看日志按钮触发
     SeeDeleteRiZhi(id) {
       this.dialogTableVisible = true;
       this.$emit("SeeDeleteRiZhi", id);
+    }
+  },
+  watch: {
+    searchVal(newValue, oldValue) {
+      if (this.searchVal == "") {
+        this.$emit("search", this.searchVal);
+      }
     }
   }
 };
