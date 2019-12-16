@@ -85,3 +85,7 @@ export const reqNewWord = (title,pic,label1,label2,needpay,price,password,try_lo
  * 编辑软文-获取内容
  */
 export const reqEditWord = (id) => ajax(`${BASE_URL}/api/5dce6ea4e108f`, {id}, 'POST');
+/**
+ * 终结课程连载
+ */
+export const reqOverCourse = (id) => ajax(`${BASE_URL}/api/5dee2beade0bd`, {id}, 'POST');

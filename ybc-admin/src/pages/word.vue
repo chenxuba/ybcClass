@@ -26,6 +26,7 @@
           :menuLabel="menuLabel"
           :course_data="course_data"
           @newWord="newWord"
+          @hanldQuxiao="hanldQuxiao"
           ref="childNewWord"
         ></childNewWord>
       </el-tab-pane>
@@ -254,10 +255,34 @@ export default {
               shangJiaSet: 0, //是否定时发布，默认不定时
               dingShiTime: "" //定时发布时间
             };
+            this.$refs.childNewWord.clearContent();
           });
       }
       // 点击课程tabs让相关课tabs消失
       this.showXiangguanke = false;
+    },
+    // 取消
+    hanldQuxiao() {
+      this.tabsName = "新建软文";
+      this.activeName = "first";
+      this.ruleForm = {
+        title: "", //标题
+        imgUrl: "", //封面
+        leixing: [], //分类
+        leixing1: "", //类型1
+        leixing2: "", //类型2
+        radio_fufei: 0, //收费方式，默认公开
+        price: "", //收费金额
+        password: "", //密码
+        radio_isShikan: 1, //是否设置试看，默认不需要
+        shikancontent: "", //试看内容
+        content: "", //正文
+        associate_sell: "0", //关联售卖，默认不关联
+        course_id: "", //关联的课程ID
+        shangJiaSet: 0, //是否定时发布，默认不定时
+        dingShiTime: "" //定时发布时间
+      };
+      this.$refs.childNewWord.clearContent();
     }
   },
   mounted() {

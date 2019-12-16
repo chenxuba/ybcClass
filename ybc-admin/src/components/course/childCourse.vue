@@ -79,28 +79,27 @@
                       type="success"
                       icon="el-icon-star-on"
                       circle
-                      @click="startLive(item,'1')"
+                      @click="seeDingyue(item.id)"
                     ></el-button>
                   </el-tooltip>
                 </div>
                 <!-- 相关评价 -->
                 <div class="tubox" style="display: inline-block;">
                   <el-tooltip class="item" effect="dark" content="相关评价" placement="top">
-                    <el-button type="danger" icon="el-icon-question" circle></el-button>
+                    <el-button type="danger" icon="el-icon-question" circle  @click="xiangguanPingjia(item.id)"></el-button>
                   </el-tooltip>
                 </div>
                 <!-- 终结连载 -->
-                <div class="tubox" style="display: inline-block;">
+                <div class="tubox" style="display: inline-block;" v-if="item.status == 1">
                   <el-tooltip class="item" effect="dark" content="终结连载" placement="top">
                     <el-popover placement="top" width="260">
                       <p>是否要终结连载，确定后将不能继续对课程进行更新！</p>
                       <div style="text-align: right; margin: 0">
-                        <el-button size="mini" type="text">否</el-button>
-                        <el-button type="primary" size="mini">是</el-button>
+                        <!-- <el-button size="mini" type="text" >否</el-button> -->
+                        <el-button type="primary" size="mini" @click="OverCourse(item.id)">是</el-button>
                       </div>
                       <!-- <el-button slot="reference">删除</el-button> -->
-                    <el-button type="info" icon="el-icon-error" slot="reference" circle></el-button>
-
+                      <el-button type="info" icon="el-icon-error" slot="reference" circle></el-button>
                     </el-popover>
                   </el-tooltip>
                 </div>
@@ -140,7 +139,20 @@ export default {
     // 点击相关课按钮触发的方法 自定义事件 ,父组件course
     addTab(item) {
       this.$emit("event3", item);
-    }
+    },
+    // 点击终结连载触发
+    OverCourse(id) {
+      this.$emit("OverCourse",id)
+    },
+    // 点击查看已订阅触发
+    seeDingyue(id){
+      this.$emit("seeDingyue",id)
+    },
+    // 点击相关评价触发
+    xiangguanPingjia(id){
+      this.$emit("xiangguanPingjia",id)
+    },
+    
   }
 };
 </script>

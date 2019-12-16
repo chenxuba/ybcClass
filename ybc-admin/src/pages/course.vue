@@ -11,6 +11,9 @@
             @event0="deleteCourse"
             @event2="hanldEdit"
             @event3="showXiangguankes"
+            @OverCourse="OverCourse"
+            @seeDingyue="seeDingyue"
+            @xiangguanPingjia="xiangguanPingjia"
           ></childCourse>
         </el-tab-pane>
         <el-tab-pane name="second">
@@ -48,6 +51,26 @@
           </span>
           <xiangguankeTimeEdit @shuaxinListss="shuaxinListsss" ref="childNewClass"></xiangguankeTimeEdit>
         </el-tab-pane>
+        <!-- 已订阅tabs -->
+        <el-tab-pane name="SeeDingyue" v-if="showSeeDingyue">
+          <span slot="label">
+            <i class="el-icon-view"></i> 查看已订阅
+            <span class="seeDingyue" @click="closeSeeDingyue">
+              <i class="el-icon-error"></i>
+            </span>
+          </span>
+          <seeDingyue></seeDingyue>
+        </el-tab-pane>
+        <!-- 相关评价tabs -->
+        <el-tab-pane name="xiangguanPingjia" v-if="showXiangguanPingjia">
+          <span slot="label">
+            <i class="el-icon-view"></i> 相关评价
+            <span class="xiangguanPingjia" @click="closeXiangguanPingjia">
+              <i class="el-icon-error"></i>
+            </span>
+          </span>
+          <xiangguanPingjia></xiangguanPingjia>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -60,12 +83,15 @@ import {
   reqAddCourse,
   reqMenuLabel,
   reqEditCourse,
-  reqRelevantCourse
+  reqRelevantCourse,
+  reqOverCourse
 } from "../api";
 import childCourse from "../components/course/childCourse";
 import childNewCourse from "../components/course/childNewCourse";
 import xiangguanCourse from "../components/course/xiangguanCourse";
 import xiangguankeTimeEdit from "../components/course/xiangguankeTimeEdit";
+import seeDingyue from "../components/course/seeDingyue";
+import xiangguanPingjia from "../components/course/xiangguanPingjia";
 export default {
   data() {
     return {
@@ -91,14 +117,18 @@ export default {
       showXiangguanke: false, //相关课
       seleteCourse: "", //选中的课程信息
       xiangguankeList: [], //相关课列表
-      showEditXiangguankeTime: false //是否显示编辑相关课时
+      showEditXiangguankeTime: false, //是否显示编辑相关课时
+      showSeeDingyue: false, //是否显示查看已订阅
+      showXiangguanPingjia: false //是否显示相关评价tabs
     };
   },
   components: {
     childCourse,
     childNewCourse,
     xiangguanCourse,
-    xiangguankeTimeEdit
+    xiangguankeTimeEdit,
+    seeDingyue,
+    xiangguanPingjia
   },
   methods: {
     // 获取课程列表
@@ -320,6 +350,43 @@ export default {
       this.showEditXiangguankeTime = false;
       this.showXiangguanke = false;
       // this.tabsNmae = "新建课时";
+    },
+    // 终结连载
+    async OverCourse(id) {
+      const res = await reqOverCourse(id);
+      if (res.code == 1) {
+        this.$message({
+          message: "已经终结连载",
+          type: "warning"
+        });
+        this.getCourseList();
+      }
+    },
+    // 点击查看已订阅
+    seeDingyue(id) {
+      alert(id)
+      this.showSeeDingyue = true;
+      this.activeName = "SeeDingyue";
+    },
+    // 点击相关评价
+    xiangguanPingjia(id) {
+      alert(id)
+      this.showXiangguanPingjia = true;
+      this.activeName = "xiangguanPingjia";
+    },
+    // 点击关闭SeeDingyuetabs
+    closeSeeDingyue() {
+      this.showSeeDingyue = false;
+      setTimeout(() => {
+        this.activeName = "first";
+      }, 10);
+    },
+    // 点击关闭XiangguanPingjiatabs
+    closeXiangguanPingjia() {
+      this.showXiangguanPingjia = false;
+      setTimeout(() => {
+        this.activeName = "first";
+      }, 10);
     }
   },
   mounted() {
@@ -333,6 +400,12 @@ export default {
   min-width: 1350px;
 }
 .yincangEditXiangguankeTimeTabs:hover {
+  color: red;
+}
+.seeDingyue:hover {
+  color: red;
+}
+.xiangguanPingjia:hover {
   color: red;
 }
 </style>

@@ -138,9 +138,9 @@
       <el-form-item>
         <span style="margin-bottom: 40px;display: inline-block;">
           <el-button type="primary" @click="newWord">确认发表</el-button>
-          <el-button type="success">存为草稿</el-button>
-          <el-button type="warning">预览</el-button>
-          <el-button type="danger">取消</el-button>
+          <!-- <el-button type="success">存为草稿</el-button> -->
+          <!-- <el-button type="warning">预览</el-button> -->
+          <el-button type="danger" @click="hanldQuxiao">取消</el-button>
         </span>
       </el-form-item>
     </el-form>
@@ -205,6 +205,10 @@ export default {
     // 发布软文
     newWord() {
       this.$emit("newWord");
+    },
+    // 取消
+    hanldQuxiao(){
+      this.$emit("hanldQuxiao")
     }
   },
   components: {

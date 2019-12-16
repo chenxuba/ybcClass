@@ -69,7 +69,7 @@
                     <span class="res_type" v-if="item.type == 4">直播回放</span>
                     <span class="res_type" v-if="item.type == 8">音频直播</span>
                     <span class="res_type" v-if="item.type == 9">音频回放</span>
-                    <span class="res_type" v-else>软文</span>
+                    <span class="res_type" v-if="item.res_type == 2">软文</span>
                   </p>
                 </div>
               </div>
