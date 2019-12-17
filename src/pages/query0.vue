@@ -161,4 +161,8 @@ export default {
   font-size: 30px;
   color: #5dd7c7;
 }
+.swiper{
+  transform: translateZ(0);
+  overflow: hidden;
+}
 </style>

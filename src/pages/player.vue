@@ -21,7 +21,7 @@
     <!-- 点赞组件 -->
     <Like ref="likes" :user_id="wsConfig.user_id"></Like>
     <!-- 底部 -->
-    <Bottom ref="bottomChild" :msgList="msgList"></Bottom>
+    <Bottom ref="bottomChild" :msgList="msgList" @touchWebsocketsend="touchWebsocketsend"></Bottom>
     <!-- 点击礼物图片弹出的礼物容器 -->
     <van-action-sheet
       v-model="showLiwu"
@@ -117,10 +117,10 @@ export default {
         member_uuid: sessionStorage.getItem("uuid"), //uuid
         member_id: sessionStorage.getItem("member_id"), //uuid
         user_id: "", //导师id
-        live_room: this.$route.params.id, //直播间id
-        timestamp: Date.parse(new Date())
-          .toString()
-          .substr(0, 10)
+        live_room: this.$route.params.id //直播间id
+        // timestamp: Date.parse(new Date())
+        //   .toString()
+        //   .substr(0, 10)
       },
       msgList: [],
       liwuList: [], //礼物列表
@@ -180,7 +180,7 @@ export default {
         this.poster = result.data.cover;
         this.wsConfig.user_id = result.data.user_id;
         this.type = result.data.type;
-        console.log(this.type);
+        // console.log(this.type);
         wxJS_SDk(
           this.ClassTimePlayer.title,
           "精彩直播，点击进入，要你好看！",
@@ -216,7 +216,7 @@ export default {
         this.paiHangBang = result.data.data;
         this.msgList = result.data.data.res_log.count;
         this.ppt = result.data.data.ppt;
-        console.log(this.ppt);
+        // console.log(this.ppt);
 
         this.getVideoConfig();
       } else if (result.code == -6) {
@@ -230,20 +230,24 @@ export default {
       this.ws.onmessage = this.websocketonmessage;
       this.ws.onopen = this.websocketonopen;
       this.ws.onclose = this.websocketclose;
-      // console.log(_this.wsConfig.live_room);
+      this.ws.onerror = this.websocketerror;
     },
     // 数据接收
     websocketonmessage(e) {
       let msg_data = JSON.parse(e.data);
-      console.log(msg_data);
-
+      var timestamp;
+      if (msg_data.timestamp != undefined) {
+        timestamp = msg_data.timestamp;
+      } else {
+        timestamp = Math.round(new Date().getTime() / 1000).toString();
+      }
       switch (msg_data.type) {
         case "ping":
           const msg_pong = {
             type: "pong",
             live_room: this.wsConfig.live_room,
-            timestamp: this.wsConfig.timestamp,
-            user_id: this.wsConfig.user_id,
+            timestamp: timestamp,
+            user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(msg_pong));
@@ -296,10 +300,17 @@ export default {
     },
     // 关闭ws
     websocketclose(e) {
-      this.ws.close();
-      console.log("链接关闭了");
+      // this.ws.close();
+      console.log("连接关闭，定时重连");
+      //connect();
+      setTimeout(this.connection(), "5000");
+      // alert("链接关闭了");
     },
-    // 连接建立之后执行send方法发送数据
+    // ws发生错误
+    websocketerror() {
+      console.log("出现错误");
+    },
+    // 连接建立之后执行send方法发送数据，登录
     websocketonopen() {
       switch (this.type) {
         // 正在直播的视频
@@ -308,7 +319,7 @@ export default {
             type: "live_login",
             member_uuid: this.wsConfig.member_uuid,
             live_room: this.wsConfig.live_room,
-            equal_user_id: this.wsConfig.user_id,
+            equal_user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(lives_login));
@@ -319,7 +330,7 @@ export default {
             type: "video_login",
             member_uuid: this.wsConfig.member_uuid,
             video_room: this.wsConfig.live_room,
-            equal_user_id: this.wsConfig.user_id,
+            equal_user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(video_login));
@@ -330,7 +341,7 @@ export default {
             type: "live_login",
             member_uuid: this.wsConfig.member_uuid,
             live_room: this.wsConfig.live_room,
-            equal_user_id: this.wsConfig.user_id,
+            equal_user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(live_login));
@@ -341,7 +352,7 @@ export default {
             type: "radio_login",
             member_uuid: this.wsConfig.member_uuid,
             live_room: this.wsConfig.live_room,
-            equal_user_id: this.wsConfig.user_id,
+            equal_user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(audio_login));
@@ -352,7 +363,7 @@ export default {
             type: "audio_login",
             member_uuid: this.wsConfig.member_uuid,
             live_room: this.wsConfig.live_room,
-            equal_user_id: this.wsConfig.user_id,
+            equal_user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(audios_login));
@@ -363,7 +374,7 @@ export default {
             type: "audio_login",
             member_uuid: this.wsConfig.member_uuid,
             live_room: this.wsConfig.live_room,
-            equal_user_id: this.wsConfig.user_id,
+            equal_user_id: this.wsConfig.user_id.toString(),
             s_id: "1"
           };
           this.websocketsend(JSON.stringify(audioss_login));
@@ -473,6 +484,11 @@ export default {
         this.$toast(result.data.msg);
         this.is_guanzhu = 1; //赋值给是否关注变量，值为1，就让这个按钮消失
       }
+    },
+    // touchWebsocketsend 自定义事件
+    touchWebsocketsend(live_msg) {
+      // console.log(live_msg);
+      this.websocketsend(live_msg);
     }
   },
   mounted() {
@@ -485,27 +501,28 @@ export default {
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState == "hidden") {
         this.hiddenTime = new Date().getTime(); //记录页面隐藏时间
+        clearInterval(this.$refs.likes.timer);
       } else {
         let visibleTime = new Date().getTime();
         if ((visibleTime - this.hiddenTime) / 1000 > 5) {
           //页面再次可见的时间-隐藏时间>10S,重连
-          typeof this.ws.close == "function" && this.websocketclose(); //先主动关闭连接
-          clearInterval(this.$refs.likes.timer);
+          // typeof this.ws.close == "function" && this.websocketclose(); //先主动关闭连接
           console.log("主动关闭连接后重连");
           setTimeout(() => {
-            this.connection(); //打开连接，使用的vuejs，这是websocket的连接方法
+            // this.connection(); //打开连接，使用的vuejs，这是websocket的连接方法
             this.$refs.likes.setIntervalZan();
           }, 1500); //1.5S后重连
         } else {
           console.log("还没有到断开的时间");
+          this.$refs.likes.setIntervalZan();
         }
       }
     });
-    var u = navigator.userAgent;
-    var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
-    if (isAndroid) {
-      this.height = "70%";
-    }
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1;
+    if (isAndroid) {
+      this.height = "70%";
+    }
   },
   components: {
     Top,
@@ -524,7 +541,6 @@ export default {
     clearTimeout(this.timer3);
     clearTimeout(this.timer4);
     clearTimeout(this.timer5);
-    
   }
 };
 </script>

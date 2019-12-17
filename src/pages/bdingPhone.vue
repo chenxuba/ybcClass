@@ -3,8 +3,8 @@
     <h1>绑定手机</h1>
     <!-- 头像 -->
     <div class="img-box">
-      <img v-lazy="userinfo.headimgurl" alt />
-      <h2>{{userinfo.name}}</h2>
+      <img v-lazy="userinfo.headimgurl || 'https://kf.ybc365.com/train/Public/train/user/common/img/user.png'" alt />
+      <h2>{{userinfo.name || '暂无昵称'}}</h2>
       <h3>为了您的账号安全，请绑定手机号</h3>
     </div>
     <div class="from">
@@ -155,7 +155,7 @@ export default {
   color: #888;
   border: 1px solid #eee;
   text-indent: 1em;
-  box-shadow: inset 0px 2px 6px #888;
+  box-shadow: inset 1px 2px 4px #888;
   border-left: none;
 }
 .from .inpu1-box {
@@ -187,11 +187,13 @@ export default {
 }
 .from .inpu2-box {
   display: flex;
+  align-items: center;
 }
 .from .inpu2-box span {
   color: #fff;
   font-size: 28px;
   line-height: 70px;
+  height: 70px;
   width: 60%;
   text-align: center;
   margin-left: 40px;

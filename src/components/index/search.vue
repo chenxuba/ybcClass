@@ -7,7 +7,7 @@
         </form>
       </van-col>
       <van-col span="3" class="msg-icon" >
-        <van-icon name="comment-o" info="9" @click="goMsgList"/>
+        <van-icon name="comment-o" info="0" @click="goMsgList"/>
       </van-col>
     </van-row>
   </div>

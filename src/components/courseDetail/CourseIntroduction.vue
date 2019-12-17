@@ -120,4 +120,10 @@ export default {
   line-height: 50px;
   min-height: 450px;
 }
+.html >>> img{
+  width: 100%;
+}
+.html >>> p{
+  font-size: 24px;
+}
 </style>

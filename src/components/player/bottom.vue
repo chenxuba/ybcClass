@@ -86,7 +86,7 @@ export default {
     //发送消息
     printMsg(ev) {
       var _this = this;
-      switch (this.$parent.type) {
+      switch (_this.$parent.type) {
         // 正在直播的视频
         case 2:
           let lives_msg = {
@@ -108,7 +108,7 @@ export default {
             type: "video_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
+            equal_user_id: _this.$parent.wsConfig.user_id.toString(),
             content: _this.msgValue
           };
           //键盘回车的编码是13
@@ -123,12 +123,15 @@ export default {
             type: "live_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
+            equal_user_id: _this.$parent.wsConfig.user_id.toString(),
             content: _this.msgValue
           };
+          // console.log(live_msg);
           //键盘回车的编码是13
           if (ev.keyCode == 13 && _this.msgValue != "") {
-            _this.$parent.websocketsend(JSON.stringify(live_msg));
+            // 自定义一个事件，触发父组件的websocketsend方法
+            _this.$emit("touchWebsocketsend", JSON.stringify(live_msg));
+            // _this.$parent.websocketsend(JSON.stringify(live_msg));
             _this.msgValue = "";
           }
           break;
@@ -138,7 +141,7 @@ export default {
             type: "radio_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
+            equal_user_id: _this.$parent.wsConfig.user_id.toString(),
             content: _this.msgValue
           };
           //键盘回车的编码是13
@@ -153,7 +156,7 @@ export default {
             type: "audio_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
+            equal_user_id: _this.$parent.wsConfig.user_id.toString(),
             content: _this.msgValue
           };
           if (ev.keyCode == 13 && _this.msgValue != "") {
@@ -167,7 +170,7 @@ export default {
             type: "audio_say",
             s_id: "1",
             member_uuid: _this.$parent.wsConfig.member_uuid,
-            equal_user_id: (_this.$parent.wsConfig.user_id).toString(),
+            equal_user_id: _this.$parent.wsConfig.user_id.toString(),
             content: _this.msgValue
           };
           if (ev.keyCode == 13 && _this.msgValue != "") {

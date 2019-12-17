@@ -595,7 +595,6 @@ router.beforeEach((to, from, next) => {
     if (to.path !== global.location.pathname) {
       location.assign(to.fullPath)
     }
-    next()
   }
   if (to.name == "login" || to.name == "register") next();
   else if (to.name == "player" || to.name == 'my' || to.name == 'inquire' ||

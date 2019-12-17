@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <!-- 线下课程 -->
-    <div class="ci-content" v-if="agency_obj.agency_offline.data != ''">
+    <div class="ci-content" v-if="agency_obj.agency_offline != null">
       <top title="线下课程"></top>
       <XxCouser :XxCouser="agency_obj.agency_offline"></XxCouser>
     </div>
@@ -11,17 +11,17 @@
       <dkXuetang :dkXuetang="agency_obj.agency_clockin"></dkXuetang>
     </div>
     <!-- 线上课程 -->
-    <div class="ci-content" v-if="agency_obj.agency_course.data != ''">
+    <div class="ci-content" v-if="agency_obj.agency_course != null">
       <top title="线上课程"></top>
       <XsCouser :XsCouser="agency_obj.agency_course"></XsCouser>
     </div>
     <!-- 线上课时 -->
-    <div class="ci-content" v-if="agency_obj.agency_resource.data != ''">
+    <div class="ci-content" v-if="agency_obj.agency_resource != null">
       <top title="线上课时"></top>
       <XsTime :XsTime="agency_obj.agency_resource"></XsTime>
     </div>
     <!-- 线上软文 -->
-    <div class="ci-content" v-if="agency_obj.agency_article.data != ''">
+    <div class="ci-content" v-if="agency_obj.agency_article != null">
       <top title="线上软文"></top>
       <XsWord :XsWord="agency_obj.agency_article"></XsWord>
     </div>
