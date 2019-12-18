@@ -306,3 +306,7 @@ export const reqUserPrice = (cookie) => ajax(`${BASE_URL2}/api/5d9c2474c1463`, {
  * 获取用户零钱明细
  */
 export const reqUserPriceMingxi = (cookie,page) => ajax(`${BASE_URL2}/api/5daec54c19446`, {cookie,page}, 'POST');
+/**
+ * 获取线下课程详情
+ */
+export const reqXxCourseDetail = (course_id,cookie) => ajax(`${BASE_URL2}/api/5dd74b390358c`, {course_id,cookie}, 'POST');
