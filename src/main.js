@@ -30,6 +30,9 @@ Vue.use(goBack)
 //全局组件滚动区域
 import Scroll from "./assets/js/Scroll";
 Vue.use(Scroll)
+// 全局
+import canvasPoster from 'vue-canvas-poster-yufan'
+Vue.use(canvasPoster)
 // 自定义指令 可视高度
 Vue.directive('height', {
   // 当被绑定的元素插入到 DOM 中时……

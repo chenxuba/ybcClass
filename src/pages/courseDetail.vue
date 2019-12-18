@@ -10,7 +10,7 @@
     </div>
     <!-- 邀约卡 -->
     <transition name="fade">
-      <div class="invite" v-show="show">
+      <div class="invite" v-show="show" @click="myYaoyuecart">
         <span class="cart-text">我的邀约卡</span>
         <span class="icon-tuiguang">
           <img
@@ -115,8 +115,8 @@ export default {
     return {
       active: 1, //默认进入到目录下
       show: true, //控制我的邀约卡的显示与否
-      id: this.$route.params.id ,//上一级传过来的id，通过id去找详情资源,
-      router:"payOver"
+      id: this.$route.params.id, //上一级传过来的id，通过id去找详情资源,
+      router: "payOver"
     };
   },
   methods: {
@@ -184,6 +184,16 @@ export default {
           this.$router.push("/openStudent");
         }, 3000);
       }
+    },
+    // 生成邀约卡
+    myYaoyuecart() {
+      this.$router.push({
+        path: "/yaoyueCart",
+        query: {
+          id: this.id,
+          type:1
+        }
+      });
     }
   },
   mounted() {
@@ -192,7 +202,6 @@ export default {
     this.getCourseJianjie();
     this.getCourseMulu();
     this.getCoursePingJia();
-    
   },
   components: {
     CourseIntroduction,

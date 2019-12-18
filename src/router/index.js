@@ -578,7 +578,57 @@ const router = new Router({
         title: "更改手机号"
       }
     },
-    // changeiPhone
+    {
+      path: "/yaoyueCart",
+      name: "yaoyueCart",
+      component: () =>
+        import('../pages/yaoyueCart.vue'),
+      meta: {
+        showFooter: false,
+        title: "生成邀约卡"
+      }
+    },
+    {
+      path: "/memberXieyi",
+      name: "memberXieyi",
+      component: () =>
+        import('../pages/memberXieyi.vue'),
+      meta: {
+        showFooter: false,
+        title: "用户协议"
+      }
+    },
+    {
+      path: "/tixianPage",
+      name: "tixianPage",
+      component: () =>
+        import('../pages/tixianPage.vue'),
+      meta: {
+        showFooter: false,
+        title: "提现"
+      }
+    },
+    {
+      path: "/moneyDetailed",
+      name: "moneyDetailed",
+      component: () =>
+        import('../pages/moneyDetailed.vue'),
+      meta: {
+        showFooter: false,
+        title: "零钱明细"
+      }
+    },
+    {
+      path: "/xsCourseDetail/:id",
+      name: "xsCourseDetail",
+      component: () =>
+        import('../pages/xsCourseDetail.vue'),
+      meta: {
+        showFooter: false,
+        title: "零钱明细"
+      }
+    },
+    // xsCourseDetail
 
   ]
 })

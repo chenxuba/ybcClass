@@ -9,7 +9,7 @@
               v-if="item.is_anonymous == 2"
               width="100%"
             />
-            <img v-lazy="item.headimgurl" v-else width="100%" />
+            <img v-lazy="item.headimgurl || 'https://kf.ybc365.com/train/Public/train/user/common/img/user.png'" v-else width="100%" />
           </div>
           <div class="title">
             <p v-if="item.is_anonymous == 2">********</p>

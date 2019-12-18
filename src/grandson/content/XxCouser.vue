@@ -2,11 +2,14 @@
   <div class="XxCouser">
     <div class="main">
       <ul>
-        <li class="detail-li" v-for="(item,index) in XxCouser.data" :key="index">
+        <li
+          class="detail-li"
+          v-for="(item,index) in XxCouser.data"
+          :key="index"
+          @click="goDetail(item.id)"
+        >
           <div class="img-div">
-            <img
-              v-lazy="item.cover"
-            />
+            <img v-lazy="item.cover" />
           </div>
           <div class="contents">
             <p class="title">{{item.title}}</p>
@@ -47,7 +50,15 @@
 
 <script>
 export default {
-  props: ["XxCouser"]
+  props: ["XxCouser"],
+  data() {
+    return {};
+  },
+  methods: {
+    goDetail(id) {
+      this.$router.push("/xsCourseDetail/" + id);
+    }
+  }
 };
 </script>
 
@@ -128,9 +139,9 @@ img {
   font-size: 25px;
 }
 .txt-orange {
-    color: #eda32a !important;
+  color: #eda32a !important;
 }
 .txt-green {
-    color: #1ad473 !important;
+  color: #1ad473 !important;
 }
 </style>

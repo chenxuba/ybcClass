@@ -45,7 +45,7 @@
           <span class="span1">学员服务协议</span>
         </van-col>
         <van-col span="7" class="right">
-          <span class="span2">高级特权</span>
+          <span class="span2" @click="goMemberXieyi">高级特权</span>
         </van-col>
         <van-col span="2">
           <van-icon name="arrow" class="img" />
@@ -102,6 +102,10 @@ export default {
       this.student = result.data.student;
       this.price = result.data.platform_info[0].price;
       this.loading = false
+    },
+    // 跳转到特权页面
+    goMemberXieyi(){
+      this.$router.push("/memberXieyi")
     }
   },
   mounted() {

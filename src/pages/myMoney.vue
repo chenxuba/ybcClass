@@ -9,18 +9,23 @@
         <p>
           <img src="../../static/img/icon_i11.png" alt />
         </p>
-        <p>¥259.11</p>
+        <p>¥{{dataMsg.total.money || '000.00'}}</p>
         <p>我的零钱</p>
       </div>
-      <div class="tixian">
-        <van-button type="primary" class="btn" size="small" round>提现</van-button>
+      <div class="tixian" v-if="dataMsg.is_withdrawals == 0">
+        <!-- 不能提现 -->
+        <van-button type="primary" class="btn" size="small" round @click="noCan">提现</van-button>
+      </div>
+      <div class="tixian" v-if="dataMsg.is_withdrawals == 1">
+        <!-- 可以提现 -->
+        <van-button type="primary" class="btn" size="small" round @click="CanTixian">提现</van-button>
       </div>
     </div>
     <!-- 收益、花费、明细 -->
     <!-- 列表导航 -->
     <div class="contbox">
       <div v-for="(item,index) in List" :key="index">
-        <div style="border-bottom: 1px solid rgb(225, 225, 225);">
+        <div style="border-bottom: 1px solid #f8f8f8;">
           <router-link :to="item.path">
             <div class="cont" style="border-bottom: 1px solid rgb(225, 225, 225);">
               <div class="cont-left">
@@ -34,32 +39,57 @@
       </div>
     </div>
     <!-- 返回按钮 -->
-   <goBack></goBack>
+    <goBack></goBack>
   </div>
 </template>
 
 <script>
+import { reqUserPrice } from "../api";
+import { Toast } from "vant";
 export default {
   data() {
     return {
       List: [
+        // {
+        //   img: require("../../static/img/icon_i2.png"),
+        //   title: "我的收益",
+        //   path: "/myProfit"
+        // },
+        // {
+        //   img: require("../../static/img/icon_i3.png"),
+        //   title: "我的花费",
+        //   path: "/mySpend"
+        // },
         {
           img: require("../../static/img/icon_i2.png"),
-          title: "我的收益",
-          path: "/myProfit" 
-        },
-        {
-          img: require("../../static/img/icon_i3.png"),
-          title: "我的花费",
-          path: "/mySpend"
-        },
-        {
-          img: require("../../static/img/my_asset.png"),
           title: "零钱明细",
           path: "/moneyDetailed"
         }
-      ]
+      ],
+      dataMsg: {
+        total: {}
+      } //用户零钱信息
     };
+  },
+  methods: {
+    async getUserPrice() {
+      const result = await reqUserPrice();
+      if (result.code == 1) {
+        console.log(result);
+        this.dataMsg = result.data;
+      }
+    },
+    // 不支持提现
+    noCan() {
+      Toast("暂时不支持提现，请联系管理员");
+    },
+    // 可以提现
+    CanTixian(){
+      this.$router.push("/tixianPage")
+    }
+  },
+  mounted() {
+    this.getUserPrice();
   }
 };
 </script>
@@ -146,5 +176,4 @@ export default {
   margin-top: 46px;
   margin-left: 3%;
 }
-
 </style>

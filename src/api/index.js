@@ -298,3 +298,11 @@ export const reqUserMenu = (cookie) => ajax(`${BASE_URL2}/api/5dd79ff4b9afe`, {c
  * 获取用户信息
  */
 export const reqUserInfo2 = (cookie) => ajax(`${BASE_URL2}/api/5da8188a00160`, {cookie}, 'POST');
+/**
+ * 获取用户零钱信息
+ */
+export const reqUserPrice = (cookie) => ajax(`${BASE_URL2}/api/5d9c2474c1463`, {cookie}, 'POST');
+/**
+ * 获取用户零钱明细
+ */
+export const reqUserPriceMingxi = (cookie,page) => ajax(`${BASE_URL2}/api/5daec54c19446`, {cookie,page}, 'POST');
