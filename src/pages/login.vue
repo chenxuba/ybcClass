@@ -55,6 +55,7 @@
 
 <script>
 import { Toast } from "vant";
+import md5 from 'js-md5';
 import { reqPhonePwdLogin } from "../api/index";
 export default {
   data() {
@@ -74,7 +75,7 @@ export default {
         Toast.fail("手机号和密码不能为空");
       } else if (this.isChecked) {
         this.setCookie(this.phone, this.password, 7); // 保存期限为7天
-        const result = await reqPhonePwdLogin(this.phone, this.password);
+        const result = await reqPhonePwdLogin(this.phone, md5(this.password));
         // console.log(result);
         if (result.code == 1) {
           Toast.success("登录成功");
@@ -88,7 +89,7 @@ export default {
         }
       } else {
         this.clearCookie(); // 清空 Cookie
-        const result = await reqPhonePwdLogin(this.phone, this.password);
+        const result = await reqPhonePwdLogin(this.phone, md5(this.password));
         // console.log(result);
         if (result.code == 1) {
           Toast.success("登录成功");

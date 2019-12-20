@@ -6,7 +6,7 @@
       </div>
       <!-- 邀约卡 -->
       <transition name="fade">
-        <div class="invite" v-show="show">
+        <div class="invite" v-show="show" @click="myYaoyuecart">
           <span class="cart-text">我的邀约卡</span>
           <span class="icon-tuiguang">
             <img
@@ -243,7 +243,16 @@ export default {
         }
       });
     },
-   
+   // 生成邀约卡
+    myYaoyuecart() {
+      this.$router.push({
+        path: "/yaoyueCart",
+        query: {
+          id: this.id,
+          type:2
+        }
+      });
+    }
   },
   mounted() {
     this.getRandomInt(100, 200);

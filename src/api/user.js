@@ -6,8 +6,8 @@ export const getCode = () => {
   if (getUrlCode().parent_id) {
     sessionStorage.setItem('parent_id', getUrlCode().parent_id)
   }
-  let openids = localStorage.getItem("openid");
-  let unionids = localStorage.getItem("unionid");
+  let openids = localStorage.getItem("login_name");
+  let unionids = localStorage.getItem("login_pwd_md5");
   let cookies = sessionStorage.getItem("cookie");
   let parent_id = sessionStorage.getItem("parent_id");
   if (cookies) {
@@ -22,9 +22,9 @@ export const getCode = () => {
 
   // *********************************************************** //
   function getCookie(openids, unionids) {
-    $axios.post("https://api.ybc365.com/api/5d7eff27c964f", {
-        openid: openids,
-        unionid: unionids
+    $axios.post("https://api.ybc365.com/api/5d7e36be38a64", {
+      account: openids,
+      password: unionids
       })
       .then(result => {
         if (result.data.code == 1) {
@@ -75,6 +75,7 @@ export const getCode = () => {
             parent_id: parent_id
           })
           .then(result => {
+            console.log(result);
             // alert(JSON.stringify(result))
             // return;
             if (result.data.code == 1) {
@@ -82,8 +83,8 @@ export const getCode = () => {
               // return;member_id
               sessionStorage.setItem("cookie", result.data.data.cookie);
               sessionStorage.setItem("uuid", result.data.data.uuid);
-              localStorage.setItem("openid", result.data.data.openid);
-              localStorage.setItem("unionid", result.data.data.unionid);
+              localStorage.setItem("login_name", result.data.data.login_name);
+              localStorage.setItem("login_pwd_md5", result.data.data.login_pwd_md5);
               sessionStorage.setItem("member_id", result.data.data.member_id);
               // console.log("我把cookie存到sessionStorage里了");
               location.reload() 
