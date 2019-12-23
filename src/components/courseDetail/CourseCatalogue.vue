@@ -78,9 +78,9 @@ export default {
       return (this.num = Math.floor(Math.random() * (max - min + 1)) + min);
     },
     goPlayer(item) {
-      if (this.CourseJianjie.subscribe == 0) {
+      if (this.CourseJianjie.subscribe == 0 && item.cantry == 0) {
         Toast("请订阅课程后查看");
-      } else {
+      } else if(this.CourseJianjie.subscribe == 0 && item.cantry == 1){
         this.$router.push({
           path: "/classDetail/" + item.id
         });

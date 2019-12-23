@@ -47,8 +47,8 @@
           <div class="sbox">
             <img src="https://kf.ybc365.com/train/Public/train/user/common/img/support.png" />
             <span>支持回看</span>
-            <img src="https://kf.ybc365.com/train/Public/train/user/common/img/support.png" />
-            <span>可使用优惠券</span>
+            <!-- <img src="https://kf.ybc365.com/train/Public/train/user/common/img/support.png" />
+            <span>可使用优惠券</span> -->
           </div>
           <!-- <div class="more">
           <img src="https://kf.ybc365.com/train/Public/train/user/common/img/more.png" />
