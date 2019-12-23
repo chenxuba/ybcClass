@@ -63,7 +63,7 @@ export default {
         path:'/moduleDetail',
         query:{
           type:'1',
-          label_id:'209'
+          label_id:'-1'
         }
       });
     }

@@ -13,10 +13,12 @@
     <Menu3></Menu3>
     <!-- 四大分类模块 -->
     <Menu4></Menu4>
-    <!-- 热门、精品课程模块 -->
+    <!-- 热门课程模块 -->
     <HotCourse></HotCourse>
-    <!-- 热门、精品课程模块2 -->
+    <!-- 最新课程模块 -->
     <HotCourse2></HotCourse2>
+    <!-- 最新课时模块 -->
+    <HotCourse3></HotCourse3>
     <!-- 软文模块 -->
     <Word></Word>
     <div class="hongbao animated tada infinite">
@@ -40,6 +42,7 @@ import Menu3 from "../components/index/menu3";
 import Menu4 from "../components/index/menu4";
 import HotCourse from "../components/index/hotCourse";
 import HotCourse2 from "../components/index/hotCourse2";
+import HotCourse3 from "../components/index/hotCourse3";
 import Word from "../components/index/word";
 import { reqisGuanzhuWx } from "../api";
 import { isWx } from "../util";
@@ -58,6 +61,7 @@ export default {
     Menu4,
     HotCourse,
     HotCourse2,
+    HotCourse3,
     Word
   },
   computed: {

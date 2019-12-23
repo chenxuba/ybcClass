@@ -1,18 +1,13 @@
 <template>
   <div class="hotCourse2">
-    <van-row class="wrapBox" v-if="newcousre.course">
+    <van-row class="wrapBox" v-if="classHour.class">
       <van-col span="24" class="hot_warp">
         <van-row type="flex" justify="space-between" class="warp1">
-          <van-col span="6" class="title">{{newcousre.title}}</van-col>
+          <van-col span="6" class="title">{{classHour.title}}</van-col>
           <van-col span="6" class="more" @click="moreContent">更多</van-col>
         </van-row>
       </van-col>
-      <van-row
-        v-for="(item,index) in newcousre.course"
-        :key="index"
-        class="box"
-        @click="goDetail(item)"
-      >
+      <van-row v-for="(item,index) in classHour.class" :key="index" class="box" @click="goDetail(item)">
         <van-col span="24" class="video_warp">
           <img v-lazy="item.pic_cover" alt width="100%" />
           <span class="on-off">
@@ -23,23 +18,18 @@
           <van-col span="24" class="course_title">{{item.title}}</van-col>
           <van-row class="course_txt">
             <van-col span="5" class="span span1">
-              <img v-lazy="item.pic_cover" alt />
+              <img v-lazy="item.headimgurl" alt />
               {{item.name}}
             </van-col>
-            <van-col span="5" class="span span2">{{item.update_status}}</van-col>
-            <van-col
-              span="7"
-              class="span span3"
-              v-if="item.update_status == '即将连载'"
-            >{{item.people_num}}人浏览</van-col>
-            <van-col
-              span="7"
-              class="span span3"
-              v-if="item.update_status != '即将连载'"
-            >{{parseInt(baseValue2)+parseInt(item.people_num)}}人观看</van-col>
-            <van-col span="7" class="span span4" v-if="item.money_type == 3">公开</van-col>
-            <van-col span="7" class="span span5" v-if="item.money_type == 2">学员</van-col>
-            <van-col span="7" class="span span5" v-if="item.money_type == 1">{{item.money}}</van-col>
+            <van-col span="4" class="span span2">
+              <van-icon name="good-job" class="icon" />
+              ({{item.likes}})
+            </van-col>
+            <van-col span="7" class="span span3">浏览{{parseInt(baseValue2)+parseInt(item.people_num)}}</van-col>
+            <van-col span="8" class="span span4" v-if="item.money_type == 3">¥ {{item.money}}</van-col>
+            <van-col span="8" class="span span5" v-if="item.money_type == 2">学员</van-col>
+            <van-col span="8" class="span span5" v-if="item.money_type == 0">公开</van-col>
+            <van-col span="8" class="span span5" v-if="item.money_type == 4">密码</van-col>
           </van-row>
         </van-row>
         <!-- 分割线 -->
@@ -57,27 +47,27 @@ export default {
   data() {
     return {
       baseValue1: "500",
-      baseValue2: "800"
+      baseValue2: "800",
     };
   },
   components: {
     NumberGrow2
   },
   computed: {
-    ...mapState(["newcousre"])
+    ...mapState(["classHour"])
   },
   methods: {
-    goDetail(item) {
+    goDetail(item){
       this.$router.push({
-        path: "/courseDetail/" + item.id
+        path: "/classDetail/" + item.id
       });
     },
-    moreContent() {
+    moreContent(){
       this.$router.push({
-        path: "/moduleDetail",
-        query: {
-          type: "1",
-          label_id: "-1"
+        path:'/moduleDetail',
+        query:{
+          type:'2',
+          label_id:'-1'
         }
       });
     }
@@ -92,7 +82,7 @@ export default {
   padding: 0px 25px 25px 25px;
   box-sizing: border-box;
 }
-.warp1 {
+.warp1{
   line-height: 40px;
 }
 .warp1 .title {
@@ -192,6 +182,7 @@ export default {
 .course_msg .course_txt .span.span2 .icon {
   position: relative;
   top: 2px;
+  
 }
 .course_msg .course_txt .span.span1 img {
   width: 40px;
@@ -203,13 +194,13 @@ export default {
 }
 .course_msg .course_txt .span.span4 {
   text-align: right;
-  color: #5dd6c7;
+  color: rgb(255, 0, 0);
 }
 .course_msg .course_txt .span.span5 {
   text-align: right;
-  color: red;
+  color: #1fd78b;
 }
-.van-divider {
+.van-divider{
   margin: 10px 0;
 }
 </style>
