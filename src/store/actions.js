@@ -8,6 +8,7 @@ import {
     GET_MENU3,
     GET_MENU4,
     GET_COUSRE,
+    GET_NEWCOUSRE,
     GET_WORD,
     GET_CLASSHOUR,
     GET_HOTSEARCH,
@@ -41,11 +42,14 @@ export default {
         // 6. 在提交一个mutation，获取到课程数据
         const cousre = result.data[6]
         commit(GET_COUSRE, { cousre })
+        // 6. 在提交一个mutation，获取到最新课程数据
+        const newcousre = result.data[7]
+        commit(GET_NEWCOUSRE, { newcousre })
         // 7. 在提交一个mutation，获取到课时数据
-        const classHour = result.data[7]
+        const classHour = result.data[8]
         commit(GET_CLASSHOUR, { classHour })
         // 8. 在提交一个mutation，获取到软文数据
-        const word = result.data[8]
+        const word = result.data[9]
         commit(GET_WORD, { word })
     },
 

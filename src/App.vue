@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <router-view v-wechat-title="$route.meta.title"></router-view>
+    <router-view v-wechat-title="$route.meta.title"></router-view>
     <!--底部导航开始-->
     <tabBar v-show="$route.meta.showFooter"></tabBar>
   </div>

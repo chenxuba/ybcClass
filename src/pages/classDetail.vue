@@ -150,7 +150,7 @@
     </div>
     <goHome></goHome>
     <!-- 返回按钮 -->
-   <goBack :router="router"></goBack>
+    <goBack :router="router"></goBack>
   </div>
 </template>
 
@@ -158,7 +158,7 @@
 import { reqClassDetail } from "../api/index";
 import { Toast } from "vant";
 import pwdNumber from "../components/classDetail/pwdNumber";
-import { isIos } from "../util";
+import { isIos, setFirstUrl } from "../util";
 import { wxJS_SDk } from "../util/share";
 
 export default {
@@ -174,7 +174,7 @@ export default {
       baseValue: "1300",
       show2: false,
       height: "50%",
-      router:"payOver"
+      router: "payOver"
     };
   },
   methods: {
@@ -218,6 +218,11 @@ export default {
         } else {
           this.$router.go(-1);
         }
+      } else if (result.code == 5001) {
+        Toast("请订阅课程后查看");
+        setTimeout(() => {
+          this.$router.push(result.data.redirect_url);
+        }, 1000);
       }
     },
     goPlayer(id) {
@@ -239,17 +244,17 @@ export default {
         query: {
           money: this.classDetail.price,
           type: "2",
-          res_id:this.id
+          res_id: this.id
         }
       });
     },
-   // 生成邀约卡
+    // 生成邀约卡
     myYaoyuecart() {
       this.$router.push({
         path: "/yaoyueCart",
         query: {
           id: this.id,
-          type:2
+          type: 2
         }
       });
     }
@@ -263,13 +268,12 @@ export default {
     if (isAndroid) {
       this.height = "70%";
     }
+    setFirstUrl();
   },
   components: {
     pwdNumber
   },
-  computed: {},
- 
- 
+  computed: {}
 };
 </script>
 

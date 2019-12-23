@@ -55,6 +55,7 @@ import jianjie from "../components/schoolDetail/jianjie";
 import teacher from "../components/schoolDetail/teacher";
 import contents from "../components/schoolDetail/content";
 import { reqschoolDetail, reqschoolteacherList } from "../api";
+import {setFirstUrl} from "../util";
 export default {
   data() {
     return {
@@ -116,6 +117,7 @@ export default {
   },
   mounted() {
     this.getSchoolDetail();
+    setFirstUrl();
   }
 };
 </script>

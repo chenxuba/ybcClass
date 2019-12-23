@@ -3,7 +3,10 @@
     <h1>绑定手机</h1>
     <!-- 头像 -->
     <div class="img-box">
-      <img v-lazy="userinfo.headimgurl || 'https://kf.ybc365.com/train/Public/train/user/common/img/user.png'" alt />
+      <img
+        v-lazy="userinfo.headimgurl || 'https://kf.ybc365.com/train/Public/train/user/common/img/user.png'"
+        alt
+      />
       <h2>{{userinfo.name || '暂无昵称'}}</h2>
       <h3>为了您的账号安全，请绑定手机号</h3>
     </div>
@@ -22,7 +25,7 @@
       <div class="inpu2-box">
         <input type="tel" placeholder="输入验证码" class="input1" v-model="code" />
         <span v-if="sendBtn" @click="sendCode">获取验证码</span>
-        <span  v-else >倒计时{{authTime}}秒</span>
+        <span v-else>倒计时{{authTime}}秒</span>
       </div>
     </div>
     <div class="over">
@@ -98,7 +101,12 @@ export default {
         // console.log(result);
         if (result.code == 1) {
           Toast.success("绑定成功");
-          this.$router.push("/index");
+          let firstUrl = sessionStorage.getItem("firstUrl");
+          if (firstUrl == null) {
+            this.$router.push("/index");
+          } else {
+            this.$router.push(firstUrl);
+          }
         } else if (result.code == -1) {
           Toast.fail(result.msg);
         }

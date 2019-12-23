@@ -8,6 +8,7 @@ import {
     GET_MENU3,
     GET_MENU4,
     GET_COUSRE,
+    GET_NEWCOUSRE,
     GET_CLASSHOUR,
     GET_WORD,
     GET_HOTSEARCH,
@@ -29,6 +30,9 @@ export default {
     },
     [GET_COUSRE](state, { cousre }) {
         state.cousre = cousre
+    },
+    [GET_NEWCOUSRE](state, { newcousre }) {
+        state.newcousre = newcousre
     },
     [GET_CLASSHOUR](state, { classHour }) {
         state.classHour = classHour

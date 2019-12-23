@@ -37,7 +37,8 @@
               </div>
               <div class="join">
                 <!---->
-                <div class="text-right fs-red">￥{{item.price}}起</div>
+                <div class="text-right fs-red" v-if="item.price > 0">￥{{item.price}}起</div>
+                <div class="text-right" style="color:rgb(18, 210, 26);" v-if="item.price == 0">免费</div>
                 <!---->
               </div>
             </div>

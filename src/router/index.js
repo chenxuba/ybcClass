@@ -625,7 +625,7 @@ const router = new Router({
         import('../pages/xsCourseDetail.vue'),
       meta: {
         showFooter: false,
-        title: "零钱明细"
+        title: "线下课程详情"
       }
     },
     // xsCourseDetail

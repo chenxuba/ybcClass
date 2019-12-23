@@ -9,6 +9,7 @@ export default {
     menu3: {},//分类3数据
     menu4: {},//分类4数据
     cousre: {},//课程数据
+    newcousre:{},//最新课程数据
     classHour: {},//课时数据
     word: {},//软文数据
     hotSearch: {},//热门搜索数据

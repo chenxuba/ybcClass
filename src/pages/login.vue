@@ -55,7 +55,7 @@
 
 <script>
 import { Toast } from "vant";
-import md5 from 'js-md5';
+import md5 from "js-md5";
 import { reqPhonePwdLogin } from "../api/index";
 export default {
   data() {
@@ -81,7 +81,12 @@ export default {
           Toast.success("登录成功");
           sessionStorage.setItem("cookie", result.data.cookie);
           sessionStorage.setItem("uuid", result.data.uuid);
-          this.$router.push("/index");
+          let firstUrl = sessionStorage.getItem("firstUrl");
+          if (firstUrl == null) {
+            this.$router.push("/index");
+          } else {
+            this.$router.push(firstUrl);
+          }
         } else if (result.code == -1) {
           Toast.fail(result.msg);
         } else if (result.code == -7) {
@@ -95,7 +100,12 @@ export default {
           Toast.success("登录成功");
           sessionStorage.setItem("cookie", result.data.cookie);
           sessionStorage.setItem("uuid", result.data.uuid);
-          this.$router.push("/index");
+          let firstUrl = sessionStorage.getItem("firstUrl");
+          if (firstUrl == null) {
+            this.$router.push("/index");
+          } else {
+            this.$router.push(firstUrl);
+          }
         } else if (result.code == -1) {
           Toast.fail("账号密码错误");
         } else if (result.code == -7) {
@@ -161,7 +171,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.getCookie();
   }
 };

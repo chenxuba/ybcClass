@@ -141,7 +141,7 @@ import {
   reqwordZan,
   reqwordShouCang
 } from "../api/index";
-import { isIos } from "../util";
+import { isIos ,setFirstUrl} from "../util";
 import { wxJS_SDk } from "../util/share";
 import Needpay0 from "../components/wordDetail/needpay0";
 import Needpay2 from "../components/wordDetail/needpay2";
@@ -287,6 +287,7 @@ export default {
     if (isAndroid) {
       this.height = "70%";
     }
+    setFirstUrl();
   },
   components: {
     Needpay0,

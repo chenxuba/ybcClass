@@ -22,9 +22,14 @@ export const isIos = () => {
       // 若没有replace参数，则添加进去
       // window.location.replace(_href + "&replace=1");
       console.log(11);
-      
+
     }
-   
+
   }
 }
 
+export const setFirstUrl = () => {
+  let firstUrl = window.location.pathname + window.location.search;
+  console.log(firstUrl);
+  sessionStorage.setItem("firstUrl", firstUrl);
+}

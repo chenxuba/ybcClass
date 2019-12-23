@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { Toast } from "vant";
 export default {
   props: ["CourseMulu"],
   data() {
@@ -76,13 +78,20 @@ export default {
       return (this.num = Math.floor(Math.random() * (max - min + 1)) + min);
     },
     goPlayer(item) {
-      this.$router.push({
-        path: "/classDetail/" + item.id,
-      });
+      if (this.CourseJianjie.subscribe == 0) {
+        Toast("请订阅课程后查看");
+      } else {
+        this.$router.push({
+          path: "/classDetail/" + item.id
+        });
+      }
     }
   },
   mounted() {
     this.getRandomInt(100, 200);
+  },
+  computed: {
+    ...mapState(["CourseJianjie"])
   }
 };
 </script>

@@ -109,12 +109,17 @@ export default {
       } else {
         const result = await reqPhoneCode(this.phone, this.code);
         // console.log(result)
-        if(result.code == 1){
-          Toast.success('登录成功');
+        if (result.code == 1) {
+          Toast.success("登录成功");
           sessionStorage.setItem("cookie", result.data.cookie);
           sessionStorage.setItem("uuid", result.data.uuid);
-          this.$router.push("/index")
-        }else if(result.code == -1){
+          let firstUrl = sessionStorage.getItem("firstUrl");
+          if (firstUrl == null) {
+            this.$router.push("/index");
+          } else {
+            this.$router.push(firstUrl);
+          }
+        } else if (result.code == -1) {
           Toast.fail(result.msg);
         }
       }

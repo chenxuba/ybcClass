@@ -18,8 +18,19 @@
         <li class="icon-position">活动地址：{{XxCourseDetail.detail_address}}</li>
       </ul>
     </div>
+    <!-- 报名须知 -->
+    <div class="signUp" v-if="XxCourseDetail.attention_id != ''">
+      <van-row>
+        <van-col span="16" class="span1">
+          <van-icon name="comment" class="icon" />报名须知
+        </van-col>
+        <van-col span="8" class="span2">
+          <van-icon name="arrow" />
+        </van-col>
+      </van-row>
+    </div>
     <!-- 老师信息 -->
-    <div class="teacher_warp">
+    <div class="teacher_warp" v-if="XxCourseDetail.anchor_id != -1">
       <div class="left">
         <img :src="XxCourseDetail.anchor_img" alt />
       </div>
@@ -34,6 +45,7 @@
         <p class="text">{{XxCourseDetail.anchor_intro}}</p>
       </div>
     </div>
+
     <!-- 课程介绍 -->
     <div class="xxcourseJieshao">
       <span class="title">课程简介</span>
@@ -42,15 +54,52 @@
     <!-- 底部xxx支持 -->
     <footer>医佰康提供技术支持</footer>
     <div class="zhanwei"></div>
-    <div class="bottom-main">
-      <a href="javascript:;" class="service-btn">
+    <!-- 有客服渲染这个 -->
+    <div class="bottom-main" v-if="customer_service.length != 0">
+      <span class="service-btn" @click="hanldfriend">
         <img
           src="https://kf.ybc365.com/train/Public/train/user/offline/images/icon/icon-service.png"
         />客服
-      </a>
-      <div class="sign-up skin-bg disabled" style="width: 70%;">立即报名</div>
+      </span>
+      <div
+        class="sign-up skin-bg"
+        style="width: 70%;"
+        v-if="XxCourseDetail.status == 2 && XxCourseDetail.ticket_data.length == 1"
+      >立即报名 ¥ {{XxCourseDetail.ticket_data[0].ticket_price}}</div>
+      <!-- 报名中 -->
+      <div
+        class="sign-up skin-bg"
+        style="width: 70%;"
+        v-if="XxCourseDetail.status == 2 && XxCourseDetail.ticket_data.length > 1"
+      >立即报名 ¥ {{XxCourseDetail.min_price}} 起</div>
+      <!-- 截止报名 -->
+      <div class="sign-up disabled" style="width: 70%;" v-if="XxCourseDetail.status != 2">立即报名</div>
+    </div>
+    <!-- 无客服渲染这个 -->
+    <div class="bottom-main" v-if="customer_service.length == 0">
+     <div
+        class="sign-up skin-bg"
+        style="width: 100%;"
+        v-if="XxCourseDetail.status == 2 && XxCourseDetail.ticket_data.length == 1"
+      >立即报名 ¥ {{XxCourseDetail.ticket_data[0].ticket_price}}</div>
+      <!-- 报名中 -->
+      <div
+        class="sign-up skin-bg"
+        style="width: 70%;"
+        v-if="XxCourseDetail.status == 2 && XxCourseDetail.ticket_data.length > 1"
+      >立即报名 ¥ {{XxCourseDetail.min_price}} 起</div>
+      <!-- 截止报名 -->
+      <div class="sign-up disabled" style="width: 100%;" v-if="XxCourseDetail.status != 2">立即报名</div>
     </div>
     <goBack></goBack>
+    <!-- 有客服弹出层 -->
+    <van-popup v-model="showFriend" class="popup" v-if="customer_service.length != 0">
+      <p>{{customer_service[0].name}}</p>
+      <p>
+        <van-icon name="phone" class="icon" />
+        <a :href="`tel://${customer_service[0].phone}`">{{customer_service[0].phone}}</a>
+      </p>
+    </van-popup>
   </div>
 </template>
 
@@ -60,14 +109,26 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      XxCourseDetail: ""
+      XxCourseDetail: {},
+      customer_service: [],
+      showFriend: false
     };
   },
   methods: {
+    //获取线下课程详情
     async getXxCourseDetail() {
       const result = await reqXxCourseDetail(this.id, "");
       console.log(result);
-      this.XxCourseDetail = result.data;
+      if (result.code == 1) {
+        this.XxCourseDetail = result.data;
+        this.customer_service = result.data.customer_service;
+      } else if (result.code == -1) {
+        this.$router.go(-1);
+      }
+    },
+    //点击客服
+    hanldfriend() {
+      this.showFriend = true;
     }
   },
   mounted() {
@@ -192,6 +253,9 @@ export default {
   margin-top: 20px;
   background: #fff;
   padding: 0 20px;
+  font-size: 26px;
+  color: #333;
+  min-height: 300px;
 }
 .xxcourseJieshao >>> img {
   width: 100%;
@@ -243,5 +307,57 @@ footer {
 }
 .zhanwei {
   height: 100px;
+}
+.signUp {
+  width: 100%;
+  height: 80px;
+  background: #fff;
+  font-size: 28px;
+  line-height: 80px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-top: 1px solid #eee;
+}
+.signUp .span1 {
+  padding-left: 5px;
+  color: #333;
+}
+.signUp .span1 .icon {
+  vertical-align: middle;
+  font-size: 34px;
+  margin-right: 10px;
+  color: #999;
+  margin-top: -2px;
+}
+.signUp .span2 {
+  text-align: right;
+  color: #999;
+}
+.popup {
+  font-size: 26px;
+  width: 80%;
+  border-radius: 10px;
+  padding: 30px;
+  box-sizing: border-box;
+  color: #333;
+}
+.popup p {
+  margin: 0;
+  line-height: 60px;
+}
+.popup p:first-child {
+  font-size: 30px;
+}
+.popup p:nth-child(2) {
+  font-size: 28px;
+}
+.popup p:nth-child(2) a {
+  color: #333;
+}
+.popup .icon {
+  font-size: 36px;
+  vertical-align: middle;
+  margin-top: -10px;
+  margin-right: 10px;
 }
 </style>

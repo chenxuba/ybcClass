@@ -109,7 +109,7 @@ import {
 } from "../api";
 import { mapState } from "vuex";
 import { Toast } from "vant";
-import { isIos } from "../util";
+import { isIos,setFirstUrl } from "../util";
 export default {
   data() {
     return {
@@ -202,6 +202,7 @@ export default {
     this.getCourseJianjie();
     this.getCourseMulu();
     this.getCoursePingJia();
+    setFirstUrl();
   },
   components: {
     CourseIntroduction,
