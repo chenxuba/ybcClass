@@ -10,10 +10,11 @@
         <van-col span="9">
           <div class="img_warp">
             <img v-lazy="item.cover" alt />
-            <span v-if="item.needpay == 2">学员</span>
-            <span v-if="item.needpay == 3">付费</span>
-            <span v-if="item.needpay == 4">密码</span>
-            <span v-if="item.needpay == 0" class="gongkai">公开</span>
+            <span v-if="item.needpay == 2" class="xueyuan">学员</span>
+            <span v-if="item.needpay == 3 && item.cantry == 0" class="fufei">付费</span>
+            <span v-if="item.needpay == 4" class="mima">密码</span>
+            <!-- <span v-if="item.needpay == 0" class="gongkai">公开</span> -->
+            <span v-if="item.cantry == 1 && item.needpay == 3" class="gongkai">试看</span>
           </div>
         </van-col>
         <van-col span="15" class="right">
@@ -21,7 +22,7 @@
           <div class="top2">
             <span id="about_text">{{item.createtime}}</span>
           </div>
-          <div class="bottom">
+          <div class="bottom" v-if="item.res_type == 1">
             <van-row>
               <van-col class="scan_warp code_warp">
                 <span class="code" v-if="item.type == 1">文章</span>
@@ -46,6 +47,16 @@
                   <van-icon name="good-job" class="icon" />
                   <span class="number">({{parseInt(num)+parseInt(item.likes)}})</span>
                 </span>
+              </van-col>
+            </van-row>
+          </div>
+          <div class="bottom" v-if="item.res_type == 2">
+            <van-row>
+              <van-col class="scan_warp code_warp">
+                <span class="code" v-if="item.res_type == 2">文章</span>
+              </van-col>
+              <van-col span="6" class="scan_warp">
+                <span class="scan">{{Number(baseValue2)+ item.read_num}}浏览</span>
               </van-col>
             </van-row>
           </div>
@@ -78,12 +89,24 @@ export default {
       return (this.num = Math.floor(Math.random() * (max - min + 1)) + min);
     },
     goPlayer(item) {
-      if (this.CourseJianjie.subscribe == 0 && item.cantry == 0) {
-        Toast("请订阅课程后查看");
-      } else if(this.CourseJianjie.subscribe == 0 && item.cantry == 1){
-        this.$router.push({
-          path: "/classDetail/" + item.id
-        });
+      // 视频，音频，直播
+      if (item.res_type == 1) {
+        if(this.CourseJianjie.subscribe == 0 && item.cantry == 0){ //无订阅无试看
+          Toast("订阅课程后才能查看");
+        }else if(this.CourseJianjie.subscribe == 0 && item.cantry == 1){ //无订阅有试看
+            this.$router.push({
+              path: "/classDetail/" + item.id
+            });
+        }else if(this.CourseJianjie.subscribe == 1){ //有订阅
+            this.$router.push({
+              path: "/classDetail/" + item.id
+            });
+        }
+      } else if (item.res_type == 2) {
+        //软文
+          this.$router.push({
+            path: "/wordDetail/" + item.res_id
+          });
       }
     }
   },
@@ -188,7 +211,6 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   color: #adadad;
-  padding-top: 3px;
   display: flex;
   align-items: center;
 }
@@ -237,5 +259,14 @@ img {
 .noshow p {
   font-size: 30px;
   color: #818181;
+}
+.xueyuan {
+  background-color: #e37e79 !important;
+}
+.mima {
+  background-color: #ebc232 !important;
+}
+.fufei {
+  background-color: #ebc232 !important;
 }
 </style>

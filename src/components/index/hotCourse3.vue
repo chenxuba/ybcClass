@@ -1,42 +1,52 @@
 <template>
-  <div class="hotCourse2">
-    <van-row class="wrapBox" v-if="classHour.class">
+  <div class="hotCourse">
+    <van-row>
       <van-col span="24" class="hot_warp">
         <van-row type="flex" justify="space-between" class="warp1">
-          <van-col span="6" class="title">{{classHour.title}}</van-col>
+          <van-col span="6" class="title">{{classHour.title || '最新课时'}}</van-col>
           <van-col span="6" class="more" @click="moreContent">更多</van-col>
         </van-row>
       </van-col>
-      <van-row v-for="(item,index) in classHour.class" :key="index" class="box" @click="goDetail(item)">
-        <van-col span="24" class="video_warp">
-          <img v-lazy="item.pic_cover" alt width="100%" />
-          <span class="on-off">
-            <van-icon name="play" class="play" />
-          </span>
-        </van-col>
-        <van-row class="course_msg">
-          <van-col span="24" class="course_title">{{item.title}}</van-col>
-          <van-row class="course_txt">
-            <van-col span="5" class="span span1">
-              <img v-lazy="item.headimgurl" alt />
-              {{item.name}}
+      <van-col span="24" class="hot_warp">
+        <div class="warp2" v-if="classHour.class">
+          <van-row gutter="12">
+            <van-col span="12" class="info" v-for="(item,index) in classHour.class" :key="index">
+              <img v-lazy="item.pic_cover" alt class="warp2_img" @click="goDetail(item)" />
+              <van-row>
+                <van-col span="24">
+                  <p class="course_title">{{item.title}}</p>
+                </van-col>
+              </van-row>
+              <van-row class="name_state">
+                <van-col span="12">
+                  <span class="course_name">{{item.name}}</span>
+                  <span class="course_number">{{Number(baseValue2)+ item.people_num}}人观看</span>
+                </van-col>
+                <van-col span="12">
+                  <span class="course_state" v-if="item.money_type == 2">学员</span>
+                  <span class="course_state" v-if="item.money_type == 4">密码</span>
+                  <span class="course_state" v-if="item.money_type == 0">公开</span>
+                  <span class="course_state" v-if="item.money_type == 3">公开</span>
+                  <span class="course_state money" v-if="item.money_type == 1">¥{{item.money}}</span>
+                  <span class="course_geng">
+                    <van-icon
+                      name="like"
+                      color="red"
+                      style="position: relative;
+    top: 1px;margin-right:2px;"
+                    />
+                    {{Number(baseValue1)+Number(item.likes)}}
+                  </span>
+                </van-col>
+              </van-row>
             </van-col>
-            <van-col span="4" class="span span2">
-              <van-icon name="good-job" class="icon" />
-              ({{item.likes}})
-            </van-col>
-            <van-col span="7" class="span span3">浏览{{parseInt(baseValue2)+parseInt(item.people_num)}}</van-col>
-            <van-col span="8" class="span span4" v-if="item.money_type == 3">¥ {{item.money}}</van-col>
-            <van-col span="8" class="span span5" v-if="item.money_type == 2">学员</van-col>
-            <van-col span="8" class="span span5" v-if="item.money_type == 0">公开</van-col>
-            <van-col span="8" class="span span5" v-if="item.money_type == 4">密码</van-col>
           </van-row>
-        </van-row>
-        <!-- 分割线 -->
-        <van-divider />
-      </van-row>
+        </div>
+        <div class="noshow" v-if="!classHour.class">
+          <img src="../../../static/img/sholist.svg" alt />
+        </div>
+      </van-col>
     </van-row>
-    <img src="../../../static/img/sholist.svg" v-else />
   </div>
 </template>
 
@@ -47,42 +57,48 @@ export default {
   data() {
     return {
       baseValue1: "500",
-      baseValue2: "800",
+      baseValue2: "800"
     };
   },
   components: {
     NumberGrow2
   },
-  computed: {
-    ...mapState(["classHour"])
-  },
+
   methods: {
-    goDetail(item){
+    goDetail(item) {
       this.$router.push({
         path: "/classDetail/" + item.id
       });
     },
-    moreContent(){
+    // 更多
+    moreContent() {
       this.$router.push({
-        path:'/moduleDetail',
-        query:{
-          type:'2',
-          label_id:'-1'
+        path: "/moduleDetail",
+        query: {
+          type: "2",
+          label_id: "-1"
         }
       });
     }
+  },
+  computed: {
+    ...mapState(["classHour"])
   }
 };
 </script>
 
 <style scoped>
+.hotCourse {
+  width: 100%;
+  transform: translateZ(0);
+}
 .hot_warp {
   background: #fff;
   font-weight: normal;
-  padding: 0px 25px 25px 25px;
+  padding: 0px 25px 0 25px;
   box-sizing: border-box;
 }
-.warp1{
+.warp1 {
   line-height: 40px;
 }
 .warp1 .title {
@@ -91,6 +107,7 @@ export default {
   padding-left: 20px;
   box-sizing: border-box;
   font-size: 28px;
+  color: #333;
 }
 .warp1 .title::after {
   content: "";
@@ -107,100 +124,81 @@ export default {
   font-size: 26px;
   color: #aaa;
 }
-
-.wrapBox {
-  transform: translateZ(0);
+.warp2 {
+  margin-top: 20px;
 }
-.box {
-  padding-top: 20px;
-}
-.video_warp {
-  padding: 0 25px;
-  position: relative;
-}
-.video_warp img {
-  height: 320px;
-  border-radius: 15px;
+.warp2_img {
+  width: 100%;
+  height: 194px;
+  border-radius: 13px;
   object-fit: cover;
 }
-.video_warp .on-off {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  background: rgba(27, 27, 27, 0.5);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  margin-top: -50px;
-  left: 50%;
-  margin-left: -50px;
-  text-align: center;
-  line-height: 120px;
-}
-.video_warp .on-off .play {
-  color: #fff;
-}
-.course_msg {
-  padding: 0px 25px;
-}
-.course_msg .course_title {
-  font-size: 28px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin: 15px 0 0px 0;
-  padding: 4px 0 0 0;
-  color: #333;
-}
-.course_msg .course_number {
+.warp2 .course_title {
   font-size: 26px;
-  padding-top: 0.01px;
-  text-align: right;
+  margin: 10px 0 5px 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  line-height: 60px;
+  color: #333;
+  line-height: 33px;
 }
-.course_msg .course_txt {
-  line-height: 80px;
+.warp2 .name_state .course_name {
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+  font-size: 26px;
+  color: #adadad;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-top: 3px;
 }
-.course_msg .course_txt .span {
+.warp2 .name_state .course_geng {
+  width: 100%;
+  display: inline-block;
   font-size: 24px;
   color: #adadad;
+  text-align: right;
 }
-.course_msg .course_txt .span.span1 {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.warp2 .name_state .course_number {
+  font-size: 24px;
+  color: #adadad;
+  /* display: flex; */
+  line-height: 55px;
+  position: relative;
+  top: 3px;
 }
-.course_msg .course_txt .span.span3 {
-  text-align: left;
+
+.warp2 .name_state .course_state {
+  text-align: right;
+  display: inline-block;
+  width: 100%;
+  font-size: 24px;
+  color: #5dd6c7;
+  position: relative;
+  top: -3px;
 }
-.course_msg .course_txt .span.span2 {
+.warp2 .name_state .course_state.money {
+  color: red;
+  font-size: 26px;
+}
+.warp2 .name_state {
+  line-height: 25px;
+}
+.warp2 .info {
+  margin-bottom: 30px;
+}
+.noshow {
+  width: 100%;
   text-align: center;
+  padding: 100px 0;
 }
-.course_msg .course_txt .span.span2 .icon {
-  position: relative;
-  top: 2px;
-  
+img {
+  max-width: 100%;
+  border: none;
 }
-.course_msg .course_txt .span.span1 img {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  position: relative;
-  top: 10px;
-  border-radius: 20px;
-}
-.course_msg .course_txt .span.span4 {
-  text-align: right;
-  color: rgb(255, 0, 0);
-}
-.course_msg .course_txt .span.span5 {
-  text-align: right;
-  color: #1fd78b;
-}
-.van-divider{
-  margin: 10px 0;
+.noshow p {
+  font-size: 30px;
+  color: #818181;
 }
 </style>

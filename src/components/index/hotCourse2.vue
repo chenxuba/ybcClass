@@ -72,6 +72,7 @@ export default {
         path: "/courseDetail/" + item.id
       });
     },
+    // 更多
     moreContent() {
       this.$router.push({
         path: "/moduleDetail",
