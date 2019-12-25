@@ -24,7 +24,7 @@
                 src="https://kf.ybc365.com/train/Public/train/user/course/images/icon-view.png"
                 class="info-item-img"
               />
-              {{parseInt(baseValue) + parseInt(classDetail.readings) || 0}}
+              {{parseInt(baseValue) + parseInt(classDetail.people_num) || 0}}
             </span>
             <span class="info-item">
               <img
@@ -171,7 +171,7 @@ export default {
       classDetail: {
         res_info: {}
       },
-      baseValue: "1300",
+      baseValue: "800",
       show2: false,
       height: "50%",
       router: "payOver"
