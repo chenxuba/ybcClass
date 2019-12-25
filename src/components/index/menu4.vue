@@ -1,7 +1,7 @@
 <template>
   <div class="menu4">
     <div class="list">
-      <ul>
+      <ul v-if="menu4.menu">
         <van-swipe @change="onChange">
           <van-swipe-item>
             <van-row class="menu_4" type="flex" justify="center">
@@ -11,7 +11,7 @@
                 :key="index"
                 @click="goToDetail(item)"
               >
-                <img width="100%" height="auto" :src="item.img" />
+                <img width="100%" height="auto" v-if="item.img" :src="item.img" />
                 <span class="menu_title">{{item.title}}</span>
               </van-col>
             </van-row>

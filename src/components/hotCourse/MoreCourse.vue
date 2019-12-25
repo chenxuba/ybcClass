@@ -15,17 +15,24 @@
                 <van-col span="12">
                   <span class="course_name">{{item.name}}</span>
                   <span class="course_number">
-                    <NumberGrow :value="item.people_num"></NumberGrow>人观看
+                    <!-- <NumberGrow :value="Number(baseVal)+item.people_num"></NumberGrow>人观看 -->
+                    {{Number(baseVal)+item.people_num}}人观看
                   </span>
                 </van-col>
                 <van-col span="12">
-                  <span class="course_state" v-if="item.money_type == 2">学员</span>
-                  <span class="course_state" v-if="item.money_type == 4">密码</span>
-                  <!-- <span class="course_state" v-if="item.money_type == 0">公开</span> -->
-                  <span class="course_state" v-if="item.money_type == 0 && item.solo_sell == 1">公开</span>
-                  <span class="course_state" v-if="item.money_type == 0 && item.solo_sell == 0"></span>
-                  <span class="course_state money" v-if="item.money_type == 1">¥{{item.money}}</span>
-                  <span class="course_geng">点赞{{item.likes}}</span>
+                  <!-- 课程资源 1:付费 2：学员 3：公开 -->
+                  <span class="course_state money" v-if="item.money_type == 1 && type == 1">{{'¥'+item.money}}</span>
+                  <span class="course_state" v-if="item.money_type == 2 && type == 1">学员</span>
+                  <span class="course_state" v-if="item.money_type == 3 && type == 1"></span>
+                  <span class="course_geng" v-if="type == 1">{{item.update_status}}</span>
+                  <!-- 课时资源 0:免费 1：会员免费 2：学员免费 3付费 4密码观看 -->
+                  <span class="course_state" v-if="item.money_type == 0 && type == 2 && item.solo_sell == 0"></span>
+                  <span class="course_state" v-if="item.money_type == 0 && type == 2 && item.solo_sell == 1">公开</span>
+                  <span class="course_state" v-if="item.money_type == 1 && type == 2 && item.solo_sell == 1">公开</span>
+                  <span class="course_state orange" v-if="item.money_type == 2 && type == 2 && item.solo_sell == 1">学员</span>
+                  <span class="course_state money" v-if="item.money_type == 3 && type == 2 && item.solo_sell == 1">{{'¥'+item.money}}</span>
+                  <span class="course_state" v-if="item.money_type == 4 && type == 2 && item.solo_sell == 1">密码</span>
+                  <span class="course_geng" v-if="type == 2">点赞{{item.likes}}</span>
                 </van-col>
               </van-row>
             </van-col>
@@ -54,7 +61,8 @@ export default {
   },
   data() {
     return {
-      type: this.$route.query.type
+      type: this.$route.query.type,
+      baseVal:"800",
     };
   },
   components: {
@@ -174,6 +182,10 @@ export default {
 }
 .warp2 .name_state .course_state.money {
   color: red;
+  font-size: 26px;
+}
+.warp2 .name_state .course_state.orange {
+  color: orange;
   font-size: 26px;
 }
 .warp2 .name_state {
