@@ -310,3 +310,11 @@ export const reqUserPriceMingxi = (cookie,page) => ajax(`${BASE_URL2}/api/5daec5
  * 获取线下课程详情
  */
 export const reqXxCourseDetail = (course_id,cookie) => ajax(`${BASE_URL2}/api/5dd74b390358c`, {course_id,cookie}, 'POST');
+/**
+ * 获取线下课程详情
+ */
+export const reqStudentQuanYi = (cookie) => ajax(`${BASE_URL2}/api/5e007612878f0`, {cookie}, 'POST');
+/**
+ * 取消订阅接口
+ */
+export const reqDeteleDingYue = (id,cookie) => ajax(`${BASE_URL2}/api/5db28d1f5d80c`, {id,cookie}, 'POST');

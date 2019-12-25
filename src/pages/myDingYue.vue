@@ -1,12 +1,13 @@
 <template>
   <div class="myDingYue">
-    <DingYueList :dingYueList="dingYueList" @pullDown="pullDown2" ref="child"></DingYueList>
+    <DingYueList :dingYueList="dingYueList" @pullDown="pullDown2" ref="child" @hanlddeleteDY="hanlddeleteDY"></DingYueList>
     <goBack></goBack>
   </div>
 </template>
 
 <script>
-import { reqUserDingyue } from "../api";
+import { reqUserDingyue,reqDeteleDingYue } from "../api";
+import { Toast } from "vant";
 import DingYueList from "../components/myDingYue/dingYueList";
 export default {
   data() {
@@ -16,13 +17,18 @@ export default {
     };
   },
   methods: {
+    // 获取订阅列表
     async getDingYueList() {
+      this.page = 1
       const result = await reqUserDingyue("", this.page);
       console.log(result);
       if (result.code == 1) {
         this.dingYueList = result.data;
+      }else if(result.code == -3){
+        this.dingYueList = {}
       }
     },
+    // 上拉加载
     async pullDown2() {
       this.page++;
       const result = await reqUserDingyue("", this.page);
@@ -35,6 +41,15 @@ export default {
       } else if (result.code == -3) {
         this.$refs.child.finished = true;
         this.$refs.child.loading = false;
+      }
+    },
+    // 取消订阅
+    async hanlddeleteDY(id){
+      const result = await reqDeteleDingYue(id,"");
+      if(result.code == 1){
+        console.log(result);
+        Toast(result.data.return_msg)
+        this.getDingYueList();
       }
     }
   },

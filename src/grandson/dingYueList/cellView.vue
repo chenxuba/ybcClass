@@ -28,7 +28,7 @@
           </div>
         </van-col>
         <template slot="right">
-          <van-button square type="danger" text="取消" />
+          <van-button square type="danger" text="取消" @click="hanlddelete(dingYueListObj)" />
         </template>
       </van-swipe-cell>
     </van-row>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { Dialog,Notify } from "vant";
 export default {
   props: {
     dingYueListObj: Object
@@ -43,6 +44,22 @@ export default {
   methods: {
     goDetail(id) {
       this.$router.push(`/courseDetail/${id}`);
+    },
+    hanlddelete(Obj) {
+      Dialog.confirm({
+        title: "温馨提示",
+        message: "付费资源取消后需要重新购买，取消？"
+      }).then(() => {
+        // on close
+        this.$emit("hanlddeleteDY",Obj.id)
+      }).catch(() => {
+        // on cancel
+        Notify({
+          message: '您取消了操作',
+          color: '#fff',
+          background: '#5dd6c7'
+        });
+      });
     }
   }
 };

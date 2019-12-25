@@ -25,8 +25,9 @@
                 <van-col span="12">
                   <span class="course_state" v-if="item.money_type == 2">学员</span>
                   <span class="course_state" v-if="item.money_type == 4">密码</span>
-                  <span class="course_state" v-if="item.money_type == 0">公开</span>
-                  <span class="course_state" v-if="item.money_type == 3">公开</span>
+                  <span class="course_state" v-if="item.money_type == 0 && item.solo_sell == 1">公开</span>
+                  <span class="course_state" v-if="item.money_type == 0 && item.solo_sell == 0"></span>
+                  <span class="course_state" v-if="item.money_type == 3 && item.solo_sell == 1">公开</span>
                   <span class="course_state money" v-if="item.money_type == 1">¥{{item.money}}</span>
                   <span class="course_geng">
                     <van-icon

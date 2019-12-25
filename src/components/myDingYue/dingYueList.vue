@@ -4,7 +4,7 @@
       <van-col span="24" class="hot_warp">
         <van-row type="flex" justify="space-between" class="warp1">
           <van-col span="6" class="title">我的订阅</van-col>
-          <van-col span="6" class="more" @click="$router.go(-1)">返回</van-col>
+          <van-col span="6" class="more">左滑取消订阅</van-col>
         </van-row>
       </van-col>
       <van-list
@@ -15,7 +15,7 @@
         :immediate-check="false"
         :offset="20"
       >
-        <cellView v-for="(item,index) in dingYueList" :key="index" :dingYueListObj="item"></cellView>
+        <cellView v-for="(item,index) in dingYueList" :key="index" :dingYueListObj="item" @hanlddeleteDY="hanlddeleteDY"></cellView>
       </van-list>
     </van-row>
   </div>
@@ -37,6 +37,9 @@ export default {
   methods: {
     onLoad() {
       this.$emit("pullDown");
+    },
+    hanlddeleteDY(id){
+      this.$emit("hanlddeleteDY",id);
     }
   }
 };
