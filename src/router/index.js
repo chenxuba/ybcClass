@@ -628,7 +628,17 @@ const router = new Router({
         title: "线下课程详情"
       }
     },
-    // xsCourseDetail
+    {
+      path: "/cantryVideo/:id",
+      name: "cantryVideo",
+      component: () =>
+        import('../pages/cantryVideo.vue'),
+      meta: {
+        showFooter: false,
+        title: "视频试看"
+      }
+    },
+    // cantryVideo
 
   ]
 })
@@ -652,7 +662,8 @@ router.beforeEach((to, from, next) => {
     to.name == 'classDetail' || to.name == 'userinfo' || to.name == 'openStudent' ||
     to.name == 'ask' || to.name == 'wordDetail' || to.name == 'course_buy_detail' ||
     to.name == 'moduleDetail' || to.name == 'wordModuleDeatil' || to.name == 'teacherUserinfo' ||
-    to.name == 'applyTeacher' || to.name == 'openTeacher' || to.name == 'openSchool' || to.name == 'schoolDetail') {
+    to.name == 'applyTeacher' || to.name == 'openTeacher' || to.name == 'openSchool' || 
+    to.name == 'schoolDetail' || to.name == 'xsCourseDetail' || to.name == 'cantryVideo') {
     var cookie = sessionStorage.getItem("cookie");
     if (cookie) {
       next();

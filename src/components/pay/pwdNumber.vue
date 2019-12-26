@@ -23,7 +23,7 @@
 import { reqWxPay, reqPayResult2 } from "../../api";
 import { Toast } from "vant";
 export default {
-  props: ["id", "type","money","user_id"],
+  props: ["id", "type", "money", "user_id"],
   data() {
     return {
       value: "",
@@ -32,7 +32,9 @@ export default {
       error_info: "",
       pay_type: "2", //2是零钱支付
       batchcode: "",
-      res_id:this.$route.query.res_id
+      res_id: this.$route.query.res_id,
+      multiply: this.$route.query.multiply,
+      m_type: this.$route.query.m_type
     };
   },
   methods: {
@@ -56,12 +58,13 @@ export default {
         "",
         this.id,
         this.type,
-        "",
+        "", //res_id
         this.pay_type,
         this.money,
-        "",
+        this.multiply,
         this.value,
-        this.user_id
+        this.user_id,
+        this.m_type
       );
       console.log(result);
       if (result.code == 1) {
@@ -85,10 +88,10 @@ export default {
         toast2.clear();
         _this.value = "";
         _this.$router.push({
-          path:"/payOver",
-          query:{
-            type:this.type,
-            id: this.id,
+          path: "/payOver",
+          query: {
+            type: this.type,
+            id: this.id
           }
         });
         Toast.success("支付成功");

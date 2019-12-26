@@ -9,9 +9,9 @@
       <p>选择支付方式:</p>
       <van-radio-group v-model="radio">
         <van-cell-group>
-          <van-cell title="支付宝支付" icon="alipay" icon-size="46px" clickable @click="radio = '1'">
+          <!-- <van-cell title="支付宝支付" icon="alipay" icon-size="46px" clickable @click="radio = '1'">
             <van-radio slot="right-icon" name="1" checked-color="#5dd6c7" />
-          </van-cell>
+          </van-cell>-->
           <van-cell title="微信支付" icon="wechat" clickable @click="radio = '2'">
             <van-radio slot="right-icon" name="2" checked-color="#5dd6c7" />
           </van-cell>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { reqWxPay } from "../api/index";
+import { reqWxPay, reqPayResult } from "../api/index";
 import { isWx, isIos } from "../util";
 import { Toast } from "vant";
 import pwdNumber from "../components/pay/pwdNumber";
@@ -48,7 +48,10 @@ export default {
       showPwdInput: false, //支付密码输入框是否显示
       height: "50%",
       user_id: this.$route.query.user_id, //导师id，软文打赏用
-      pay_type: 1
+      pay_type: 1,
+      multiply: this.$route.query.multiply,
+      m_type: this.$route.query.m_type,
+      batchcode:"",//订单编号
     };
   },
   methods: {
@@ -62,10 +65,13 @@ export default {
             "",
             this.id,
             this.type,
-            "",
+            "", //res_id
             this.pay_type,
             this.money,
-            ""
+            this.multiply,
+            "",
+            "",
+            this.m_type
           );
           console.log(result);
           WeixinJSBridge.invoke(
@@ -82,14 +88,16 @@ export default {
               // console.log(res);
               if (res.err_msg == "get_brand_wcpay_request:ok") {
                 //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                Toast.success("支付成功");
-                this.$router.push({
-                  path: "/payOver",
-                  query: {
-                    id: this.id,
-                    type: this.type
-                  }
-                });
+                // Toast.success("支付成功");
+                // this.$router.push({
+                //   path: "/payOver",
+                //   query: {
+                //     id: this.id,
+                //     type: this.type
+                //   }
+                // });
+                this.batchcode = result.data.batchcode;
+                this.getPayResult();
               } else {
                 return;
               }
@@ -102,6 +110,30 @@ export default {
         console.log("调用零钱支付，先弹出支付密码输入框");
         this.showPwdInput = true;
       }
+    },
+    // 检查零钱支付结果
+    async getPayResult() {
+      let _this = this;
+      const toast2 = Toast.loading({
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        message: "加载中"
+      });
+      const res = await reqPayResult(this.batchcode, "");
+      if (res.code == 1) {
+        toast2.clear();
+        _this.value = "";
+        _this.$router.push({
+          path: "/payOver",
+          query: {
+            type: this.type,
+            id: this.id
+          }
+        });
+        Toast.success("支付成功");
+      } else {
+        this.$toast(res.msg);
+      }
     }
   },
   mounted() {
@@ -113,7 +145,8 @@ export default {
   },
   components: {
     pwdNumber
-  }
+  },
+  
 };
 </script>
 

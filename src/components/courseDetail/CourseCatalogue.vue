@@ -39,7 +39,7 @@
               <van-col span="6" class="scan_warp">
                 <span class="scan">
                   <van-icon name="play-circle-o" class="icon-paly" />
-                  ({{parseInt(baseValue2)+parseInt(item.readings)}})
+                  ({{parseInt(baseValue2)+parseInt(item.people_num)}})
                 </span>
               </van-col>
               <van-col span="6" class="good_warp">

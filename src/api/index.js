@@ -165,7 +165,7 @@ export const reqMyFans = (cookie,page) => ajax(`${BASE_URL2}/api/5db1697a74d6d`,
 /**
  * 课程购买---支付接口
  */
-export const reqWxPay = (cookie,id,type,res_id,pay_type,money,multiply,pwd,user_id) => ajax(`${BASE_URL2}/api/5db6a07c84156`, {cookie,id,type,res_id,pay_type,money,multiply,pwd,user_id}, 'POST');
+export const reqWxPay = (cookie,id,type,res_id,pay_type,money,multiply,pwd,user_id,m_type) => ajax(`${BASE_URL2}/api/5db6a07c84156`, {cookie,id,type,res_id,pay_type,money,multiply,pwd,user_id,m_type}, 'POST');
 /**
  * 是否订阅接口
  */

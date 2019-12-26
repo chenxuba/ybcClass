@@ -1,6 +1,6 @@
 <template>
   <div class="hotCourse">
-    <van-row>
+    <van-row v-if="classHour.class">
       <van-col span="24" class="hot_warp">
         <van-row type="flex" justify="space-between" class="warp1">
           <van-col span="6" class="title">{{classHour.title || '最新课时'}}</van-col>
@@ -8,7 +8,7 @@
         </van-row>
       </van-col>
       <van-col span="24" class="hot_warp">
-        <div class="warp2" v-if="classHour.class">
+        <div class="warp2">
           <van-row gutter="12">
             <van-col span="12" class="info" v-for="(item,index) in classHour.class" :key="index">
               <img v-lazy="item.pic_cover" alt class="warp2_img" @click="goDetail(item)" />

@@ -79,34 +79,42 @@
       <!-- 赠送好友，付费资源 -->
       <van-row>
         <van-col span="8">
-          <van-button class="zengsong" v-if="CourseJianjie.money_type == 1">
+          <van-button class="zengsong" v-if="CourseJianjie.money_type == 1" @click="GiveFriend">
             <van-icon name="point-gift-o" class="icon" />赠送好友
           </van-button>
         </van-col>
         <!-- 学员权益价格 -->
-        <van-col :span="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student ==1 ? '16' : '6'" v-if="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student ==1">
+        <van-col
+          :span="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student ==1 ? '16' : '6'"
+          v-if="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student ==1"
+        >
           <van-button
             class="xueyuanjia"
             v-if="CourseJianjie.money_type == 1 && CourseJianjie.subscribe == 0"
-            @click="GoPay(StudentQuanYi.student_discount /100 *CourseJianjie.total_month)"
-          >学员价¥{{StudentQuanYi.student_discount /100 *CourseJianjie.total_month }}</van-button>
+            @click="GoPay()"
+          >学员价¥{{money}}</van-button>
         </van-col>
-        <van-col :span="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student == 0 ? '6' : '16'" v-if="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student == 0 && CourseJianjie.subscribe == 0">
+        <van-col
+          :span="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student == 0 ? '6' : '16'"
+          v-if="StudentQuanYi.student_discount_status == 1 && CourseJianjie.student == 0 && CourseJianjie.subscribe == 0"
+        >
           <van-button
             class="xueyuanjia"
             v-if="CourseJianjie.money_type == 1"
             @click="dingyue"
-          >学员价¥{{StudentQuanYi.student_discount /100 *CourseJianjie.total_month }}</van-button>
+          >学员价¥{{money }}</van-button>
         </van-col>
-        <van-col :span="StudentQuanYi.student_discount_status == 1 && CourseJianjie.subscribe == 0 ? '10' : '16'">
+        <van-col
+          :span="StudentQuanYi.student_discount_status == 1 && CourseJianjie.subscribe == 0 ? '10' : '16'"
+        >
           <!-- 付费无订阅 -->
           <van-button
             class="btn"
             v-if="CourseJianjie.subscribe == 0 && CourseJianjie.money_type == 1 && StudentQuanYi.student_free_status != 1 && CourseJianjie.student ==0"
-            @click="GoPay(CourseJianjie.total_month)"
-          >订阅线上课程(¥{{CourseJianjie.total_month}}元)</van-button>
+            @click="GoPay()"
+          >订阅线上课程¥{{CourseJianjie.total_month}}元</van-button>
           <!-- 学员免费 -->
-           <van-button
+          <van-button
             class="btn"
             v-if="CourseJianjie.subscribe == 0 && CourseJianjie.money_type == 1 && StudentQuanYi.student_free_status == 1"
             @click="dingyue"
@@ -121,6 +129,8 @@
     </div>
     <goHome></goHome>
     <goBack :router="router"></goBack>
+    <!-- 赠送好友弹出框 -->
+    <giveFriendPopup ref="giveFriendPopup" :price="CourseJianjie.total_month" :type="1"></giveFriendPopup>
   </div>
 </template>
 
@@ -128,6 +138,7 @@
 import CourseIntroduction from "../components/courseDetail/CourseIntroduction";
 import CourseCatalogue from "../components/courseDetail/CourseCatalogue";
 import CousreComment from "../components/courseDetail/CousreComment";
+import giveFriendPopup from "../components/courseDetail/GiveFriendPopup";
 import { wxJS_SDk } from "../util/share";
 import {
   reqCourseJianjie,
@@ -195,10 +206,10 @@ export default {
       // console.log(result)
       this.$store.commit("setCoursePingJia", result.data);
     },
-    GoPay(money) {
+    GoPay() {
       this.$router.push({
         path: `/pay/${this.id}`,
-        query: { money: money, type: "1" }
+        query: { money: this.money, type: "1" }
       });
     },
     // 点击订阅
@@ -232,6 +243,10 @@ export default {
         console.log(result);
         this.StudentQuanYi = result.data;
       }
+    },
+    // 赠送好友
+    GiveFriend() {
+      this.$refs.giveFriendPopup.isShowGiveFriend = true;
     }
   },
   mounted() {
@@ -246,14 +261,23 @@ export default {
   components: {
     CourseIntroduction,
     CourseCatalogue,
-    CousreComment
+    CousreComment,
+    giveFriendPopup
   },
   computed: {
-    ...mapState(["CourseJianjie", "CourseMulu", "CoursePingJia"])
-  },
-  created() {
-    isIos();
+    ...mapState(["CourseJianjie", "CourseMulu", "CoursePingJia"]),
+    money() {
+      return (this.StudentQuanYi.student_discount / 100) *
+        this.CourseJianjie.total_month <
+        "0.01"
+        ? "0.01"
+        : ((this.StudentQuanYi.student_discount / 100) *
+            this.CourseJianjie.total_month).toFixed(2);
+    }
   }
+  // created() {
+  //   isIos();
+  // }
 };
 </script>
 
@@ -311,7 +335,7 @@ export default {
   position: fixed;
   bottom: -4px;
   width: 100%;
-  z-index: 9999;
+  /* z-index: 9999; */
 }
 .buy .btn {
   width: 100%;

@@ -149,6 +149,7 @@ export default {
     };
   },
   methods: {
+    // 获取播放器配置
     getVideoConfig() {
       let player = new HlsJsPlayer({
         id: "mse",
@@ -217,11 +218,12 @@ export default {
         this.msgList = result.data.data.res_log.count;
         this.ppt = result.data.data.ppt;
         // console.log(this.ppt);
-
         this.getVideoConfig();
       } else if (result.code == -6) {
         Toast("该资源需要输入密码");
         this.$router.push(`/classDetail/${this.res_id}`);
+      }else if(result.code == -3){
+        Toast("未购买此资源");
       }
     },
     // 连接ws

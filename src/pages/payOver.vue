@@ -6,6 +6,13 @@
     <p class="zfOk">支付成功</p>
     <div class="btn">
       <van-button type="primary" size="large" color="#5dd6c7" round @click="goBack">查看详情</van-button>
+      <van-button
+        type="primary"
+        size="large"
+        color="#5dd6c7"
+        round
+        @click="$router.push('/course_buy_detail')"
+      >购买记录</van-button>
     </div>
     <goHome></goHome>
   </div>
@@ -38,13 +45,13 @@ export default {
         this.$router.push({
           path: "/myQa"
         });
-      }else if (this.type == 7 || this.type == 8) {
+      } else if (this.type == 7 || this.type == 8) {
         this.$router.push({
-          path: "/wordDetail/"+ this.id
+          path: "/wordDetail/" + this.id
         });
       }
     }
-  },
+  }
   // created() {
   //   let _href = window.location.href; // 获取当前地址
   //   if (_href.indexOf("&replace=1") <= -1) {
@@ -52,7 +59,6 @@ export default {
   //     window.location.replace(_href + "&replace=1");
   //   }
   // }
-  
 };
 </script>
 
@@ -84,8 +90,18 @@ export default {
   letter-spacing: 2px;
 }
 .payOver .btn {
+  display: flex;
   padding: 0 80px;
   box-sizing: border-box;
   margin-top: 100px;
+  justify-content: space-between;
+}
+.van-button--large {
+  height: 90px;
+  line-height: 90px;
+}
+.van-button--large:first-child {
+  margin-right: 40px;
+  margin-left: 20px;
 }
 </style>

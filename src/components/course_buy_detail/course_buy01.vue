@@ -1,71 +1,77 @@
 <template>
   <div class="course_buy01">
-    <div class="list" v-if="audio_res != ''">
-      <!-- 图片和标题和价格 -->
-      <div class="content-allbox" v-for="(item,index) in audio_res" :key="'audio_res'+index">
-        <div class="class-contentbox">
-          <div class="img-box">
-            <img v-lazy="item.cover" />
-          </div>
-          <div class="content-detail">
-            <div class="detail-name">
-              <h4>{{item.title}}</h4>
-              <div class="content-money">¥{{item.money}}</div>
+    <div class="list">
+      <div v-if="audio_res != ''">
+        <!-- 图片和标题和价格 -->
+        <div class="content-allbox" v-for="(item,index) in audio_res" :key="'audio_res'+index">
+          <div class="class-contentbox">
+            <div class="img-box">
+              <img v-lazy="item.cover" />
             </div>
-            <div class="detail-time">
-              <span>视频</span>
-              购买于:
-              <span>{{item.paytime}}</span>
+            <div class="content-detail">
+              <div class="detail-name">
+                <h4>{{item.title}}</h4>
+                <div class="content-money">¥{{item.money}}</div>
+              </div>
+              <div class="detail-time">
+                <span>音频</span>
+                购买于:
+                <span>{{item.paytime}}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="btnbox">
-          <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
-          <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
+          <div class="btnbox">
+            <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+            <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
+          </div>
         </div>
       </div>
-       <div class="content-allbox" v-for="(item,index) in live_res" :key="'live_res'+index">
-        <div class="class-contentbox">
-          <div class="img-box">
-            <img v-lazy="item.cover" />
-          </div>
-          <div class="content-detail">
-            <div class="detail-name">
-              <h4>{{item.title}}</h4>
-              <div class="content-money">¥{{item.money}}</div>
+      <div v-if="live_res != ''">
+        <div class="content-allbox" v-for="(item,index) in live_res" :key="'live_res'+index">
+          <div class="class-contentbox">
+            <div class="img-box">
+              <img v-lazy="item.cover" />
             </div>
-            <div class="detail-time">
-              <span>视频</span>
-              购买于:
-              <span>{{item.paytime}}</span>
+            <div class="content-detail">
+              <div class="detail-name">
+                <h4>{{item.title}}</h4>
+                <div class="content-money">¥{{item.money}}</div>
+              </div>
+              <div class="detail-time">
+                <span>视频</span>
+                购买于:
+                <span>{{item.paytime}}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="btnbox">
-          <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
-          <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
+          <div class="btnbox">
+            <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+            <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
+          </div>
         </div>
       </div>
-       <div class="content-allbox" v-for="(item,index) in video_res" :key="'video_res'+index">
-        <div class="class-contentbox">
-          <div class="img-box">
-            <img v-lazy="item.cover" />
-          </div>
-          <div class="content-detail">
-            <div class="detail-name">
-              <h4>{{item.title}}</h4>
-              <div class="content-money">¥{{item.money}}</div>
+      <div v-if="video_res != ''">
+        <div class="content-allbox" v-for="(item,index) in video_res" :key="'video_res'+index">
+          <div class="class-contentbox">
+            <div class="img-box">
+              <img v-lazy="item.cover" />
             </div>
-            <div class="detail-time">
-              <span>视频</span>
-              购买于:
-              <span>{{item.paytime}}</span>
+            <div class="content-detail">
+              <div class="detail-name">
+                <h4>{{item.title}}</h4>
+                <div class="content-money">¥{{item.money}}</div>
+              </div>
+              <div class="detail-time">
+                <span>视频</span>
+                购买于:
+                <span>{{item.paytime}}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="btnbox">
-          <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
-          <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
+          <div class="btnbox">
+            <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+            <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +86,7 @@
 
 <script>
 export default {
-  props: ["audio_res","live_res","video_res"]
+  props: ["audio_res", "live_res", "video_res"]
 };
 </script>
 
@@ -98,7 +104,7 @@ export default {
   padding: 25px 25px 20px 20px;
   box-sizing: border-box;
 }
-.course_buy01 .content-allbox:last-child{
+.course_buy01 .content-allbox:last-child {
   border: none;
 }
 .course_buy01 .content-allbox .class-contentbox {

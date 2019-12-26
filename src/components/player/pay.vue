@@ -60,10 +60,13 @@ export default {
         this.liwuID,
         this.type,
         this.res_id,
+        this.pay_type,
         "",
-        this.multiply
+        this.multiply,
+        "",
+        ""
       );
-      // console.log(result);
+      console.log(result);
       showLoading();
       this.batchcode = result.data.batchcode;
       WeixinJSBridge.invoke(

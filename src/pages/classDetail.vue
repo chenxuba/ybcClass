@@ -48,7 +48,7 @@
             <img src="https://kf.ybc365.com/train/Public/train/user/common/img/support.png" />
             <span>支持回看</span>
             <!-- <img src="https://kf.ybc365.com/train/Public/train/user/common/img/support.png" />
-            <span>可使用优惠券</span> -->
+            <span>可使用优惠券</span>-->
           </div>
           <!-- <div class="more">
           <img src="https://kf.ybc365.com/train/Public/train/user/common/img/more.png" />
@@ -118,48 +118,266 @@
       >进入课时</van-button>
       <!-- 密码 -->
       <van-button class="btn" v-if="classDetail.needpay == 4" @click="showNumber">进入课时</van-button>
-      <van-row>
-        <van-col span="8">
+      <!-- 付费资源 -->
+      <!-- 付费资源且可以试看且开了学员打折权益且没有购买课时且不是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 1 
+        && StudentQuanYi.student_discount_status == 1 
+        && classDetail.is_ok == 0 
+        && classDetail.student == 0"
+      >
+        <van-col span="6">
           <!-- 收费的，始终有赠送好友的按钮 -->
-          <van-button class="zengsong" v-if="classDetail.needpay == 3">
+          <van-button class="zengsong" @click="GiveFriend">
             <van-icon name="point-gift-o" class="icon" />赠送好友
           </van-button>
         </van-col>
-        <van-col :span="classDetail.cantry == 1 && classDetail.is_ok !=1? '6':'0'">
+        <van-col span="5">
           <!-- 试看按钮 -->
-          <van-button
-            class="btn"
-            v-if="classDetail.cantry == 1 && classDetail.needpay != 4 && classDetail.needpay !=2 && classDetail.is_ok !=1"
-          >免费试看</van-button>
+          <van-button class="btn" @click="freeCantry">试看</van-button>
         </van-col>
-        <van-col :span="classDetail.cantry == 1 && classDetail.is_ok != 1 ? '10':'16'">
+        <!-- 学员权益 -->
+        <van-col span="6">
+          <van-button class="btn" @click="firStudent">学员价({{StudentQuanYi.student_discount / 10}}折)</van-button>
+        </van-col>
+        <van-col span="7">
           <!-- 付费的视频，没付费就显示这个按钮 -->
+          <van-button class="btn" @click="GoPay">立即支付{{classDetail.price.toFixed(2)}}元</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且不可以试看且开了学员打折权益且没有购买课时且不是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 0 
+        && StudentQuanYi.student_discount_status == 1 
+        && classDetail.is_ok == 0 
+        && classDetail.student == 0"
+      >
+        <van-col span="7">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="8">
+          <van-button class="btn" @click="firStudent">学员价({{StudentQuanYi.student_discount / 10}}折)</van-button>
+        </van-col>
+        <van-col span="9">
+          <!-- 付费的视频，没付费就显示这个按钮 -->
+          <van-button class="btn" @click="GoPay">立即支付{{classDetail.price.toFixed(2)}}元</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且不可以试看且没开学员打折权益且没有购买课时且不是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 0 
+        && StudentQuanYi.student_discount_status == 0 
+        && StudentQuanYi.student_free_status == 0
+        && classDetail.is_ok == 0 
+        && classDetail.student == 0"
+      >
+        <van-col span="8">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <van-col span="16">
+          <!-- 付费的视频，没付费就显示这个按钮 -->
+          <van-button class="btn" @click="GoPay">立即支付{{classDetail.price.toFixed(2)}}元</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且可以试看且没开学员打折权益且没有购买课时且不是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 1 
+        && StudentQuanYi.student_discount_status == 0 
+        && StudentQuanYi.student_free_status == 0
+        && classDetail.is_ok == 0 
+        && classDetail.student == 0"
+      >
+        <van-col span="7">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <van-col span="7">
+          <!-- 试看按钮 -->
+          <van-button class="btn" @click="freeCantry">免费试看</van-button>
+        </van-col>
+        <van-col span="10">
+          <!-- 付费的视频，没付费就显示这个按钮 -->
+          <van-button class="btn" @click="GoPay">立即支付{{classDetail.price.toFixed(2)}}元</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且可以试看且开了学员全场免费权益且没有购买课时且不是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 1 
+        && StudentQuanYi.student_free_status == 1 
+        && classDetail.is_ok == 0 
+        && classDetail.student == 0"
+      >
+        <van-col span="6">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <van-col span="4">
+          <!-- 试看按钮 -->
+          <van-button class="btn" @click="freeCantry">试看</van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="7">
+          <van-button class="btn" @click="firStudent">学员免费</van-button>
+        </van-col>
+        <van-col span="7">
+          <!-- 付费的视频，没付费就显示这个按钮 -->
+          <van-button class="btn" @click="GoPay">立即支付{{classDetail.price.toFixed(2)}}元</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且不可以试看且开了学员全场免费权益且没有购买课时且不是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 0 
+        && StudentQuanYi.student_free_status == 1 
+        && classDetail.is_ok == 0 
+        && classDetail.student == 0"
+      >
+        <van-col span="6">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="8">
+          <van-button class="btn" @click="firStudent">学员免费</van-button>
+        </van-col>
+        <van-col span="10">
+          <!-- 付费的视频，没付费就显示这个按钮 -->
+          <van-button class="btn" @click="GoPay">立即支付{{classDetail.price.toFixed(2)}}元</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且可以试看且开了学员打折权益且没有购买且是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 1 
+        && StudentQuanYi.student_discount_status == 1 
+        && classDetail.is_ok == 0 
+        && classDetail.student == 1"
+      >
+        <van-col span="7">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <van-col span="7">
+          <!-- 试看按钮 -->
+          <van-button class="btn" @click="freeCantry">免费试看</van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="10">
           <van-button
             class="btn"
-            v-if="classDetail.needpay == 3 && classDetail.is_ok != 1"
-            @click="GoPay"
-          >立即支付{{classDetail.price.toFixed(2)}}元</van-button>
-          <!-- 付费的视频，但已经付费了就显示这个按钮 -->
+            @click="GoPayStudentQuanYi"
+          >学员价({{StudentQuanYi.student_discount / 10}}折)</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且不可以试看且开了学员打折权益且没有购买且是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 0 
+        && StudentQuanYi.student_discount_status == 1 
+        && classDetail.is_ok == 0 
+        && classDetail.student == 1"
+      >
+        <van-col span="8">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="16">
           <van-button
             class="btn"
-            v-if="classDetail.needpay == 3 && classDetail.is_ok == 1"
-            @click="goPlayer(classDetail.id)"
-          >进入课时</van-button>
+            @click="GoPayStudentQuanYi"
+          >学员价({{StudentQuanYi.student_discount / 10}}折)</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且不可以试看且开了学员全场免费权益且没有购买且是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 0 
+        && StudentQuanYi.student_free_status == 1 
+        && classDetail.student == 1"
+      >
+        <van-col span="8">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="16">
+          <van-button class="btn" @click="goPlayer(classDetail.id)">学员免费，点击查看</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源且不可以试看且开了学员全场免费权益且没有购买且是学员 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.cantry == 1 
+        && StudentQuanYi.student_free_status == 1 
+        && classDetail.student == 1"
+      >
+        <van-col span="8">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <!-- 学员权益 -->
+        <van-col span="16">
+          <van-button class="btn" @click="goPlayer(classDetail.id)">学员免费，点击查看</van-button>
+        </van-col>
+      </van-row>
+      <!-- 付费资源但是已购买 -->
+      <van-row
+        v-if="classDetail.needpay == 3 
+        && classDetail.is_ok == 1"
+      >
+        <van-col span="7">
+          <!-- 收费的，始终有赠送好友的按钮 -->
+          <van-button class="zengsong" @click="GiveFriend">
+            <van-icon name="point-gift-o" class="icon" />赠送好友
+          </van-button>
+        </van-col>
+        <van-col span="17">
+          <van-button class="btn"  @click="goPlayer(classDetail.id)">进入课时</van-button>
         </van-col>
       </van-row>
     </div>
     <goHome></goHome>
     <!-- 返回按钮 -->
     <goBack :router="router"></goBack>
+    <!-- 赠送好友弹出框 -->
+    <giveFriendPopup ref="giveFriendPopup" :price="classDetail.price" :type="2"></giveFriendPopup>
   </div>
 </template>
 
 <script>
-import { reqClassDetail } from "../api/index";
+import { reqClassDetail, reqStudentQuanYi } from "../api/index";
 import { Toast } from "vant";
 import pwdNumber from "../components/classDetail/pwdNumber";
 import { isIos, setFirstUrl } from "../util";
 import { wxJS_SDk } from "../util/share";
+import giveFriendPopup from "../components/courseDetail/GiveFriendPopup";
 
 export default {
   data() {
@@ -174,7 +392,8 @@ export default {
       baseValue: "800",
       show2: false,
       height: "50%",
-      router: "payOver"
+      router: "payOver",
+      StudentQuanYi: "" //学员权益
     };
   },
   methods: {
@@ -242,7 +461,18 @@ export default {
       this.$router.push({
         path: `/pay/${this.id}`,
         query: {
-          money: this.classDetail.price,
+          money: this.money,
+          type: "2",
+          res_id: this.id
+        }
+      });
+    },
+    // 学员价
+    GoPayStudentQuanYi() {
+      this.$router.push({
+        path: `/pay/${this.id}`,
+        query: {
+          money: this.money,
           type: "2",
           res_id: this.id
         }
@@ -257,6 +487,31 @@ export default {
           type: 2
         }
       });
+    },
+    // 获取学员权益
+    async getStudentQuanYi() {
+      const result = await reqStudentQuanYi();
+      if (result.code == 1) {
+        console.log(result);
+        this.StudentQuanYi = result.data;
+      }
+    },
+    // 点击学员价触发 先开通学员
+    firStudent() {
+      Toast("请先成为学员");
+      setTimeout(() => {
+        this.$router.push("/openStudent");
+      }, 1000);
+    },
+    // 免费试看
+    freeCantry() {
+      this.$router.push({
+        path: `/pay/player/` + this.classDetail.id
+      });
+    },
+    // 赠送好友
+    GiveFriend() {
+      this.$refs.giveFriendPopup.isShowGiveFriend = true;
     }
   },
   mounted() {
@@ -269,11 +524,24 @@ export default {
       this.height = "70%";
     }
     setFirstUrl();
+    this.getStudentQuanYi();
   },
   components: {
-    pwdNumber
+    pwdNumber,
+    giveFriendPopup
   },
-  computed: {}
+  computed: {
+    money() {
+      return (this.StudentQuanYi.student_discount / 100) *
+        this.classDetail.price <
+        0.01
+        ? "0.01"
+        : (
+            (this.StudentQuanYi.student_discount / 100) *
+            this.classDetail.price
+          ).toFixed(2);
+    }
+  }
 };
 </script>
 
@@ -346,7 +614,7 @@ export default {
 }
 .van-button--default {
   background-color: #5dd6c7;
-  border: 1px solid #ebedf0;
+  /* border: 1px solid #ebedf0; */
   color: #fff;
 }
 .point {
@@ -560,5 +828,8 @@ export default {
   height: 60%;
   vertical-align: top;
   margin-top: 10px;
+}
+.van-button--normal {
+  padding: 0;
 }
 </style>
