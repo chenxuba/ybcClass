@@ -318,3 +318,7 @@ export const reqStudentQuanYi = (cookie) => ajax(`${BASE_URL2}/api/5e007612878f0
  * 取消订阅接口
  */
 export const reqDeteleDingYue = (id,cookie) => ajax(`${BASE_URL2}/api/5db28d1f5d80c`, {id,cookie}, 'POST');
+/**
+ * 获取赠礼详情
+ */
+export const reqGiveLiwuDetail = (cookie,batchcode) => ajax(`${BASE_URL2}/api/5e0438409b28e`, {cookie,batchcode}, 'POST');

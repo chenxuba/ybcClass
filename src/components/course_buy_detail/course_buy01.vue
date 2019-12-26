@@ -21,7 +21,22 @@
             </div>
           </div>
           <div class="btnbox">
-            <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="#5dd6c7"
+              v-if="item.buy_type != 2"
+            >评价</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="red"
+              v-if="item.buy_type == 2"
+              class="giveF"
+              @click="seeGiveLiwu(item)"
+            >查看赠礼</van-button>
             <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
           </div>
         </div>
@@ -69,7 +84,22 @@
             </div>
           </div>
           <div class="btnbox">
-            <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="#5dd6c7"
+              v-if="item.buy_type != 2"
+            >评价</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="red"
+              v-if="item.buy_type == 2"
+              class="giveF"
+              @click="seeGiveLiwu(item)"
+            >查看赠礼</van-button>
             <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
           </div>
         </div>
@@ -86,7 +116,17 @@
 
 <script>
 export default {
-  props: ["audio_res", "live_res", "video_res"]
+  props: ["audio_res", "live_res", "video_res"],
+  data() {
+    return {
+    
+    }
+  },
+  methods: {
+    seeGiveLiwu(item) {
+      this.$router.push("/course_gift_detail/" + item.batchcode)
+    }
+  },
 };
 </script>
 
@@ -197,5 +237,8 @@ export default {
   color: #666;
   line-height: 80px;
   letter-spacing: 2px;
+}
+.giveF {
+  padding: 0 10px;
 }
 </style>

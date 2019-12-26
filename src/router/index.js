@@ -638,7 +638,17 @@ const router = new Router({
         title: "视频试看"
       }
     },
-    // cantryVideo
+    {
+      path: "/course_gift_detail/:id",
+      name: "course_gift_detail",
+      component: () =>
+        import('../pages/course_gift_detail.vue'),
+      meta: {
+        showFooter: false,
+        title: "赠礼详情"
+      }
+    },
+    // course_gift_detail
 
   ]
 })
