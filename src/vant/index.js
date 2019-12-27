@@ -1,5 +1,5 @@
 // 导入自己需要的组件
-import {Sticky, Button,List,Grid,Area,Skeleton, GridItem,Picker,Stepper,PullRefresh,CouponList,SwipeCell,Checkbox,CheckboxGroup,RadioGroup,PasswordInput, NumberKeyboard, Radio,Search,Switch, SubmitBar,Uploader,Popup,Toast,Slider,Field,Icon, Swipe, Cell,CellGroup,SwipeItem, Lazyload, Row, Col, Image, Divider, NoticeBar, ActionSheet, Dialog, Tab, Tabs, Pagination, Rate, Tag, NavBar,} from 'vant';
+import {Sticky, Button,List,Grid,Area,Overlay,Skeleton, GridItem,Picker,Stepper,PullRefresh,CouponList,SwipeCell,Checkbox,CheckboxGroup,RadioGroup,PasswordInput, NumberKeyboard, Radio,Search,Switch, SubmitBar,Uploader,Popup,Toast,Slider,Field,Icon, Swipe, Cell,CellGroup,SwipeItem, Lazyload, Row, Col, Image, Divider, NoticeBar, ActionSheet, Dialog, Tab, Tabs, Pagination, Rate, Tag, NavBar,} from 'vant';
 const vant = {
     install: function(Vue) {
         Vue.use(Button)
@@ -44,6 +44,7 @@ const vant = {
         Vue.use(Area);
         // Vue.use(CouponList);
         Vue.use(Skeleton);
+        Vue.use(Overlay);
     }
 }
 export default vant

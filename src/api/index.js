@@ -322,3 +322,7 @@ export const reqDeteleDingYue = (id,cookie) => ajax(`${BASE_URL2}/api/5db28d1f5d
  * 获取赠礼详情
  */
 export const reqGiveLiwuDetail = (cookie,batchcode) => ajax(`${BASE_URL2}/api/5e0438409b28e`, {cookie,batchcode}, 'POST');
+/**
+ * 获取赠礼详情
+ */
+export const reqGiftlingquDetail = (cookie,g_id,type) => ajax(`${BASE_URL2}/api/5e0491708478e`, {cookie,g_id,type}, 'POST');

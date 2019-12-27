@@ -648,7 +648,17 @@ const router = new Router({
         title: "赠礼详情"
       }
     },
-    // course_gift_detail
+    {
+      path: "/giftCollectionDetails",
+      name: "giftCollectionDetails",
+      component: () =>
+        import('../pages/giftCollectionDetails.vue'),
+      meta: {
+        showFooter: false,
+        title: "赠礼领取详情"
+      }
+    },
+    // giftCollectionDetails
 
   ]
 })
