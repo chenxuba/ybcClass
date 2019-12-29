@@ -2,10 +2,10 @@
   <div class="course_buy01">
     <div class="list" v-if="article_res != ''">
       <!-- 图片和标题和价格 -->
-      <div class="content-allbox" v-for="(item,index) in article_res" :key="index">
+      <div class="content-allbox" v-for="(item,index) in article_res" :key="index" v-if="item.isvalid == 1">
         <div class="class-contentbox">
           <div class="img-box">
-            <img v-lazy="item.pic_cover" />
+            <img v-lazy="item.pic" />
           </div>
           <div class="content-detail">
             <div class="detail-name">
@@ -13,7 +13,7 @@
               <div class="content-money">¥{{item.money}}</div>
             </div>
             <div class="detail-time">
-              <span>视频</span>
+              <span>软文</span>
               购买于:
               <span>{{item.paytime}}</span>
             </div>
@@ -21,6 +21,13 @@
         </div>
         <div class="btnbox">
           <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+          <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="#5dd6c7"
+              v-if="item.buy_type == 3"
+            >赠送好礼</van-button>
           <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
         </div>
       </div>

@@ -4,7 +4,7 @@
         <div class="top">
           <div class="title_img">
             <img :src="member_info.headimgurl" alt v-if="member_info.headimgurl" />
-            <img src="../../../static/img/pic.svg" alt />
+            <img src="../../../static/img/pic.svg" alt v-else />
           </div>
           <i class="title_box">
             <h1>

@@ -326,3 +326,15 @@ export const reqGiveLiwuDetail = (cookie,batchcode) => ajax(`${BASE_URL2}/api/5e
  * 获取赠礼详情
  */
 export const reqGiftlingquDetail = (cookie,g_id,type) => ajax(`${BASE_URL2}/api/5e0491708478e`, {cookie,g_id,type}, 'POST');
+/**
+ * 领取赠礼
+ */
+export const reqTakeGift = (cookie,batchcode) => ajax(`${BASE_URL2}/api/5e04956a4d6de`, {cookie,batchcode}, 'POST');
+/**
+ * 设置零钱支付密码
+ */
+export const reqsetPayPwd = (cookie,pwd) => ajax(`${BASE_URL2}/api/5dd4a71b78a96`, {cookie,pwd}, 'POST');
+/**
+ * 设置零钱支付密码
+ */
+export const reqsetting = (cookie) => ajax(`${BASE_URL2}/api/5e06c3192e890`, {cookie}, 'POST');

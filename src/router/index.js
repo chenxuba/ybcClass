@@ -658,7 +658,57 @@ const router = new Router({
         title: "赠礼领取详情"
       }
     },
-    // giftCollectionDetails
+    {
+      path: "/giftOver",
+      name: "giftOver",
+      component: () =>
+        import('../pages/giftOver.vue'),
+      meta: {
+        showFooter: false,
+        title: "领取成功"
+      }
+    },
+    {
+      path: "/WxOpen",
+      name: "WxOpen",
+      component: () =>
+        import('../pages/WxOpen.vue'),
+      meta: {
+        showFooter: false,
+        title: "错误"
+      }
+    },
+    {
+      path: "/set_pay_pwd",
+      name: "set_pay_pwd",
+      component: () =>
+        import('../pages/set_pay_pwd.vue'),
+      meta: {
+        showFooter: false,
+        title: "设置支付密码"
+      }
+    },
+    {
+      path: "/revisePwd",
+      name: "revisePwd",
+      component: () =>
+        import('../pages/revisePwd.vue'),
+      meta: {
+        showFooter: false,
+        title: "修改密码"
+      }
+    },
+    {
+      path: "/forgetPwd",
+      name: "forgetPwd",
+      component: () =>
+        import('../pages/forgetPwd.vue'),
+      meta: {
+        showFooter: false,
+        title: "忘记密码"
+      }
+    },
+    // forgetPwd
 
   ]
 })

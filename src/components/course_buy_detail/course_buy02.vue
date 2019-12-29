@@ -2,7 +2,7 @@
   <div class="course_buy01">
     <div class="list" v-if="classs != ''">
       <!-- 图片和标题和价格 -->
-      <div class="content-allbox" v-for="(item,index) in classs" :key="index">
+      <div class="content-allbox" v-for="(item,index) in classs" :key="index" v-if="item.isvalid == 1">
         <div class="class-contentbox">
           <div class="img-box">
             <img v-lazy="item.pic_cover" />
@@ -21,6 +21,14 @@
         </div>
         <div class="btnbox">
           <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+          <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="#5dd6c7"
+              v-if="item.buy_type == 3"
+              class="in"
+            >赠送好礼</van-button>
           <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
         </div>
       </div>

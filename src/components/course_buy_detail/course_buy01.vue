@@ -3,7 +3,7 @@
     <div class="list">
       <div v-if="audio_res != ''">
         <!-- 图片和标题和价格 -->
-        <div class="content-allbox" v-for="(item,index) in audio_res" :key="'audio_res'+index">
+        <div class="content-allbox" v-for="(item,index) in audio_res" :key="'audio_res'+index" v-if="item.isvalid == 1">
           <div class="class-contentbox">
             <div class="img-box">
               <img v-lazy="item.cover" />
@@ -32,6 +32,14 @@
               plain
               type="primary"
               size="mini"
+              color="#5dd6c7"
+              class="giveF"
+              v-if="item.buy_type == 3"
+            >赠送好礼</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
               color="red"
               v-if="item.buy_type == 2"
               class="giveF"
@@ -42,7 +50,7 @@
         </div>
       </div>
       <div v-if="live_res != ''">
-        <div class="content-allbox" v-for="(item,index) in live_res" :key="'live_res'+index">
+        <div class="content-allbox" v-for="(item,index) in live_res" :key="'live_res'+index" v-if="item.isvalid == 1">
           <div class="class-contentbox">
             <div class="img-box">
               <img v-lazy="item.cover" />
@@ -61,12 +69,20 @@
           </div>
           <div class="btnbox">
             <van-button plain type="primary" size="mini" color="#5dd6c7">评价</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="#5dd6c7"
+              v-if="item.buy_type == 3"
+              class="giveF"
+            >赠送好礼</van-button>
             <van-button plain type="primary" size="mini" color="#5dd6c7" class="in">进入课时</van-button>
           </div>
         </div>
       </div>
       <div v-if="video_res != ''">
-        <div class="content-allbox" v-for="(item,index) in video_res" :key="'video_res'+index">
+        <div class="content-allbox" v-for="(item,index) in video_res" :key="'video_res'+index" v-if="item.isvalid == 1">
           <div class="class-contentbox">
             <div class="img-box">
               <img v-lazy="item.cover" />
@@ -91,6 +107,14 @@
               color="#5dd6c7"
               v-if="item.buy_type != 2"
             >评价</van-button>
+            <van-button
+              plain
+              type="primary"
+              size="mini"
+              color="#5dd6c7"
+              class="giveF"
+              v-if="item.buy_type == 3"
+            >赠送好礼</van-button>
             <van-button
               plain
               type="primary"

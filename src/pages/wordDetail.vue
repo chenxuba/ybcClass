@@ -60,14 +60,14 @@
           class="needpay0"
           v-if="word.needpay == 3 && word.try_content != '' && word.content == null"
         >
-          <Needpay6 :try_content="word.try_content" :price="word.price" :id="word.id"></Needpay6>
+          <Needpay6 :try_content="word.try_content" :price="word.price" :id="word.id" ></Needpay6>
         </div>
         <!-- 付费文章，needpay == 3 无试看 没有购买-->
         <div
           class="needpay0"
           v-if="word.needpay == 3 && word.try_content == '' && word.content == null"
         >
-          <Needpay7 :price="word.price"></Needpay7>
+          <Needpay7 :price="word.price" @gopay="gopay"></Needpay7>
         </div>
       </div>
       <!-- 赞赏区域 -->
@@ -141,7 +141,7 @@ import {
   reqwordZan,
   reqwordShouCang
 } from "../api/index";
-import { isIos ,setFirstUrl} from "../util";
+import { isIos, setFirstUrl } from "../util";
 import { wxJS_SDk } from "../util/share";
 import Needpay0 from "../components/wordDetail/needpay0";
 import Needpay2 from "../components/wordDetail/needpay2";
@@ -166,16 +166,14 @@ export default {
       my_member_id: "",
       showDashang: false,
       showPwdInput: false,
-      height: "50%",
-      
+      height: "50%"
     };
   },
   methods: {
     // 获取软文详情
     async getWordDetail() {
-      let password = localStorage.getItem(`wordPwd${this.article_id}`)
-      const result = await reqWordDetail(this.article_id, "",password);
-      console.log(result);
+      let password = localStorage.getItem(`wordPwd${this.article_id}`);
+      const result = await reqWordDetail(this.article_id, "", password);
       this.word = result.data;
       if (result.code == -8) {
         this.$toast("该资源不存在");
@@ -252,6 +250,7 @@ export default {
         }
       }
     },
+    // 收藏文章
     async wordCollection() {
       if (this.word.bottom_data.is_collection == 0) {
         const result = await reqwordShouCang(
@@ -277,7 +276,16 @@ export default {
         }
       }
     },
-    
+    // 去支付
+    gopay() {
+      this.$router.push({
+        path: "/pay/" + this.word.id,
+        query: {
+          type: 8,
+          money: this.word.price
+        }
+      });
+    }
   },
   mounted() {
     this.getWordDetail();

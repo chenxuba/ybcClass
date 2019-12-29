@@ -124,6 +124,7 @@
     </div>
     <!-- 返回按钮 -->
     <goHome></goHome>
+    <goBack></goBack>
   </div>
 </template>
 

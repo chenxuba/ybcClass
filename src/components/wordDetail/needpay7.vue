@@ -9,7 +9,7 @@
         <span>点击下方按钮立即支付 ↓</span>
       </p>
       <div class="commit">
-        <span class="btn">（{{price}}元）阅读全文</span>
+        <span class="btn" @click="goPay">（{{price}}元）阅读全文</span>
       </div>
       <div class="erweima">
         <img src="http://qiniu.ybc365.com/WechatIMG65.jpeg" alt />
@@ -20,7 +20,12 @@
 
 <script>
 export default {
-  props: ["price"]
+  props: ["price"],
+  methods: {
+    goPay() {
+      this.$emit("gopay")
+    }
+  },
 };
 </script>
 

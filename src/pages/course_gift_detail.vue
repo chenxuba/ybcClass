@@ -33,18 +33,21 @@
               <td>
                 <span class="send" v-if="item.status == 0" @click="share('only',item.id);showPic()">发送</span>
                 <span class="sendOver" v-if="item.status == 2">已领取</span>
+                <span class="send" v-if="item.status == 1">已发送</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <button class="share-btn" @click="share('all',g_ids);showPic()">一键分享所有赠礼</button>
+    <button class="share-btn" @click="share('all',g_ids);showPic()" v-if="GiveLiwuDetail.gift_num != 0">一键分享所有赠礼</button>
+    <button class="share-btn disabled" v-if="GiveLiwuDetail.gift_num == 0">一键分享所有赠礼</button>
     <van-overlay :show="showOverlay" @click="showOverlay = false">
       <div class="wrapper">
         <img src="../../static/img/click.png" class="shareImg" />
       </div>
     </van-overlay>
+    <goBack></goBack>
   </div>
 </template>
 
@@ -233,5 +236,9 @@ table tr td {
   position: absolute;
   top: 20px;
   right: 0;
+}
+.disabled{
+  background: #c2c2c2;
+
 }
 </style>

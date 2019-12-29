@@ -37,8 +37,7 @@ export const getCode = () => {
   }
 
   function getWechatCode() {
-    var url = encodeURI(window.location.href); //取得整个地址栏
-    // console.log("encodeURI" + url)
+    var url = encodeURIComponent(window.location.href); //取得整个地址栏
     window.location.href = `https://wxauth.ybc365.com/?appid=wxe0d15ea2f03bed68&response_type=code&scope=snsapi_userinfo&redirect_uri=${url}`;
   }
 
