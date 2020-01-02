@@ -30,7 +30,7 @@
         <teacherList :teacherList="TeacherList" @pullDown2="pullDown2" ref="child2"></teacherList>
       </van-tab>
     </van-tabs>
-    <goHome></goHome>
+    <!-- <goHome></goHome> -->
   </div>
 </template>
 
