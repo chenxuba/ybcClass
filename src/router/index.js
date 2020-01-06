@@ -4,7 +4,6 @@ import {
   isWx
 } from "../util";
 Vue.use(Router)
-
 const router = new Router({
   mode: 'history',
   routes: [{

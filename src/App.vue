@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view v-wechat-title="$route.meta.title"></router-view>
+      <router-view v-wechat-title="$route.meta.title" class="router"></router-view>
     <!--底部导航开始-->
     <tabBar v-show="$route.meta.showFooter"></tabBar>
   </div>
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      is_follow: ""
+      is_follow: "",
     };
   },
   methods: {},
@@ -31,7 +31,7 @@ export default {
     if (isWx()) {
       getCode();
     }
-  }
+  },
 };
 document.addEventListener("DOMContentLoaded", setFontSize);
 window.addEventListener("resize", setFontSize);
