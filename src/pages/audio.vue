@@ -12,7 +12,9 @@
           <img width="100%" height="100%" :src="ClassTimePlayer.cover" />
         </div>
         <div class="top">
-          <h1 class="title">{{ClassTimePlayer.title}}</h1>
+          <h1 class="title">
+            <van-notice-bar :text="ClassTimePlayer.title" />
+          </h1>
           <h2 class="subtitle">{{ClassTimePlayer.user_name}}</h2>
         </div>
         <div class="middle">
@@ -46,7 +48,8 @@ export default {
   data() {
     return {
       ClassTimePlayer: {},
-      videoUrl: "https://yibaikang001.oss-cn-shanghai.aliyuncs.com/rrGzQ7Ek/mp3/rbaC3zAN1557044456.mp3",
+      videoUrl:
+        "https://yibaikang001.oss-cn-shanghai.aliyuncs.com/rrGzQ7Ek/mp3/rbaC3zAN1557044456.mp3",
       res_id: this.$route.params.id //课时id
     };
   },
@@ -111,6 +114,10 @@ export default {
   width: 100%;
   background: rgb(243, 167, 167);
   overflow: hidden;
+}
+.van-notice-bar{
+  color: #fff;
+  background-color: rgb(0, 0, 0,0);
 }
 .normal-player {
   position: fixed;

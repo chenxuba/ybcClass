@@ -732,11 +732,11 @@ router.beforeEach((to, from, next) => {
   const agent = navigator.userAgent
   const isiOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
   // console.log(isiOS);
-  if (isiOS) {
-    if (to.path !== global.location.pathname) {
-      location.assign(to.fullPath)
-    }
-  }
+  // if (isiOS) {
+  //   if (to.path !== global.location.pathname) {
+  //     location.assign(to.fullPath)
+  //   }
+  // }
   if (to.name == "login" || to.name == "register") next();
   else if (to.name != 'query1' || to.name != 'query2' || to.name != 'video') {
     var cookie = sessionStorage.getItem("cookie");
