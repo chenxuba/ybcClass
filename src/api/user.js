@@ -2,12 +2,11 @@ import $axios from "axios"
 
 export const getCode = () => {
   // console.log(getUrlCode().parent_id);
-  
   if (getUrlCode().parent_id) {
     sessionStorage.setItem('parent_id', getUrlCode().parent_id)
   }
-  let openids = localStorage.getItem("login_name");
-  let unionids = localStorage.getItem("login_pwd_md5");
+  let openids = sessionStorage.getItem("login_name");
+  let unionids = sessionStorage.getItem("login_pwd_md5");
   let cookies = sessionStorage.getItem("cookie");
   let parent_id = sessionStorage.getItem("parent_id");
   if (cookies) {
@@ -33,6 +32,7 @@ export const getCode = () => {
           sessionStorage.setItem("member_id", result.data.data.member_id);
           location.reload() 
         }
+      }).catch((err)=>{
       });
   }
 
@@ -82,8 +82,8 @@ export const getCode = () => {
               // return;member_id
               sessionStorage.setItem("cookie", result.data.data.cookie);
               sessionStorage.setItem("uuid", result.data.data.uuid);
-              localStorage.setItem("login_name", result.data.data.login_name);
-              localStorage.setItem("login_pwd_md5", result.data.data.login_pwd_md5);
+              sessionStorage.setItem("login_name", result.data.data.login_name);
+              sessionStorage.setItem("login_pwd_md5", result.data.data.login_pwd_md5);
               sessionStorage.setItem("member_id", result.data.data.member_id);
               // console.log("我把cookie存到sessionStorage里了");
               location.reload() 

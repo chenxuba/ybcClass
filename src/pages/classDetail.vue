@@ -101,9 +101,9 @@
     <!-- 订购课程按钮 -->
     <div class="buy">
       <!-- 公开的 -->
-      <van-button class="btn" v-if="classDetail.needpay == 0" @click="goPlayer(classDetail.id)">进入课时</van-button>
+      <van-button class="btn" v-if="classDetail.needpay == 0" @click="goPlayer(classDetail)">进入课时</van-button>
       <!-- 公开的 -->
-      <van-button class="btn" v-if="classDetail.needpay == 1" @click="goPlayer(classDetail.id)">进入课时</van-button>
+      <van-button class="btn" v-if="classDetail.needpay == 1" @click="goPlayer(classDetail)">进入课时</van-button>
       <!-- 学员才能看 -->
       <van-button
         class="btn"
@@ -114,7 +114,7 @@
       <van-button
         class="btn"
         v-if="classDetail.needpay == 2 && classDetail.student == 1"
-        @click="goPlayer(classDetail.id)"
+        @click="goPlayer(classDetail)"
       >进入课时</van-button>
       <!-- 密码 -->
       <van-button class="btn" v-if="classDetail.needpay == 4" @click="showNumber">进入课时</van-button>
@@ -326,7 +326,7 @@
         </van-col>
         <!-- 学员权益 -->
         <van-col span="16">
-          <van-button class="btn" @click="goPlayer(classDetail.id)">学员免费，点击查看</van-button>
+          <van-button class="btn" @click="goPlayer(classDetail)">学员免费，点击查看</van-button>
         </van-col>
       </van-row>
       <!-- 付费资源且不可以试看且开了学员全场免费权益且没有购买且是学员 -->
@@ -344,14 +344,12 @@
         </van-col>
         <!-- 学员权益 -->
         <van-col span="16">
-          <van-button class="btn" @click="goPlayer(classDetail.id)">学员免费，点击查看</van-button>
+          <van-button class="btn" @click="goPlayer(classDetail)">学员免费，点击查看</van-button>
         </van-col>
       </van-row>
       <!-- 付费资源但是已购买 -->
-      <van-row
-        v-if="classDetail.needpay == 3 
-        && classDetail.is_ok == 1"
-      >
+      <van-row v-if="classDetail.needpay == 3 
+        && classDetail.is_ok == 1">
         <van-col span="7">
           <!-- 收费的，始终有赠送好友的按钮 -->
           <van-button class="zengsong" @click="GiveFriend">
@@ -359,7 +357,7 @@
           </van-button>
         </van-col>
         <van-col span="17">
-          <van-button class="btn"  @click="goPlayer(classDetail.id)">进入课时</van-button>
+          <van-button class="btn" @click="goPlayer(classDetail)">进入课时</van-button>
         </van-col>
       </van-row>
     </div>
@@ -444,10 +442,18 @@ export default {
         }, 1000);
       }
     },
-    goPlayer(id) {
-      this.$router.push({
-        path: `/pay/player/` + id
-      });
+    goPlayer(classDetail) {
+      if (classDetail.type == 10 || classDetail.type == 9) {
+        //音频
+        this.$router.push({
+          path: `/pay/player/` + classDetail.id + "/audio"
+        });
+      } else {
+        //视频
+        this.$router.push({
+          path: `/pay/player/` + classDetail.id
+        });
+      }
     },
     // 开通学员,跳转页面
     openStudent() {

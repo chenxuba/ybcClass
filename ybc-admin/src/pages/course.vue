@@ -364,13 +364,11 @@ export default {
     },
     // 点击查看已订阅
     seeDingyue(id) {
-      alert(id)
       this.showSeeDingyue = true;
       this.activeName = "SeeDingyue";
     },
     // 点击相关评价
     xiangguanPingjia(id) {
-      alert(id)
       this.showXiangguanPingjia = true;
       this.activeName = "xiangguanPingjia";
     },

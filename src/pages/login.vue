@@ -57,6 +57,7 @@
 import { Toast } from "vant";
 import md5 from "js-md5";
 import { reqPhonePwdLogin } from "../api/index";
+import { Alert } from 'element-ui';
 export default {
   data() {
     return {

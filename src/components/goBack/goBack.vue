@@ -37,6 +37,7 @@ export default {
   background: #333;
   border-radius: 12px;
   text-align: center;
+  z-index: 9999;
 }
 .goHome img {
   width: 60%;

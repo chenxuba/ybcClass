@@ -1,72 +1,83 @@
 <template>
   <div class="CourseCatalogue">
-    <div class="box-warp" v-if="CourseMulu != ''">
-      <van-row
-        class="msg_warp"
-        v-for="(item,index) in CourseMulu"
-        :key="index"
-        @click="goPlayer(item)"
-      >
-        <van-col span="9">
-          <div class="img_warp">
-            <img v-lazy="item.cover" alt />
-            <span v-if="item.needpay == 2" class="xueyuan">学员</span>
-            <span v-if="item.needpay == 3 && item.cantry == 0" class="fufei">付费</span>
-            <span v-if="item.needpay == 4" class="mima">密码</span>
-            <!-- <span v-if="item.needpay == 0" class="gongkai">公开</span> -->
-            <span v-if="item.cantry == 1 && item.needpay == 3" class="gongkai">试看</span>
-          </div>
-        </van-col>
-        <van-col span="15" class="right">
-          <div class="top">{{item.title}}</div>
-          <div class="top2">
-            <span id="about_text">{{item.createtime}}</span>
-          </div>
-          <div class="bottom" v-if="item.res_type == 1">
-            <van-row>
-              <van-col class="scan_warp code_warp">
-                <span class="code" v-if="item.type == 1">文章</span>
-                <span class="code" v-if="item.type == 2">直播</span>
-                <span class="code" v-if="item.type == 3">视频</span>
-                <span class="code" v-if="item.type == 4">回放</span>
-                <span class="code" v-if="item.type == 5">课程</span>
-                <span class="code" v-if="item.type == 6">课程直播</span>
-                <span class="code" v-if="item.type == 7">课程点播</span>
-                <span class="code" v-if="item.type == 8">电台直播</span>
-                <span class="code" v-if="item.type == 9">电台回听</span>
-                <span class="code" v-if="item.type == 10">音频</span>
-              </van-col>
-              <van-col span="6" class="scan_warp">
-                <span class="scan">
-                  <van-icon name="play-circle-o" class="icon-paly" />
-                  ({{parseInt(baseValue2)+parseInt(item.people_num)}})
-                </span>
-              </van-col>
-              <van-col span="6" class="good_warp">
-                <span class="beautiful">
-                  <van-icon name="good-job" class="icon" />
-                  <span class="number">({{parseInt(num)+parseInt(item.likes)}})</span>
-                </span>
-              </van-col>
-            </van-row>
-          </div>
-          <div class="bottom" v-if="item.res_type == 2">
-            <van-row>
-              <van-col class="scan_warp code_warp">
-                <span class="code" v-if="item.res_type == 2">文章</span>
-              </van-col>
-              <van-col span="6" class="scan_warp">
-                <span class="scan">{{Number(baseValue2)+ item.read_num}}浏览</span>
-              </van-col>
-            </van-row>
-          </div>
-        </van-col>
-      </van-row>
-    </div>
-    <div class="noshow" v-else>
-      <img width="50%" src="https://kf.ybc365.com/train/Public/train/user/course/images/nodata.png" />
-      <p class="crvp">还没有相关课时数据</p>
-    </div>
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+      :immediate-check="false"
+    >
+      <div class="box-warp" v-if="CourseMulu != ''">
+        <van-row
+          class="msg_warp"
+          v-for="(item,index) in CourseMulu"
+          :key="index"
+          @click="goPlayer(item)"
+        >
+          <van-col span="9">
+            <div class="img_warp">
+              <img v-lazy="item.cover" alt />
+              <span v-if="item.needpay == 2" class="xueyuan">学员</span>
+              <span v-if="item.needpay == 3 && item.cantry == 0" class="fufei">付费</span>
+              <span v-if="item.needpay == 4" class="mima">密码</span>
+              <!-- <span v-if="item.needpay == 0" class="gongkai">公开</span> -->
+              <span v-if="item.cantry == 1 && item.needpay == 3" class="gongkai">试看</span>
+            </div>
+          </van-col>
+          <van-col span="15" class="right">
+            <div class="top">{{item.title}}</div>
+            <div class="top2">
+              <span id="about_text">{{item.createtime}}</span>
+            </div>
+            <div class="bottom" v-if="item.res_type == 1">
+              <van-row>
+                <van-col class="scan_warp code_warp">
+                  <span class="code" v-if="item.type == 1">文章</span>
+                  <span class="code" v-if="item.type == 2">直播</span>
+                  <span class="code" v-if="item.type == 3">视频</span>
+                  <span class="code" v-if="item.type == 4">回放</span>
+                  <span class="code" v-if="item.type == 5">课程</span>
+                  <span class="code" v-if="item.type == 6">课程直播</span>
+                  <span class="code" v-if="item.type == 7">课程点播</span>
+                  <span class="code" v-if="item.type == 8">电台直播</span>
+                  <span class="code" v-if="item.type == 9">电台回听</span>
+                  <span class="code" v-if="item.type == 10">音频</span>
+                </van-col>
+                <van-col span="6" class="scan_warp">
+                  <span class="scan">
+                    <van-icon name="play-circle-o" class="icon-paly" />
+                    ({{parseInt(baseValue2)+parseInt(item.people_num)}})
+                  </span>
+                </van-col>
+                <van-col span="6" class="good_warp">
+                  <span class="beautiful">
+                    <van-icon name="good-job" class="icon" />
+                    <span class="number">({{parseInt(num)+parseInt(item.likes)}})</span>
+                  </span>
+                </van-col>
+              </van-row>
+            </div>
+            <div class="bottom" v-if="item.res_type == 2">
+              <van-row>
+                <van-col class="scan_warp code_warp">
+                  <span class="code" v-if="item.res_type == 2">文章</span>
+                </van-col>
+                <van-col span="6" class="scan_warp">
+                  <span class="scan">{{Number(baseValue2)+ item.read_num}}浏览</span>
+                </van-col>
+              </van-row>
+            </div>
+          </van-col>
+        </van-row>
+      </div>
+      <div class="noshow" v-else>
+        <img
+          width="50%"
+          src="https://kf.ybc365.com/train/Public/train/user/course/images/nodata.png"
+        />
+        <p class="crvp">还没有相关课时数据</p>
+      </div>
+    </van-list>
   </div>
 </template>
 
@@ -80,7 +91,9 @@ export default {
       baseValue1: "500",
       baseValue2: "800",
       num: 0,
-      code: "视频"
+      code: "视频",
+      loading: false,
+      finished: false
     };
   },
   methods: {
@@ -91,23 +104,30 @@ export default {
     goPlayer(item) {
       // 视频，音频，直播
       if (item.res_type == 1) {
-        if(this.CourseJianjie.subscribe == 0 && item.cantry == 0){ //无订阅无试看
+        if (this.CourseJianjie.subscribe == 0 && item.cantry == 0) {
+          //无订阅无试看
           Toast("订阅课程后才能查看");
-        }else if(this.CourseJianjie.subscribe == 0 && item.cantry == 1){ //无订阅有试看
-            this.$router.push({
-              path: "/classDetail/" + item.id
-            });
-        }else if(this.CourseJianjie.subscribe == 1){ //有订阅
-            this.$router.push({
-              path: "/classDetail/" + item.id
-            });
+        } else if (this.CourseJianjie.subscribe == 0 && item.cantry == 1) {
+          //无订阅有试看
+          this.$router.push({
+            path: "/classDetail/" + item.id
+          });
+        } else if (this.CourseJianjie.subscribe == 1) {
+          //有订阅
+          this.$router.push({
+            path: "/classDetail/" + item.id
+          });
         }
       } else if (item.res_type == 2) {
         //软文
-          this.$router.push({
-            path: "/wordDetail/" + item.res_id
-          });
+        this.$router.push({
+          path: "/wordDetail/" + item.res_id
+        });
       }
+    },
+    //下拉加载
+    onLoad(){
+      this.$emit("onLoad")
     }
   },
   mounted() {

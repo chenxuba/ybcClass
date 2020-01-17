@@ -39,7 +39,7 @@
         ></CourseIntroduction>
       </van-tab>
       <van-tab title="目录">
-        <CourseCatalogue :CourseMulu="CourseMulu"></CourseCatalogue>
+        <CourseCatalogue :CourseMulu="CourseMulu" @onLoad="getCourseMulu" ref="CourseMulu"></CourseCatalogue>
       </van-tab>
       <van-tab title="评价">
         <CousreComment :CoursePingJia="CoursePingJia"></CousreComment>
@@ -157,7 +157,9 @@ export default {
       show: true, //控制我的邀约卡的显示与否
       id: this.$route.params.id, //上一级传过来的id，通过id去找详情资源,
       router: "payOver",
-      StudentQuanYi: ""
+      StudentQuanYi: "",
+      page: "0", //默认从第一页开始的
+      resultInfo: [] //数据
     };
   },
   methods: {
@@ -191,14 +193,27 @@ export default {
     },
     //触发请求，课程目录
     async getCourseMulu() {
-      const result = await reqCourseMulu(this.id);
+      this.page++;
+      const result = await reqCourseMulu(this.id, this.page);
       if (result.code == -8) {
         Toast.fail("该资源已删除");
         setTimeout(() => {
           this.$router.go(-1);
         }, 1000);
+      } else {
+        if (result.data.length > 0) {
+          result.data.forEach(item => {
+            this.resultInfo.push(item);
+          });
+        }
+        this.$store.commit("setCourseMulu", this.resultInfo);
+        // 加载状态结束
+        this.$refs.CourseMulu.loading = false;
+        // 数据全部加载完成
+        if (result.code == -19) {
+          this.$refs.CourseMulu.finished = true;
+        }
       }
-      this.$store.commit("setCourseMulu", result.data);
     },
     //触发请求，课程评价
     async getCoursePingJia() {
@@ -248,6 +263,20 @@ export default {
     GiveFriend() {
       this.$refs.giveFriendPopup.isShowGiveFriend = true;
     }
+    // 下拉加载
+    // async MuLuOnLoad() {
+    //   this.page++;
+    //   const result = await reqCourseMulu(this.id, this.page);
+    //   console.log(result);
+    //   let resultInfo = [];
+    //    if (result.data.length > 0) {
+    //     result.data.forEach(item => {
+    //       resultInfo.push(item);
+    //     });
+    //   }
+    //   console.log(resultInfo);
+
+    // }
   },
   mounted() {
     this.getRandomInt(100, 200);
@@ -271,8 +300,10 @@ export default {
         this.CourseJianjie.total_month <
         "0.01"
         ? "0.01"
-        : ((this.StudentQuanYi.student_discount / 100) *
-            this.CourseJianjie.total_month).toFixed(2);
+        : (
+            (this.StudentQuanYi.student_discount / 100) *
+            this.CourseJianjie.total_month
+          ).toFixed(2);
     }
   }
   // created() {

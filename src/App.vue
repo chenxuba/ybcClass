@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <router-view v-wechat-title="$route.meta.title" class="router"></router-view>
+    <router-view v-wechat-title="$route.meta.title" class="router"></router-view>
     <!--底部导航开始-->
     <tabBar v-show="$route.meta.showFooter"></tabBar>
   </div>
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      is_follow: "",
+      is_follow: ""
     };
   },
   methods: {},
@@ -28,10 +28,12 @@ export default {
     tabBar
   },
   mounted() {
-    if (isWx()) {
-      getCode();
-    }
-  },
+    // if (isWx()) {
+    //   setTimeout(() => {
+    //     getCode();
+    //   }, 1000);
+    // }
+  }
 };
 document.addEventListener("DOMContentLoaded", setFontSize);
 window.addEventListener("resize", setFontSize);
@@ -69,5 +71,8 @@ function setFontSize() {
 /* 控制视频播放页面底部菜单是否显示，0为显示 ，可选值为1101*/
 .xgplayer-poster {
   z-index: 0;
+}
+.aplayer-music {
+  display: none;
 }
 </style>

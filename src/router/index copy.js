@@ -3,8 +3,6 @@ import Router from 'vue-router'
 import {
   isWx
 } from "../util";
-import { getCode } from "../api/user";
-
 Vue.use(Router)
 const router = new Router({
   mode: 'history',
@@ -731,20 +729,29 @@ import {
 router.beforeEach((to, from, next) => {
   const agent = navigator.userAgent
   const isiOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
-  // console.log(isiOS);
-  // if (isiOS) {
-  //   if (to.path !== global.location.pathname) {
-  //     location.assign(to.fullPath)
-  //   }
-  // }
+  console.log(isiOS);
+  if (isiOS) {
+    if (to.path !== global.location.pathname) {
+      location.assign(to.fullPath)
+    }
+  }
   if (to.name == "login" || to.name == "register") next();
-  else if (to.name != 'query1' || to.name != 'query2' || to.name != 'video') {
+  else if (to.name == "player" || to.name == 'my' || to.name == 'inquire' ||
+    to.name == 'query1' || to.name == 'query2' || to.name == 'courseDetail' ||
+    to.name == 'classDetail' || to.name == 'userinfo' || to.name == 'openStudent' ||
+    to.name == 'ask' || to.name == 'wordDetail' || to.name == 'course_buy_detail' ||
+    to.name == 'moduleDetail' || to.name == 'wordModuleDeatil' || to.name == 'teacherUserinfo' ||
+    to.name == 'applyTeacher' || to.name == 'openTeacher' || to.name == 'openSchool' || 
+    to.name == 'schoolDetail' || to.name == 'xsCourseDetail' || to.name == 'cantryVideo') {
     var cookie = sessionStorage.getItem("cookie");
-    if (cookie != null) {
+    if (cookie) {
       next();
     } else {
       if (isWx()) {
-        getCode();
+        // getCode();
+        setTimeout(() => {
+          next();
+        }, 1000);
       } else {
         const toast = Toast.loading({
           duration: 0, // 持续展示 toast
