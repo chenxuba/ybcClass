@@ -53,7 +53,7 @@ export default {
     // 进来这个页面就执行这个方法，判断用户是不是导师
     async isTeacher() {
       const result = await reqUserIsTeacher();
-      console.log(result);
+      // console.log(result);
       if (result.code == 1) {
         this.userIsTeacher = result.data;
         // this.getTeacherList();
@@ -167,6 +167,7 @@ export default {
   },
   mounted() {
     this.isTeacher();
+    this.loadMore();
   }
 };
 </script>

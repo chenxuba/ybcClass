@@ -14,12 +14,10 @@
           <van-icon name="replay" class="icon" />
         </div>
         <div class="jieshu" v-show="showyugao">
-          <span>
-            直播倒计时
-            <br />
-            <!-- {{ClassTimePlayer.res_info.starttime}} -->
-            <van-count-down :time="daojishitime" format="DD 天 HH 时 mm 分 ss 秒" />
-          </span>
+          <span>直播开始时间
+          <br>
+            {{ClassTimePlayer.res_info.starttime}}</span>
+          <van-icon name="replay" class="icon" />
         </div>
       </van-overlay>
     </div>
@@ -162,8 +160,7 @@ export default {
       is_guanzhu: 0, //是否关注导师
       showzhezhao: false, //是否显示结束或者预告遮罩层
       showjieshu: false, //是否直播结束
-      showyugao: false, //是否是直播预告
-      daojishitime: 0 //直播倒计时
+      showyugao: false //是否是直播预告
     };
   },
   methods: {
@@ -185,8 +182,9 @@ export default {
         width: "100%",
         height: "100%",
         poster:
-          "https://kf.ybc365.com/train/Public/train/user/live/img/default_bg.png",
-        autoplay: false
+          "https://kf.ybc365.com/train/Public/train/user/live/img/default_bg.png"
+
+        // autoplay: false
       });
     },
     //触发请求，播放页详情
@@ -199,9 +197,6 @@ export default {
         this.wsConfig.user_id = result.data.user_id;
         this.type = result.data.type;
         // console.log(this.type);
-        let s1 = this.dateFormat(new Date()); //倒计时 
-        let s2 = result.data.res_info.starttime;
-        this.daojishitime = new Date(s2.replace(/-/g, "/")) - new Date(s1.replace(/-/g, "/"));
         wxJS_SDk(
           this.ClassTimePlayer.title,
           "精彩直播，点击进入，要你好看！",
@@ -229,7 +224,7 @@ export default {
       console.log(result);
       if (result.code == 1) {
         this.is_guanzhu = result.data.is_user_follow;
-        sessionStorage.setItem("videoUrl", result.data.videourl);
+        sessionStorage.setItem("videoUrl",result.data.videourl)
         if (result.data.videourl != 4004 && result.data.videourl != "") {
           this.videoUrl = result.data.videourl;
         } else if (result.data.videourl == "") {
@@ -517,39 +512,6 @@ export default {
     touchWebsocketsend(live_msg) {
       // console.log(live_msg);
       this.websocketsend(live_msg);
-    },
-    //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
-    dateFormat(time) {
-      var date = new Date(time);
-      var year = date.getFullYear();
-      /* 在日期格式中，月份是从0开始的，因此要加0
-       * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
-       * */
-      var month =
-        date.getMonth() + 1 < 10
-          ? "0" + (date.getMonth() + 1)
-          : date.getMonth() + 1;
-      var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-      var hours =
-        date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-      var minutes =
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-      var seconds =
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-      // 拼接
-      return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        " " +
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds
-      );
     }
   },
   mounted() {
@@ -672,8 +634,5 @@ export default {
   color: red;
   font-size: 28px;
   font-weight: bold;
-}
-.van-count-down {
-  color: #fff;
 }
 </style>

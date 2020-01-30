@@ -32,7 +32,6 @@
                   <span class="course_geng">
                     <van-icon
                       name="like"
-                      color="red"
                       style="position: relative;
     top: 1px;margin-right:2px;"
                     />

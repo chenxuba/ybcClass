@@ -5,6 +5,7 @@
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
+        :immediate-check="false"
         :offset="10"
       >
     <cellView v-for="(item,index) in teacherList" :key="index" :teacherObj="item"></cellView>

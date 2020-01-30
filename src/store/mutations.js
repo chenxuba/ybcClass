@@ -69,6 +69,9 @@ export default {
     // 把赋值的礼物总价钱数据存到vuex中
     setLiwuTotalPrice(state,LiwuTotalPrice){
         state.LiwuTotalPrice = LiwuTotalPrice
+    },
+    setTransitionName(state,transitionName){
+        state.transitionName = transitionName
     }
   
     

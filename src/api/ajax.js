@@ -84,12 +84,12 @@ axios.interceptors.response.use((res) => {
     if (isWx()) {
       console.log("过期了")
       sessionStorage.removeItem('cookie');
-      console.log(222);
+      // console.log(222);
       
       getCode();
-      setTimeout(() => {
-        router.go(0)
-      }, 1000);
+      // setTimeout(() => {
+      //   router.go(0)
+      // }, 1000);
       hideLoading();
       return res;
     } else {

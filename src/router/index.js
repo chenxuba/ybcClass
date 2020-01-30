@@ -3,7 +3,12 @@ import Router from 'vue-router'
 import {
   isWx
 } from "../util";
-import { getCode } from "../api/user";
+import {
+  getCode
+} from "../api/user";
+import {
+  Toast
+} from 'vant';
 
 Vue.use(Router)
 const router = new Router({
@@ -724,40 +729,34 @@ const router = new Router({
   ]
 })
 
-import {
-  Toast
-} from 'vant';
+
 // 添加路由守卫
+
 router.beforeEach((to, from, next) => {
-  const agent = navigator.userAgent
-  const isiOS = !!agent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
-  // console.log(isiOS);
-  if (isiOS) {
-    if (to.path !== global.location.pathname) {
-      location.assign(to.fullPath)
-    }
-  }
-  if (to.name == "login" || to.name == "register") next();
-  else if (to.name != 'query1' || to.name != 'query2' || to.name != 'video') {
-    var cookie = sessionStorage.getItem("cookie");
-    if (cookie != null) {
-      next();
-    } else {
-      if (isWx()) {
-        getCode();
+  if (isWx()) {
+    // 是微信浏览器走这个逻辑
+    getCode();
+    next();
+  } else {
+    // 不是微信浏览器走这个逻辑
+    let cookie = sessionStorage.getItem("cookie"); //唯一判断标准，是否登录状态
+    if (cookie == null) {
+      // 未登录状态下走这个逻辑
+      if (to.name == 'login' || to.name == "login2" || to.name == 'register' || to.name == 'index' || to.name == 'query0' || to.name == 'query1' || to.name == 'query2' || to.name == 'video') {
+        next();
       } else {
         const toast = Toast.loading({
-          duration: 0, // 持续展示 toast
-          forbidClick: true, // 禁用背景点击
+          duration: 0, // 持续展示 toast
+          forbidClick: true, // 禁用背景点击
           loadingType: 'spinner',
-          message: '监测到您没有登录，开始跳转登录'
+          message: '您还没有登录'
         });
 
         let second = 3;
         const timer = setInterval(() => {
           second--;
           if (second) {
-            toast.message = `正在跳转...`;
+            toast.message = `跳转登录...`;
           } else {
             clearInterval(timer);
           }
@@ -769,10 +768,19 @@ router.beforeEach((to, from, next) => {
           Toast.clear();
         }, 2000);
       }
-
+    } else {
+      // 不是微信浏览器已登录状态下走这个逻辑
+      next();
     }
-  } else next();
+  }
 })
-
+//解决ios微信浏览器内vue项目url不改变
+router.afterEach((to, from) => {
+  const u = navigator.userAgent.toLowerCase()
+  if (u.indexOf("like mac os x") < 0 || u.match(/MicroMessenger/i) != 'micromessenger') return
+  if (to.path !== global.location.pathname) {
+    location.assign(to.fullPath)
+  }
+})
 
 export default router;

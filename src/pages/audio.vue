@@ -125,7 +125,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 150;
+  /* z-index: 150; */
   background: #a98175;
 }
 .normal-player .background {

@@ -7,6 +7,7 @@
         :finished="finished"
         finished-text="没有更多了"
         @load="onLoad"
+        :immediate-check="false"
         :offset="10"
       >
         <van-row class="list_box" gutter="2">
@@ -36,7 +37,7 @@ export default {
     async onLoad() {
       this.page++;
       const result = await reqLivePage("", this.page);
-      console.log(result);
+      // console.log(result);
       if (result.code == 1) {
         result.data.forEach(item => {
           this.video.push(item);
@@ -49,19 +50,20 @@ export default {
       }
     },
     async onRefresh() {
-      let num = 1;
+      let num = 0;
       const result = await reqLivePage("", num);
       if (result.code == 1) {
         this.video = result.data;
         this.$toast("刷新成功");
         this.isLoading = false;
         this.finished = false;
-        this.page = 1;
+        this.page = 0;
       }
     }
   },
   mounted() {
     // this.getLive();
+    this.onLoad();
   },
   components: {
     cellView

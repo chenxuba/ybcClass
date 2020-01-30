@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view v-wechat-title="$route.meta.title" class="router"></router-view>
+    <transition :name="$store.state.transitionName">
+      <router-view v-wechat-title="$route.meta.title"></router-view>
+    </transition>
     <!--底部导航开始-->
     <tabBar v-show="$route.meta.showFooter"></tabBar>
   </div>
@@ -19,20 +21,18 @@ export default {
     };
   },
   data() {
-    return {
-      is_follow: ""
-    };
+    return {};
   },
   methods: {},
   components: {
     tabBar
   },
-  mounted() {
-    // if (isWx()) {
-    //   setTimeout(() => {
-    //     getCode();
-    //   }, 1000);
-    // }
+  watch: {
+    $route(to, from) {
+      // 如果to索引大于from索引,判断为前进状态,反之则为后退状态
+      // this.transitionName = "slide-left";
+      this.$store.commit("setTransitionName", "slide-left");
+    }
   }
 };
 document.addEventListener("DOMContentLoaded", setFontSize);
@@ -74,5 +74,40 @@ function setFontSize() {
 }
 .aplayer-music {
   display: none;
+}
+
+.slide-right-enter-active,
+.slide-left-enter-active {
+  will-change: transform;
+  transition: all 500ms;
+}
+.slide-left-leave-active,
+.slide-right-leave-active {
+  will-change: transform;
+  transition: all 1ms;
+}
+.slide-right-enter {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-enter {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}
+.slide-left-leave-active {
+  opacity: 0;
+  transform: translate3d(-100%, 0, 0);
+}
+/* 改变loading 图标颜色 */
+.el-loading-spinner i{
+  /* color: #eee !important; */
+}
+/* 改变loading 字体颜色 */
+.el-loading-text {
+  /* color: #eee !important; */
 }
 </style>

@@ -55,14 +55,14 @@ export default {
           duration: 0, // 持续展示 toast
           forbidClick: true, // 禁用背景点击
           loadingType: "spinner",
-          message: "监测到您没有登录，开始跳转登录"
+          message: "您还没有登录"
         });
 
         let second = 3;
         const timer = setInterval(() => {
           second--;
           if (second) {
-            toast.message = `正在跳转...`;
+            toast.message = `跳转登录...`;
           } else {
             clearInterval(timer);
           }

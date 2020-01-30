@@ -6,9 +6,10 @@ let loading;
 const startLoading = () => {
     loading = Loading.service({
         lock: true,
-        text: 'Loading...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0)',
+        text: '加载中...请稍后',
+        spinner: 'el-icon-s-promotion',
+        background: 'rgba(0, 0, 0, 0.2)',
+        customClass:"ele-loading",
         target: document.querySelector('.loading-area')
     });
 };

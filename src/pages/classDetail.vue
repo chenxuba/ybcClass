@@ -498,7 +498,7 @@ export default {
     async getStudentQuanYi() {
       const result = await reqStudentQuanYi();
       if (result.code == 1) {
-        console.log(result);
+        // console.log(result);
         this.StudentQuanYi = result.data;
       }
     },

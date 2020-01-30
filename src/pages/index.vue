@@ -72,7 +72,7 @@ export default {
     // 判断用户是否关注了医佰康公众号
     async isGuanZhuWx() {
       const result = await reqisGuanzhuWx("");
-      console.log(result);
+      // console.log(result);
       if (result.code == 1) {
         this.is_follow = result.data.is_follow;
         if (this.is_follow == 1) {

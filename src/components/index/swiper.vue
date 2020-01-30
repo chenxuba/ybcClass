@@ -4,9 +4,9 @@
       <van-col span="24" class="swiper_col">
         <van-swipe :autoplay="3000" indicator-color="white" style="height: 160px;">
           <van-swipe-item v-for="(item,index) in swiper.carousel" :key="index">
-            <!-- <a :href="item.url"> -->
+            <a :href="item.url">
             <img v-lazy="item.img" alt />
-            <!-- </a> -->
+            </a>
           </van-swipe-item>
         </van-swipe>
       </van-col>

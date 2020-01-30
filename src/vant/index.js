@@ -4,6 +4,7 @@ import {
   Button,
   List,
   Grid,
+  CountDown,
   Area,
   Overlay,
   Skeleton,
@@ -92,6 +93,8 @@ const vant = {
     // Vue.use(CouponList);
     Vue.use(Skeleton);
     Vue.use(Overlay);
+    Vue.use(CountDown);
+    
   }
 }
 export default vant

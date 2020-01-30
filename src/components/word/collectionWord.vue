@@ -171,7 +171,7 @@ export default {
   position: relative;
   top: 2px;
   margin-right: 5px;
-  color: orange;
+  /* color: orange; */
 }
 .box-warp .msg_warp .right .bottom .scan_warp {
   text-align: right;

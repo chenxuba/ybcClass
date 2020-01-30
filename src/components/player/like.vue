@@ -172,7 +172,11 @@ export default {
     //自动飘心
     setIntervalZan() {
       this.timer = setInterval(() => {
-        this.$parent.delayed();
+        if (sessionStorage.getItem("videoUrl") == "") {
+          console.log("不飘心");
+        } else {
+          this.$parent.delayed();
+        }
       }, 1200);
     }
   },

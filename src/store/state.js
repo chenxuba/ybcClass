@@ -19,4 +19,5 @@ export default {
     CoursePingJia:{},//课程评价数据
     ClassTimePlayer:{},//课时课程播放页数据
     LiwuTotalPrice:"",//赠送的礼物的总价钱，用来和用户零钱做比较，>用户零钱，就显示余额不足
+    transitionName:"",//动画名称
 }
